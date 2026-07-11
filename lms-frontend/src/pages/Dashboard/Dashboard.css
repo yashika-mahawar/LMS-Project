@@ -1,0 +1,84 @@
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  color: #334155;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-main-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.dashboard-section {
+  margin-bottom: 32px;
+}
+
+.section-header-flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.view-all-btn {
+  background: none;
+  border: none;
+  color: #4f46e5;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* 4 Items wide grid layout for CourseCards */
+.courses-grid-layout {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 24px;
+}
+
+/* Two-column balance setup for child metrics */
+.dashboard-split-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+.grid-column-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.component-card-wrapper {
+  background: #ffffff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  padding: 20px;
+}
+
+/* Media Queries for Desktop responsiveness */
+@media (min-width: 640px) {
+  .courses-grid-layout {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .courses-grid-layout {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  
+  .dashboard-split-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

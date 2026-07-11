@@ -1,0 +1,169 @@
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 32px;
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 20px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 6px -1px rgba(15, 23, 42, 0.02);
+}
+
+/* Luxury Input Search Section */
+.search-box {
+  flex: 0 1 420px; /* Limits width to look highly professional */
+  display: flex;
+  align-items: center;
+  background: #f8fafc;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.search-icon {
+  color: #94a3b8;
+  font-size: 16px;
+  transition: color 0.3s;
+}
+
+.search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  margin-left: 12px;
+  color: #334155;
+  font-weight: 500;
+}
+
+.search-box input::placeholder {
+  color: #94a3b8;
+}
+
+/* Glass & Glow Focus Matrix for Search Input */
+.search-box:focus-within {
+  background: #ffffff;
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1), 0 4px 12px -2px rgba(79, 70, 229, 0.05);
+}
+
+.search-box:focus-within .search-icon {
+  color: #4f46e5;
+}
+
+/* Action Center Alignments */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* Dynamic Notification Ring Group */
+.notification {
+  position: relative;
+  font-size: 20px;
+  cursor: pointer;
+  color: #64748b;
+  padding: 8px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.notification:hover {
+  color: #4f46e5;
+  background: #f5f3ff;
+  border-color: #ddd6fe;
+  transform: translateY(-1px);
+}
+
+.badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ef4444;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* Premium Profile Layout Element */
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  padding: 4px 12px 4px 6px;
+  border-radius: 14px;
+  transition: all 0.2s ease;
+}
+
+.profile:hover {
+  background: #f8fafc;
+}
+
+.profile-avatar-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.avatar-svg {
+  font-size: 38px;
+  color: #4f46e5;
+  transition: transform 0.3s ease;
+}
+
+.profile:hover .avatar-svg {
+  transform: rotate(5deg) scale(1.04);
+}
+
+.profile-info-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.user-role {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+/* Responsive Scaling Mechanics */
+@media (max-width: 640px) {
+  .dashboard-header {
+    padding: 16px 20px;
+  }
+  .search-box {
+    order: 2;
+    flex: 1 1 100%;
+  }
+}

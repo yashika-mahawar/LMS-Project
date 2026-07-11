@@ -1,0 +1,127 @@
+.mycourses-page {
+  padding: 40px;
+  background: #f5f7ff;
+  min-height: 100vh;
+}
+
+/* TITLE */
+.title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #111;
+}
+
+.subtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+/* GRID */
+.mycourses-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* CARD */
+.mycourse-card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  transition: 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.mycourse-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.12);
+}
+
+/* HEADER */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.card-header h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+}
+
+/* BADGE */
+.badge {
+  background: linear-gradient(45deg, #4f46e5, #06b6d4);
+  color: white;
+  padding: 4px 10px;
+  font-size: 11px;
+  border-radius: 20px;
+}
+
+/* PROGRESS TEXT */
+.progress-text {
+  font-size: 13px;
+  color: #666;
+  margin: 10px 0 5px;
+}
+
+/* PROGRESS BAR */
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: #e5e7eb;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+/* FILL */
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4f46e5, #06b6d4);
+  border-radius: 20px;
+  transition: width 0.6s ease-in-out;
+}
+
+/* PERCENT TEXT */
+.progress-value {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #444;
+}
+
+/* BUTTON */
+.continue-btn {
+  display: block;
+  margin-top: 15px;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px;
+  text-decoration: none;
+  background: #111827;
+  color: white;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.continue-btn:hover {
+  background: linear-gradient(45deg, #4f46e5, #06b6d4);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .title {
+    font-size: 24px;
+  }
+
+  .mycourse-card {
+    padding: 15px;
+  }
+}

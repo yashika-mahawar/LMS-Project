@@ -1,0 +1,165 @@
+.login-container{
+    min-height:100vh;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+}
+
+/* LEFT SIDE */
+
+.login-left{
+    background:#002147;
+    color:white;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:80px;
+}
+
+.login-left h1{
+    font-size:46px;
+    margin-bottom:20px;
+}
+
+.login-left h2{
+    font-size:32px;
+    margin-bottom:20px;
+}
+
+.login-left p{
+    color:#ddd;
+    line-height:1.8;
+}
+
+/* RIGHT SIDE */
+
+.login-right{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#f8f9fc;
+}
+
+.login-form{
+    width:420px;
+    background:white;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.1);
+}
+
+.login-form h2{
+    text-align:center;
+    color:#002147;
+    margin-bottom:25px;
+}
+
+.login-form input{
+    width:100%;
+    padding:14px;
+    margin-bottom:18px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:15px;
+    outline:none;
+    box-sizing:border-box;
+}
+
+.login-form input:focus{
+    border-color:#002147;
+}
+
+/* Remember Me + Forgot Password */
+
+.login-options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.remember-me{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
+    font-size:15px;
+    color:#333;
+}
+
+.remember-me input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    margin:0;
+    cursor:pointer;
+}
+
+.login-options a{
+    text-decoration:none;
+    color:#002147;
+    font-size:15px;
+    font-weight:500;
+}
+
+.login-options a:hover{
+    color:#f4b400;
+}
+
+/* Button */
+
+.login-form button{
+    width:100%;
+    padding:14px;
+    background:#002147;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-form button:hover{
+    background:#f4b400;
+    color:#002147;
+}
+
+/* Bottom Text */
+
+.login-form p{
+    text-align:center;
+    margin-top:20px;
+}
+
+.login-form p a{
+    color:#002147;
+    text-decoration:none;
+    font-weight:bold;
+}
+
+.login-form p a:hover{
+    color:#f4b400;
+}
+
+/* Responsive */
+
+@media(max-width:768px){
+
+.login-container{
+    grid-template-columns:1fr;
+}
+
+.login-left{
+    display:none;
+}
+
+.login-form{
+    width:90%;
+}
+
+.login-options{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:12px;
+}
+
+}

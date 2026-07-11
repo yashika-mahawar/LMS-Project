@@ -1,0 +1,26 @@
+.notifications-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.alert-box {
+  background-color: #f5f3ff;
+  border-left: 4px solid #8b5cf6;
+  padding: 12px;
+  border-radius: 0 8px 8px 0;
+}
+
+.alert-heading {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #4c1d95;
+}
+
+.alert-desc {
+  margin: 4px 0 0 0;
+  font-size: 0.78rem;
+  color: #6d28d9;
+  line-height: 1.4;
+}

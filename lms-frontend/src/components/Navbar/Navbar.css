@@ -1,0 +1,153 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.navbar{
+    width:100%;
+    max-width:100%;
+    height:80px;
+    background:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 40px;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    box-shadow:0 4px 15px rgba(0,0,0,0.08);
+    border-bottom:1px solid #ececec;
+}
+
+.logo-section{
+    display:flex;
+    align-items:center;
+}
+
+.logo-section img{
+    width:140px;
+    height:auto;
+    object-fit:contain;
+    cursor:pointer;
+}
+
+.nav-links{
+    display:flex;
+    align-items:center;
+    gap:30px;
+    list-style:none;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:#1e293b;
+    font-size:15px;
+    font-weight:600;
+    position:relative;
+    transition:.3s;
+}
+
+.nav-links a::after{
+    content:"";
+    position:absolute;
+    left:0;
+    bottom:-6px;
+    width:0;
+    height:2px;
+    background:#F4B400;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:#0A2E73;
+}
+
+.nav-links a:hover::after{
+    width:100%;
+}
+
+.nav-buttons{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.login-btn{
+    text-decoration:none;
+    color:#0A2E73;
+    border:2px solid #0A2E73;
+    padding:8px 16px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+    height:40px;
+}
+
+.login-btn:hover{
+    background:#0A2E73;
+    color:#fff;
+}
+
+.register-btn{
+    text-decoration:none;
+    background:#F4B400;
+    color:#111;
+    padding:8px 16px;
+    border-radius:8px;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.register-btn:hover{
+    background:#e0a800;
+    transform:translateY(-2px);
+}
+/* Smooth scrolling enable karne ke liye */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Nav links ko styling taaki wo click hone layak dikhein */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links a {
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #007bff; /* Hover par color change */
+}
+/* Search bar design */
+.search-input {
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px; /* Thoda rounded corners ke liye */
+  outline: none;
+  width: 200px;
+  transition: width 0.4s ease;
+}
+
+.search-input:focus {
+  width: 250px; /* Click karne par thoda extend hoga */
+  border-color: #007bff;
+}
+
+/* Navbar ka flex layout ensure karein taaki sab ek line mein rahe */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 50px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

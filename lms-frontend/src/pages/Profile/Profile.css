@@ -1,0 +1,121 @@
+/* 1. Layout Fix: Sidebar aur Content */
+.profile-page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f1f5f9; /* Thoda darker background for premium look */
+  width: 100%;
+}
+
+.sidebar-section {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  background-color: #1e293b;
+}
+
+.profile-content {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+/* 2. Premium Main Card */
+.profile-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 24px; /* Zyada smooth corners */
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  width: 100%;
+  max-width: 900px; /* Layout bada kar diya for dual column */
+}
+
+/* 3. Tab Styling */
+.tabs {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 32px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  padding: 12px 0;
+  cursor: pointer;
+  font-weight: 700;
+  color: #64748b;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tabs button.active {
+  border-bottom: 3px solid #4f46e5;
+  color: #4f46e5;
+}
+
+/* 4. Form Styling (Professional) */
+.profile-form {
+  display: grid; /* Grid use kiya hai for dual column support */
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+/* Bio aur Full-width elements ke liye */
+.full-width {
+  grid-column: span 2;
+}
+
+label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 8px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  background: #f8fafc;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+input:focus {
+  border-color: #4f46e5;
+  background: #ffffff;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+}
+
+.save-btn {
+  grid-column: span 2;
+  padding: 14px;
+  background: #4f46e5;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.save-btn:hover {
+  background: #4338ca;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+}

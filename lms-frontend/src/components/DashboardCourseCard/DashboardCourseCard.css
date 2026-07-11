@@ -1,0 +1,74 @@
+.dashboard-course-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+margin-top:20px;
+}
+
+.dashboard-course-card{
+background:#fff;
+border-radius:16px;
+overflow:hidden;
+box-shadow:0 4px 15px rgba(0,0,0,.08);
+transition:.3s;
+}
+
+.dashboard-course-card:hover{
+transform:translateY(-8px);
+}
+
+.dashboard-course-card img{
+width:100%;
+height:180px;
+object-fit:cover;
+}
+
+.dashboard-course-content{
+padding:20px;
+}
+
+.dashboard-course-content h3{
+margin-bottom:8px;
+}
+
+.dashboard-course-content p{
+color:#666;
+margin-bottom:15px;
+}
+
+.progress-bar{
+width:100%;
+height:10px;
+background:#e5e7eb;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:10px;
+}
+
+.progress-fill{
+height:100%;
+background:#4f46e5;
+border-radius:20px;
+}
+
+.dashboard-course-content span{
+font-size:14px;
+color:#555;
+}
+
+.dashboard-course-content button{
+width:100%;
+margin-top:18px;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#4f46e5;
+color:white;
+cursor:pointer;
+font-weight:600;
+transition:.3s;
+}
+
+.dashboard-course-content button:hover{
+background:#3730a3;
+}
