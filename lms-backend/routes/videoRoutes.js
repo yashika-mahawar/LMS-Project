@@ -1,8 +1,11 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const { getAllVideos, getVideosByCourse } = require('../controllers/videoController');
 
-router.get('/', getAllVideos); // Route: /api/videos/
-router.get('/:course_id', getVideosByCourse); // Route: /api/videos/:course_id
+// Controller import karo (.js extension ke sath)
+import { getAllVideos, getVideosByCourse } from "../controllers/videoController.js";
 
-module.exports = router;
+// Routes define karo
+router.get("/", getAllVideos); // Route: /api/videos/
+router.get("/:course_id", getVideosByCourse); // Route: /api/videos/:course_id
+
+export default router;

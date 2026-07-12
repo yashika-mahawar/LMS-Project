@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+import jwt from "jsonwebtoken";
 
 const authMiddleware = (req, res, next) => {
   // Authorization header check kar rahe hain
@@ -16,7 +16,7 @@ const authMiddleware = (req, res, next) => {
     // Token verify kar rahe hain
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    // User data ko req.user mein set kar rahe hain taaki baaki routes use kar sakein
+    // User data ko req.user mein set kar rahe hain
     req.user = decoded; 
     next(); // Agle step par jane ke liye
   } catch (err) {
@@ -24,4 +24,4 @@ const authMiddleware = (req, res, next) => {
   }
 };
 
-module.exports = authMiddleware;
+export default authMiddleware;

@@ -1,8 +1,9 @@
-function roleMiddleware(allowedRoles) {
+const roleMiddleware = (allowedRoles) => {
   return (req, res, next) => {
-    const userRole = req.user.role;
+    // req.user tabhi exist karega agar authMiddleware pehle call hua ho
+    const userRole = req.user?.role;
 
-    if (!allowedRoles.includes(userRole)) {
+    if (!userRole || !allowedRoles.includes(userRole)) {
       return res.status(403).json({
         message: "Access Denied: You do not have permission",
       });
@@ -10,6 +11,6 @@ function roleMiddleware(allowedRoles) {
 
     next();
   };
-}
+};
 
-module.exports = roleMiddleware;
+export default roleMiddleware;

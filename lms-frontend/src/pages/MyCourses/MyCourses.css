@@ -3,7 +3,13 @@
   background: #f5f7ff;
   min-height: 100vh;
 }
-
+.main-content {
+  flex: 1; /* Baaki bachi saari jagah le lega */
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fb;
+  min-width: 0; /* Grid overflow rokne ke liye */
+}
 /* TITLE */
 .title {
   text-align: center;
@@ -41,7 +47,13 @@
   transform: translateY(-6px);
   box-shadow: 0 12px 25px rgba(0,0,0,0.12);
 }
-
+.sidebar-container {
+  width: 250px; /* Sidebar ki fixed width */
+  flex-shrink: 0; /* Ye chhota nahi hoga */
+  height: 100vh;
+  position: sticky; /* Fixed jaisa kaam karega par layout nahi bigadega */
+  top: 0;
+}
 /* HEADER */
 .card-header {
   display: flex;
@@ -49,7 +61,12 @@
   align-items: center;
   margin-bottom: 10px;
 }
-
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
 .card-header h2 {
   font-size: 16px;
   font-weight: 600;
@@ -114,7 +131,9 @@
 .continue-btn:hover {
   background: linear-gradient(45deg, #4f46e5, #06b6d4);
 }
-
+.content-padding {
+  padding: 30px;
+}
 /* MOBILE */
 @media (max-width: 768px) {
   .title {

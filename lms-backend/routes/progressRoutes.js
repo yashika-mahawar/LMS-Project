@@ -1,7 +1,10 @@
-const express = require('express');
+import express from "express";
 const router = express.Router();
-const progressController = require('../controllers/progressController');
 
-router.post('/', progressController.saveProgress);
+// Controller import karo (.js extension ke sath)
+import { saveProgress } from "../controllers/progressController.js";
 
-module.exports = router;
+// Route define karo
+router.post("/", saveProgress);
+
+export default router;

@@ -55,7 +55,6 @@ function AppRoutes() {
       <Route path="/payment" element={<Payment />} />
       <Route path="/payment-success" element={<PaymentSuccess />} />
       <Route path="/payment-failure" element={<PaymentFailure />} />
-      <Route path="/learning" element={<Learning />} />
       <Route path="/live-classes" element={<LiveClass />} />
       
       {/* 🔥 ADMIN ROUTES */}

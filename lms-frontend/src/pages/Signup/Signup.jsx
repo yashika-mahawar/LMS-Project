@@ -16,7 +16,58 @@ function Signup() {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+const courseData = {
+  "B.Tech Computer Science": {
+    fee: "₹49,999",
+    duration: "4 Years",
+    image: "Course1.jpg",
+  },
+  BCA: {
+    fee: "₹39,999",
+    duration: "3 Years",
+    image: "Course3.jpeg",
+  },
+  MBA: {
+    fee: "₹69,999",
+    duration: "2 Years",
+    image: "Course2.jpg",
+  },
+  MCA: {
+    fee: "₹45,999",
+    duration: "2 Years",
+    image: "Course4.png",
+  },
+  "M.Tech": {
+    fee: "₹79,999",
+    duration: "2 Years",
+    image: "Course5.jpeg",
+  },
+  LLB: {
+    fee: "₹59,999",
+    duration: "3 Years",
+    image: "Course6.jpeg",
+  },
+  BA: {
+    fee: "₹29,999",
+    duration: "3 Years",
+    image: "Course7.jpeg",
+  },
+  "B.Com": {
+    fee: "₹34,999",
+    duration: "3 Years",
+    image: "Course8.jpeg",
+  },
+  "Diploma in IT": {
+    fee: "₹19,999",
+    duration: "2 Years",
+    image: "Course9.jpeg",
+  },
+  "Cyber Security": {
+    fee: "₹24,999",
+    duration: "1 Year",
+    image: "Course10.jpeg",
+  },
+};
  const handleSignup = (e) => {
   e.preventDefault();
 
@@ -29,20 +80,24 @@ function Signup() {
     profileImage: "",
   };
 
-  // Current logged in user
-  localStorage.setItem("currentUser", JSON.stringify(user));
+  // Payment ke baad use save karenge
+  localStorage.setItem("pendingUser", JSON.stringify(user));
 
-  // Sabhi users ki list (future login ke liye)
-  const users = JSON.parse(localStorage.getItem("users")) || [];
+  // Program ko course ki tarah pass karo
+  const selectedCourse = courseData[formData.program];
 
-  users.push(user);
+const course = {
+  id: Date.now(),
+  title: formData.program,
+  description: `${formData.program} Admission Registration`,
+  duration: selectedCourse.duration,
+  fee: selectedCourse.fee,
+  image: selectedCourse.image,
+};
 
-  localStorage.setItem("users", JSON.stringify(users));
-
-  // Components ko update karne ke liye
-  window.dispatchEvent(new Event("userUpdated"));
-
-  navigate("/dashboard");
+  navigate("/payment", {
+    state: { course },
+  });
 };
 
   return (

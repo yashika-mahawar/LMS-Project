@@ -1,6 +1,6 @@
-const supabase = require("../config/supabase");
+import { supabase } from "../config/supabase.js";
 
-async function getCourses(req, res) {
+export async function getCourses(req, res) {
   const { data, error } = await supabase
     .from("courses")
     .select("*");
@@ -14,7 +14,7 @@ async function getCourses(req, res) {
   res.status(200).json(data);
 }
 
-async function getCourseById(req, res) {
+export async function getCourseById(req, res) {
   const id = req.params.id;
 
   const { data, error } = await supabase
@@ -32,7 +32,7 @@ async function getCourseById(req, res) {
   res.status(200).json(data);
 }
 
-async function createCourse(req, res) {
+export async function createCourse(req, res) {
   console.log("Body:", req.body);
 
   const { title, description, fee, image_url, duration } = req.body;
@@ -61,8 +61,8 @@ async function createCourse(req, res) {
 
   res.status(201).json(data);
 }
-//Update Course
-async function updateCourse(req, res) {
+
+export async function updateCourse(req, res) {
   const { id } = req.params;
   const { title, description, fee, duration } = req.body;
 
@@ -95,10 +95,3 @@ async function updateCourse(req, res) {
     course: data,
   });
 }
-
-module.exports = {
-  getCourses,
-  getCourseById,
-  createCourse,
-  updateCourse,
-};

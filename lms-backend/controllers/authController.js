@@ -1,7 +1,8 @@
-const supabase = require("../config/supabase");
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
-async function registerUser(req, res) {
+import { supabase } from "../config/supabase.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+export async function registerUser(req, res) {
   const { full_name, email, password, role } = req.body;
 
   // Validation
@@ -24,49 +25,48 @@ async function registerUser(req, res) {
     });
   }
 
-    // Password Hashing
+  // Password Hashing
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  console.log(hashedPassword);
+  const { data, error } = await supabase
+    .from("users")
+    .insert([
+      {
+        full_name,
+        email,
+        password: hashedPassword,
+        role,
+      },
+    ])
+    .select()
+    .single();
 
- const { data, error } = await supabase
-  .from("users")
-  .insert([
+  if (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+
+  const token = jwt.sign(
     {
-      full_name,
-      email,
-      password: hashedPassword,
-      role,
+      id: data.id,
+      email: data.email,
+      role: data.role,
     },
-  ])
-  .select()
-  .single();
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
 
-if (error) {
-  return res.status(500).json({
-    message: error.message,
+  res.status(201).json({
+    message: "User Registered Successfully",
+    token,
+    user: data,
   });
 }
-const token = jwt.sign(
-  {
-    id: data.id,
-    email: data.email,
-    role: data.role,
-  },
-  process.env.JWT_SECRET,
-  {
-    expiresIn: "7d",
-  }
-);
-res.status(201).json({
-  message: "User Registered Successfully",
-  token,
-  user: data,
-});
-  
-}
 
-async function loginUser(req, res) {
+export async function loginUser(req, res) {
   const { email, password } = req.body;
 
   // Validation
@@ -124,12 +124,9 @@ async function loginUser(req, res) {
   });
 }
 
-  async function getProfile(req, res) {
+export async function getProfile(req, res) {
   res.status(200).json({
     message: "Profile fetched successfully",
     user: req.user,
   });
-  }
-
-
-module.exports = { registerUser, loginUser,  getProfile };
+}

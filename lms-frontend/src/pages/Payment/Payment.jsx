@@ -18,56 +18,81 @@ function Payment() {
   if (!course) return null;
 
   const handlePayment = async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.post("http://localhost:5000/api/create-order", {
-        amount: course.fee,
-      });
+  setLoading(true);
 
-      const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY,
-        amount: data.amount,
-        currency: "INR",
-        name: "ICFAI University",
-        description: `Enrollment for ${course.title}`,
-        order_id: data.id,
-        handler: async (response) => {
-          try {
-            const verify = await axios.post("http://localhost:5000/api/verify-payment", {
+  try {
+
+    // ₹49,999  ---> 49999
+    const amount = Number(
+      course.fee.replace(/[₹,]/g, "")
+    );
+
+    console.log("Amount:", amount);
+
+    const { data } = await axios.post(
+      "http://localhost:5000/api/payment/create-order",
+      {
+        amount: amount * 100,
+      }
+    );
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_KEY,
+      amount: data.amount,
+      currency: "INR",
+      name: "ICFAI University",
+      description: `Enrollment for ${course.title}`,
+      order_id: data.id,
+
+      handler: async (response) => {
+        try {
+
+          const verify = await axios.post(
+            "http://localhost:5000/api/payment/verify-payment",
+            {
               razorpay_order_id: response.razorpay_order_id,
               razorpay_payment_id: response.razorpay_payment_id,
               razorpay_signature: response.razorpay_signature,
-            });
-
-            if (verify.data.success) {
-              // Enrollment Success page par move kar di gai hai
-              navigate("/payment-success", { state: { course } });
             }
-          } catch (err) {
-            navigate("/payment-failure");
+          );
+
+          if (verify.data.success) {
+            navigate("/payment-success", {
+              state: { course },
+            });
           }
-        },
-        modal: {
-          ondismiss: function () {
-            setLoading(false);
-          },
-          escape: true
-        },
-        theme: { color: "#2563eb" },
-      };
 
-      const rzp = new window.Razorpay(options);
-      rzp.on('payment.failed', function (response){
-        navigate("/payment-failure");
-      });
-      rzp.open();
-    } catch (error) {
-      console.error("Payment Initiation Error:", error);
-      alert("Could not connect to payment server.");
-      setLoading(false);
-    }
-  };
+        } catch (err) {
+          console.log(err);
+          navigate("/payment-failure");
+        }
+      },
 
+      modal: {
+        ondismiss() {
+          setLoading(false);
+        },
+      },
+
+      theme: {
+        color: "#2563eb",
+      },
+    };
+
+    const rzp = new window.Razorpay(options);
+
+    rzp.on("payment.failed", function () {
+      navigate("/payment-failure");
+    });
+
+    rzp.open();
+
+  } catch (err) {
+    console.log(err);
+    alert("Payment Failed");
+    setLoading(false);
+  }
+};
   return (
     <div className="payment-page">
       <h1>Complete Enrollment</h1>
@@ -91,4 +116,5 @@ function Payment() {
     </div>
   );
 }
+
 export default Payment;

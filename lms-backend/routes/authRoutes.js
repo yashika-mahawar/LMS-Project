@@ -1,13 +1,15 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
-const roleMiddleware = require("../middleware/roleMiddleware");
-const { registerUser, loginUser,  getProfile} = require("../controllers/authController");
+
+import authMiddleware from "../middleware/authMiddleware.js";
+import roleMiddleware from "../middleware/roleMiddleware.js";
+import { registerUser, loginUser, getProfile } from "../controllers/authController.js";
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/profile", authMiddleware, getProfile);
-//Admin dashboard only
+
+// Admin dashboard only
 router.get(
   "/admin/dashboard",
   authMiddleware,
@@ -19,7 +21,7 @@ router.get(
   }
 );
 
-//student route only
+// Student route only
 router.get(
   "/student/dashboard",
   authMiddleware,
@@ -31,4 +33,4 @@ router.get(
   }
 );
 
-module.exports = router;
+export default router;

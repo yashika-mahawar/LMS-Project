@@ -1,47 +1,91 @@
-const Razorpay = require("razorpay");
-const crypto = require("crypto");
+import Razorpay from "razorpay";
+import crypto from "crypto";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
+  console.error("❌ Razorpay keys missing in .env");
+}
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
 });
 
-// Order create karne ke liye
-exports.createOrder = async (req, res) => {
+// ================= CREATE ORDER =================
+
+export const createOrder = async (req, res) => {
   try {
+    console.log("Request Body:", req.body);
+
     const { amount } = req.body;
+console.log("Received Amount:", amount);
+console.log("Amount Type:", typeof amount);
+    if (!amount) {
+      return res.status(400).json({
+        success: false,
+        message: "Amount is required",
+      });
+    }
+
     const options = {
-      amount: amount * 100, // Amount in paise
+      amount: Number(amount), // Frontend should already send paisa
       currency: "INR",
-      receipt: "order_rcptid_" + Date.now(),
+      receipt: `receipt_${Date.now()}`,
     };
+
+    console.log("Creating Order:", options);
+
     const order = await razorpay.orders.create(options);
-    res.status(200).json(order);
+
+    console.log("Order Created:", order);
+
+    return res.status(200).json(order);
   } catch (error) {
-    res.status(500).json({ message: "Error creating order", error });
+    console.error("Razorpay Order Creation Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.error?.description || error.message,
+    });
   }
 };
 
-// Payment verify karne ke liye (Naya code)
-exports.verifyPayment = async (req, res) => {
-  try {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
+// ================= VERIFY PAYMENT =================
 
-    // Razorpay signature verify karna
-    const sign = razorpay_order_id + "|" + razorpay_payment_id;
-    const expectedSign = crypto
+export const verifyPayment = async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+    } = req.body;
+
+    const body = razorpay_order_id + "|" + razorpay_payment_id;
+
+    const expectedSignature = crypto
       .createHmac("sha256", process.env.RAZORPAY_SECRET)
-      .update(sign.toString())
+      .update(body)
       .digest("hex");
 
-    if (razorpay_signature === expectedSign) {
-      // Signature match ho gaya, payment success!
-      return res.status(200).json({ success: true, message: "Payment verified successfully" });
-    } else {
-      // Signature match nahi hua
-      return res.status(400).json({ success: false, message: "Invalid signature" });
+    if (expectedSignature === razorpay_signature) {
+      return res.json({
+        success: true,
+        message: "Payment Verified",
+      });
     }
-  } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
+
+    return res.status(400).json({
+      success: false,
+      message: "Invalid Signature",
+    });
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
   }
 };

@@ -1,9 +1,10 @@
-require("dotenv").config();
-const { createClient } = require("@supabase/supabase-js");
+// lms-backend/config/supabase.js
+import dotenv from "dotenv";
+import { createClient } from "@supabase/supabase-js";
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_KEY
-);
+dotenv.config(); // .env file load karne ke liye
 
-module.exports = supabase;
+const supabaseUrl = process.env.SUPABASE_URL; // VITE_ hata do
+const supabaseKey = process.env.SUPABASE_KEY; // VITE_ hata do
+
+export const supabase = createClient(supabaseUrl, supabaseKey);

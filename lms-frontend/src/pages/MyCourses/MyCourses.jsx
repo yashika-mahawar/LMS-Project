@@ -3,67 +3,167 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { Link } from "react-router-dom";
 import { FaBookReader, FaClock } from "react-icons/fa";
-import { getMyCourses } from "../../services/courseService";
 import "./MyCourses.css";
+// MyCourses.jsx ke upar
+import axios from 'axios'; 
 
-function MyCourses() {
-  const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    loadCourses();
-  }, []);
-const loadCourses = async () => {
+// ... useEffect ke andar
+const fetchEnrolledCourses = async () => {
   try {
-    const data = await getMyCourses();
-    console.log("Backend se kya data aaya:", data); // Isse F12 mein dekho
-    setCourses(data);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    setLoading(false);
+    const response = await axios.get("http://localhost:5000/api/enrollments/my-courses", {
+    headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+});
+    console.log("Backend se aaya data:", response.data); // Yeh check karo
+    setMyEnrolledCourses(response.data.data || []);
+  } catch (error) {
+    console.error("Error fetching courses:", error);
   }
 };
+function MyCourses() {
+  const [myEnrolledCourses, setMyEnrolledCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // MyCourses.jsx
+useEffect(() => {
+  const fetchEnrolledCourses = async () => {
+    try {
+      // Backend ke route ko call karo
+      const response = await axios.get("http://localhost:5000/api/enrollments/my-courses", {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      });
+      
+      console.log("Fetched Data:", response.data); // Console mein dekho kya data aa raha hai
+      setMyEnrolledCourses(response.data.data || []);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+  fetchEnrolledCourses();
+}, []);
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#f5f7fb" }}>
-      <Sidebar />
-      <div style={{ flex: 1 }}>
+    <div
+      className="my-courses-wrapper"
+      style={{
+        display: "flex",
+        minHeight: "100vh",
+        background: "#f8fafc",
+      }}
+    >
+      <aside
+        style={{
+          width: "260px",
+          minWidth: "260px",
+          position: "sticky",
+          top: 0,
+        }}
+      >
+        <Sidebar />
+      </aside>
+
+      <div
+        style={{
+          flexGrow: 1,
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Header />
-        <div style={{ padding: 30 }}>
-          <h1>My Enrolled Courses</h1>
-          {courses.length === 0 ? (
-            <h3>No Course Enrolled</h3>
+
+        <main
+          style={{
+            padding: "32px",
+            maxWidth: "1200px",
+            width: "100%",
+            margin: "0 auto",
+          }}
+        >
+          <h1
+            style={{
+              fontSize: "1.8rem",
+              fontWeight: "800",
+              marginBottom: "25px",
+            }}
+          >
+            My Enrolled Courses
+          </h1>
+
+          {loading ? (
+            <h3>Loading...</h3>
+          ) : myEnrolledCourses.length === 0 ? (
+            <h3>No courses enrolled yet!</h3>
           ) : (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(300px,1fr))", gap: 25, marginTop: 30 }}>
-              {courses.map((item) => {
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))",
+                gap: "20px",
+              }}
+            >
+              {myEnrolledCourses.map((item) => {
                 const course = item.courses;
+
+                if (!course) return null;
+
+                const imagePath = course.image_url
+                  ? course.image_url.startsWith("/")
+                    ? course.image_url
+                    : `/${course.image_url}`
+                  : "/Course1.jpg";
+
                 return (
-                  <div key={item.id} style={{ background: "#fff", borderRadius: 15, overflow: "hidden", boxShadow: "0 5px 15px rgba(0,0,0,.08)" }}>
-                    {/* YAHAN PATH FIX KIYA HAI: Add '/' before the image_url */}
+                  <div
+                    key={item.id}
+                    className="course-card"
+                    style={{
+                      background: "#fff",
+                      borderRadius: "15px",
+                      overflow: "hidden",
+                      border: "1px solid #ddd",
+                    }}
+                  >
                     <img
-                      src={`/${course.image_url}`}
+                      src={imagePath}
                       alt={course.title}
-                      onError={(e) => { e.target.src = '/Course1.jpg'; }} // Default image agar error aaye
-                      style={{ width: "100%", height: 180, objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "180px",
+                        objectFit: "cover",
+                      }}
                     />
-                    <div style={{ padding: 20 }}>
+
+                    <div style={{ padding: "20px" }}>
                       <h3>{course.title}</h3>
-                      <p>{course.description}</p>
-                      <div style={{ display: "flex", gap: 8, alignItems: "center", color: "#666", margin: "10px 0" }}>
-                        <FaClock /> {course.duration}
+
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          color: "#666",
+                        }}
+                      >
+                        <FaClock />
+                        <span>{course.duration || "Self Paced"}</span>
                       </div>
-                      <div style={{ marginBottom: 15 }}>
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <span>Progress</span>
-                          <span>0%</span>
-                        </div>
-                        <div style={{ height: 8, background: "#ddd", borderRadius: 10, marginTop: 5 }}>
-                          <div style={{ width: "0%", height: "100%", background: "#4f46e5", borderRadius: 10 }} />
-                        </div>
-                      </div>
-                      <Link to={`/learning/${course.id}`} state={{ course }}>
-                        <button style={{ width: "100%", padding: 12, background: "#4f46e5", color: "#fff", border: "none", borderRadius: 10, cursor: "pointer" }}>
+
+                      <Link
+                        to={`/learning/${course.id}`}
+                        state={{ course }}
+                      >
+                        <button
+                          style={{
+                            marginTop: "15px",
+                            width: "100%",
+                            padding: "10px",
+                            background: "#4f46e5",
+                            color: "#fff",
+                            border: "none",
+                            borderRadius: "8px",
+                            cursor: "pointer",
+                          }}
+                        >
                           <FaBookReader /> Continue Learning
                         </button>
                       </Link>
@@ -73,7 +173,7 @@ const loadCourses = async () => {
               })}
             </div>
           )}
-        </div>
+        </main>
       </div>
     </div>
   );

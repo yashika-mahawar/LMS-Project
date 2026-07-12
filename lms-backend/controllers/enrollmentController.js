@@ -1,17 +1,16 @@
-const supabase = require("../config/supabase");
+import { supabase } from "../config/supabase.js";
 
-async function enrollCourse(req, res) {
+export async function enrollCourse(req, res) {
   try {
     const user_id = req.user.id;
-    const { course_id } = req.body;
+    // Removed Number() conversion: We now expect a UUID string
+    const { course_id } = req.body; 
 
-    // Check karo ki course_id aaya bhi hai ya nahi
     if (!course_id) {
       return res.status(400).json({ message: "Course ID is required!" });
     }
 
-    // 1. Check karo ki user pehle se enrolled toh nahi hai?
-    // 'maybeSingle' use kiya hai taaki agar data na ho toh error na aaye
+    // 1. Check existing enrollment
     const { data: existing, error: checkError } = await supabase
       .from("enrollment")
       .select("*")
@@ -23,10 +22,10 @@ async function enrollCourse(req, res) {
       return res.status(200).json({ message: "Already enrolled!" });
     }
 
-    // 2. Agar nahi, toh insert karo
+    // 2. Insert as a UUID string
     const { data, error } = await supabase
       .from("enrollment")
-      .insert([{ user_id, course_id }]);
+      .insert([{ user_id, course_id }]); 
 
     if (error) {
         console.error("Insert Error:", error);
@@ -41,23 +40,23 @@ async function enrollCourse(req, res) {
   }
 }
 
-async function getEnrolledCourses(req, res) {
+export async function getEnrolledCourses(req, res) {
   try {
     const user_id = req.user.id;
 
     const { data, error } = await supabase
       .from("enrollment")
       .select(`
-  id,
-  created_at,
-  courses (
-    id,
-    title,
-    fee,
-    duration,
-    image_url
-  )
-`)
+        id,
+        created_at,
+        courses (
+          id,
+          title,
+          fee,
+          duration,
+          image_url
+        )
+      `)
       .eq("user_id", user_id);
 
     if (error) {
@@ -67,15 +66,10 @@ async function getEnrolledCourses(req, res) {
 
     res.status(200).json({
       message: "Enrolled courses fetched successfully",
-      data,
+      data: data || [], 
     });
   } catch (err) {
     console.error("Unexpected error in getEnrolledCourses:", err);
     res.status(500).json({ message: "Internal server error" });
   }
 }
-
-module.exports = {
-  enrollCourse,
-  getEnrolledCourses,
-};

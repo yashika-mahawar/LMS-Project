@@ -1,10 +1,11 @@
-const express = require("express");
+import express from "express";
 const router = express.Router();
 
-const authMiddleware = require("../middleware/authMiddleware");
-const { enrollCourse, getEnrolledCourses } = require("../controllers/enrollmentController");
+// Middlewares aur Controllers import karo (.js extension ke sath)
+import authMiddleware from "../middleware/authMiddleware.js";
+import { enrollCourse, getEnrolledCourses } from "../controllers/enrollmentController.js";
 
+// Routes define karo
 router.post("/enroll", authMiddleware, enrollCourse);
-router.get("/enrolled-courses", authMiddleware, getEnrolledCourses);
-
-module.exports = router;
+router.get("/my-courses", authMiddleware, getEnrolledCourses);
+export default router;
