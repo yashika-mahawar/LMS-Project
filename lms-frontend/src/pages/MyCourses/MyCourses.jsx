@@ -24,23 +24,32 @@ function MyCourses() {
   const [loading, setLoading] = useState(true);
 
   // MyCourses.jsx
+// --- YAHAN FIX HAI ---
 useEffect(() => {
-  const fetchEnrolledCourses = async () => {
+  const fetchCourses = async () => {
     try {
-      // Backend ke route ko call karo
+      const token = localStorage.getItem("token");
       const response = await axios.get("http://localhost:5000/api/enrollments/my-courses", {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       
-      console.log("Fetched Data:", response.data); // Console mein dekho kya data aa raha hai
-      setMyEnrolledCourses(response.data.data || []);
+      console.log("Backend Response:", response.data);
+
+      if (response.data && response.data.data) {
+        // Galti yahan thi: tum 'setEnrolledCourses' use kar rahi thi
+        // Lekin tumhara state variable 'myEnrolledCourses' hai!
+        setMyEnrolledCourses(response.data.data); 
+      }
     } catch (error) {
       console.error("Error fetching courses:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  fetchEnrolledCourses();
+  fetchCourses();
 }, []);
+
 
   return (
     <div

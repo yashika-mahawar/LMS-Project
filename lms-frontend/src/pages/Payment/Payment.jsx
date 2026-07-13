@@ -43,30 +43,32 @@ function Payment() {
       name: "ICFAI University",
       description: `Enrollment for ${course.title}`,
       order_id: data.id,
+handler: async (response) => {
+  try {
+    const verify = await axios.post(
+      "http://localhost:5000/api/payment/verify-payment",
+      {
+        razorpay_order_id: response.razorpay_order_id,
+        razorpay_payment_id: response.razorpay_payment_id,
+        razorpay_signature: response.razorpay_signature,
+      }
+    );
 
-      handler: async (response) => {
-        try {
-
-          const verify = await axios.post(
-            "http://localhost:5000/api/payment/verify-payment",
-            {
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature,
-            }
-          );
-
-          if (verify.data.success) {
-            navigate("/payment-success", {
-              state: { course },
-            });
-          }
-
-        } catch (err) {
-          console.log(err);
-          navigate("/payment-failure");
-        }
-      },
+    if (verify.data.success) {
+      // --- YAHAN HOGA ENROLLMENT ---
+      // Ab hum database mein enrollment record banayenge
+      await axios.post("http://localhost:5000/api/enrollments/enroll", 
+        { course_id: course.id }, // Yahan 'course.id' dynamic hai!
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      
+      navigate("/payment-success", { state: { course } });
+    }
+  } catch (err) {
+    console.log(err);
+    navigate("/payment-failure");
+  }
+},
 
       modal: {
         ondismiss() {

@@ -5,8 +5,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/Header/Header";
 import { FaPlayCircle, FaCheckCircle, FaArrowLeft } from "react-icons/fa";
 import "./Learning.css";
-
-const Learning = () => {
+import { supabase } from "../../config/supabase.js";const Learning = () => {
   console.log("Learning Component Render ho raha hai!");
   const { id } = useParams();
   const [modules, setModules] = useState([]);
@@ -18,10 +17,11 @@ const Learning = () => {
   setLoading(true);
   console.log("ID from URL:", id); // Check: kya yahan ID print ho rahi hai?
 
-  const { data, error } = await supabase
-    .from("videos")
-    .select("*")
-    .eq("course_id", id);
+ const { data, error } = await supabase
+  .from("videos")
+  .select("*")
+  .eq("course_id", id) 
+  .order("module_number", { ascending: true }); // Sequence ke liye ye zaroori hai
 
   if (error) {
     console.error("Supabase Error:", error);
@@ -73,19 +73,19 @@ const Learning = () => {
           <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "28px" }}>
             <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
               <div className="video-container">
-                <div className="player-wrapper">
-                  <div className="video-box">
-                    <ReactPlayer
-                      url={currentModule.video_url} 
-                      width="100%"
-                      height="100%"
-                      controls
-                      playing
-                      onEnded={handleVideoEnd}
-                    />
-                  </div>
-                </div>
-              </div>
+  <div className="player-wrapper">
+    {/* ReactPlayer ki jagah direct iframe */}
+    <iframe
+      src={currentModule.video_url.replace("watch?v=", "embed/")}
+      width="100%"
+      height="100%"
+      title="Course Video"
+      frameBorder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowFullScreen
+    ></iframe>
+  </div>
+</div>
               <div style={{ background: "#fff", padding: "24px", borderRadius: "16px", border: "1px solid #e2e8f0" }}>
                 <h2 style={{ margin: 0 }}>{currentModule.title}</h2>
               </div>
