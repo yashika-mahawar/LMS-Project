@@ -13,7 +13,12 @@ const Learning = () => {
   const [modules, setModules] = useState([]);
   const [activeIdx, setActiveIdx] = useState(0); // <--- YE MISSING THA
   const [loading, setLoading] = useState(true);
-
+  const [progress, setProgress] = useState({
+  totalVideos: 0,
+  completedVideos: 0,
+  progress: 0,
+  completedIds: [],
+});
   useEffect(() => {
     const fetchVideos = async () => {
       setLoading(true);
@@ -47,6 +52,30 @@ const Learning = () => {
   useEffect(() => {
     localStorage.setItem(`lastModule_${id}`, activeIdx);
   }, [activeIdx, id]);
+  
+  useEffect(() => {
+  const fetchProgress = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    if (!user || !id) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/progress/${id}/${user.id}`
+      );
+
+      const result = await response.json();
+
+      if (result.success) {
+        setProgress(result);
+      }
+    } catch (err) {
+      console.error("Progress Error:", err);
+    }
+  };
+
+  fetchProgress();
+}, [id]);
 
   const handleVideoEnd = async () => {
   // Purana code hatao aur ye use karo
@@ -75,6 +104,20 @@ if (!user) {
 
     const result = await response.json();
     console.log("SERVER RESPONSE:", result);
+    const progressResponse = await fetch(
+  `http://localhost:5000/api/progress/${id}/${user.id}`
+);
+
+const progressData = await progressResponse.json();
+
+if (progressData.success) {
+  setProgress(progressData);
+}
+if (activeIdx < modules.length - 1) {
+  setActiveIdx((prev) => prev + 1);
+} else {
+  alert("🎉 Course Completed!");
+}
   } catch (err) {
     console.error("FETCH ERROR:", err);
   }
@@ -132,7 +175,7 @@ if (!user) {
           >
             <FaArrowLeft /> Back to Courses
           </Link>
-
+           
           <div
             style={{
               display: "grid",
@@ -215,11 +258,13 @@ if (!user) {
                       gap: "10px",
                     }}
                   >
-                    {activeIdx === idx ? (
-                      <FaPlayCircle color="#4f46e5" />
-                    ) : (
-                      <FaCheckCircle color="#94a3b8" />
-                    )}
+                    {progress.completedIds.includes(module.id) ? (
+  <FaCheckCircle color="#22c55e" />
+) : activeIdx === idx ? (
+  <FaPlayCircle color="#4f46e5" />
+) : (
+  <FaPlayCircle color="#94a3b8" />
+)}
                     <span style={{ fontSize: "0.85rem", fontWeight: "500" }}>
                       {module.title}
                     </span>
