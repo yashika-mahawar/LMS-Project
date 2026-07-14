@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 // 1. Internal Dashboard Components
 import WelcomeCard from "./WelcomeCard/WelcomeCard";
 import StatsCards from "./StatsCards/StatsCards";
@@ -14,42 +15,53 @@ import "./Dashboard.css";
 
 const Dashboard = () => {
   const [userName, setUserName] = useState("Student");
+  const [ongoingCourses, setOngoingCourses] = useState([]);
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.name) {
-      setUserName(user.name);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user && user.name) {
+    setUserName(user.name);
+  }
+
+
+  const fetchProgress = async () => {
+
+    try {
+
+      if (!user?.id) {
+        console.log("User id nahi mili");
+        return;
+      }
+
+
+      const response = await axios.get(
+        `http://localhost:5000/api/progress/user/${user.id}`
+      );
+
+
+      console.log("Dashboard Progress:", response.data);
+
+
+      setOngoingCourses(response.data.courses || []);
+
+
+    } catch(error){
+
+      console.log(
+        "Dashboard progress error:",
+        error
+      );
+
     }
-  }, []);
-  const ongoingCourses = [
-    {
-      id: 1,
-      title: "B.Tech Computer Science",
-      prof: "Dr. Rahul Sharma",
-      progress: 70,
-      duration: "4 Years",
-    },
-    {
-      id: 2,
-      title: "Web Development BootCamp",
-      prof: "Prof. Amit Verma",
-      progress: 45,
-      duration: "6 Months",
-    },
-    {
-      id: 3,
-      title: "UI/UX Design Essentials",
-      prof: "Prof. Neha Gupta",
-      progress: 90,
-      duration: "3 Months",
-    },
-    {
-      id: 4,
-      title: "Database Management Systems",
-      prof: "Dr. Anjali Mehta",
-      progress: 20,
-      duration: "1 Semester",
-    },
-  ];
+
+  };
+
+
+  fetchProgress();
+
+
+}, []);
 
   return (
     // Pura page layout do bhagon me divide hoga: Sidebar + Main Content
@@ -150,7 +162,7 @@ const Dashboard = () => {
             >
               {ongoingCourses.map((course) => (
                 <div
-                  key={course.id}
+                key={course.courseId}
                   style={{
                     background: "#ffffff",
                     padding: "20px",
@@ -174,7 +186,7 @@ const Dashboard = () => {
                         fontWeight: "500",
                       }}
                     >
-                      {course.duration}
+                      {course.completedVideos} / {course.totalVideos} Videos
                     </span>
                     <h3
                       style={{
@@ -193,7 +205,7 @@ const Dashboard = () => {
                         color: "#64748b",
                       }}
                     >
-                      {course.prof}
+                      {course.completedVideos} Videos Completed
                     </p>
                   </div>
 

@@ -9,7 +9,8 @@ import enrollmentRoutes from "./routes/enrollmentRoutes.js";
 import videoRoutes from "./routes/videoRoutes.js";
 import progressRoutes from "./routes/progressRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
-
+import liveClassRoutes from "./routes/liveClassRoutes.js";
+import activityRoutes from "./routes/activityRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -33,7 +34,8 @@ app.use("/api/enrollments", enrollmentRoutes);
 app.use("/api/videos", videoRoutes);
 app.use("/api/progress", progressRoutes);
 app.use("/api/payment", paymentRoutes);
-
+app.use("/api/live-classes",liveClassRoutes);
+app.use("/api/activities", activityRoutes);
 // Testing endpoint
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend working fine 🚀" });

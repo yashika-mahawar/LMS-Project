@@ -1,23 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
 import './WelcomeCard.css';
 
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
+  const [lastCourse, setLastCourse] = useState(null);
+  useEffect(() => {
+  const fetchLastCourse = async () => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
 
+      if (!user || isAdmin) return;
+
+      const response = await axios.get(
+        `http://localhost:5000/api/progress/user/${user.id}`
+      );
+
+      const courses = response.data.courses;
+
+      if (courses && courses.length > 0) {
+        setLastCourse(courses[0]);
+      }
+
+    } catch (error) {
+      console.error("Welcome Card Error:", error);
+    }
+  };
+
+  fetchLastCourse();
+}, [isAdmin]);
   const handleAction = () => {
     if (isAdmin) {
       // Yahan path update kar diya hai taaki route match ho sake
       navigate("/admin/manage-courses");
     } else {
-      const saved = localStorage.getItem("lastCourse");
-      if (saved) {
-        const course = JSON.parse(saved);
-        navigate(`/learning/${course.id}`);
-      } else {
-        alert("Please select a course first!");
-      }
+      if (lastCourse) {
+  navigate(`/learning/${lastCourse.courseId}`);
+} else {
+  alert("Please enroll in a course first!");
+}
     }
   };
 

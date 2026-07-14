@@ -1,22 +1,43 @@
-import React from 'react';
-import './Notifications.css';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./Notifications.css";
 
 const Notifications = () => {
-  const notificationList = [
-    { title: 'New React Course Added', desc: 'Enroll now and start learning today.' },
-    { title: 'Quiz Tomorrow', desc: 'Java Programming Quiz starts at 10:00 AM.' }
-  ];
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    const fetchNotifications = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
+
+        const res = await axios.get(
+          `http://localhost:5000/api/activities/${user.id}`
+        );
+
+        setNotifications(res.data.data || []);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchNotifications();
+  }, []);
 
   return (
     <div className="notifications-card-inner">
       <h3 className="sub-module-title">🔔 Notifications</h3>
+
       <div className="notifications-stack">
-        {notificationList.map((note, index) => (
-          <div key={index} className="alert-box">
-            <h4 className="alert-heading">{note.title}</h4>
-            <p className="alert-desc">{note.desc}</p>
-          </div>
-        ))}
+        {notifications.length === 0 ? (
+          <p>No Notifications</p>
+        ) : (
+          notifications.map((note) => (
+            <div key={note.id} className="alert-box">
+              <h4 className="alert-heading">{note.title}</h4>
+              <p className="alert-desc">{note.description}</p>
+            </div>
+          ))
+        )}
       </div>
     </div>
   );

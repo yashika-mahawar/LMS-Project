@@ -22,7 +22,7 @@ const fetchEnrolledCourses = async () => {
 function MyCourses() {
   const [myEnrolledCourses, setMyEnrolledCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const [progressMap, setProgressMap] = useState({});
   // MyCourses.jsx
 // --- YAHAN FIX HAI ---
 useEffect(() => {
@@ -39,6 +39,21 @@ useEffect(() => {
         // Galti yahan thi: tum 'setEnrolledCourses' use kar rahi thi
         // Lekin tumhara state variable 'myEnrolledCourses' hai!
         setMyEnrolledCourses(response.data.data); 
+        const user = JSON.parse(localStorage.getItem("user"));
+
+if (user) {
+  const progressRes = await axios.get(
+    `http://localhost:5000/api/progress/user/${user.id}`
+  );
+
+  const map = {};
+
+  progressRes.data.courses.forEach((course) => {
+    map[course.courseId] = course;
+  });
+
+  setProgressMap(map);
+}
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -112,7 +127,7 @@ useEffect(() => {
             >
               {myEnrolledCourses.map((item) => {
                 const course = item.courses;
-
+                 const progress = progressMap[course.id];
                 if (!course) return null;
 
                 const imagePath = course.image_url
@@ -156,6 +171,37 @@ useEffect(() => {
                         <FaClock />
                         <span>{course.duration || "Self Paced"}</span>
                       </div>
+                      <div style={{ marginTop: "15px" }}>
+  <div
+    style={{
+      width: "100%",
+      height: "8px",
+      background: "#e5e7eb",
+      borderRadius: "999px",
+      overflow: "hidden",
+    }}
+  >
+    <div
+      style={{
+        width: `${progress?.progress || 0}%`,
+        height: "100%",
+        background: "#22c55e",
+      }}
+    />
+  </div>
+
+  <p
+    style={{
+      marginTop: "8px",
+      fontSize: "14px",
+      color: "#64748b",
+    }}
+  >
+    {progress?.completedVideos || 0} / {progress?.totalVideos || 0} Videos
+  </p>
+
+  <strong>{progress?.progress || 0}% Complete</strong>
+</div>
 
                       <Link
                         to={`/learning/${course.id}`}
