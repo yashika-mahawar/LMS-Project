@@ -29,12 +29,19 @@ function Payment() {
 
     console.log("Amount:", amount);
 
-    const { data } = await axios.post(
-      "http://localhost:5000/api/payment/create-order",
-      {
-        amount: amount * 100,
-      }
-    );
+    const token = localStorage.getItem("token");
+
+const { data } = await axios.post(
+  "http://localhost:5000/api/payment/create-order",
+  {
+    amount: amount * 100,
+  },
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
     const options = {
       key: import.meta.env.VITE_RAZORPAY_KEY,

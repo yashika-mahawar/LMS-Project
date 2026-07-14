@@ -3,10 +3,23 @@ import React, { useState, useEffect } from 'react';
 const EditProfile = () => {
   // 1. Initial state ab localStorage se aayegi
   const [formData, setFormData] = useState(() => {
-    const savedUser = localStorage.getItem("currentUser");
-    return savedUser ? JSON.parse(savedUser) : { name: '', email: '', phone: '' };
-  });
+    const savedUser = localStorage.getItem("user");
+    if (savedUser) {
+  const user = JSON.parse(savedUser);
 
+  return {
+    name: user.full_name || "",
+    email: user.email || "",
+    phone: user.phone || "",
+  };
+}
+
+return {
+  name: "",
+  email: "",
+  phone: "",
+};
+  });
   const [msg, setMsg] = useState('');
 
   const handleSubmit = (e) => {
@@ -18,8 +31,17 @@ const EditProfile = () => {
     }
 
     // 2. Save Changes karte hi localStorage update karo
-    localStorage.setItem("currentUser", JSON.stringify(formData));
-    
+const oldUser = JSON.parse(localStorage.getItem("user"));
+
+const updatedUser = {
+  ...oldUser,
+  full_name: formData.name,
+  email: formData.email,
+  phone: formData.phone,
+};
+
+localStorage.setItem("user", JSON.stringify(updatedUser));
+window.dispatchEvent(new Event("storage"));    
     setMsg('Profile Updated Successfully!');
     setTimeout(() => setMsg(''), 3000);
   };

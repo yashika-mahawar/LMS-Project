@@ -10,43 +10,38 @@ function Login() {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    // DUMMY LOGIC (Jab tak backend nahi banta)
-    if (email === "test@gmail.com" && password === "1234") {
-      setLoading(false);
-      alert("Login Successful! (Testing Mode)");
-      navigate("/dashboard");
-      return;
-    }
-
-    // REAL BACKEND LOGIC (Jab backend ban jaye, toh ye code uncomment kar dena)
-    /*
-    try {
-      const res = await axios.post("http://localhost:5000/api/auth/login", {
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/auth/login",
+      {
         email,
         password,
-      });
-
-      if (res.data.success) {
-        alert("Login Successful!");
-        navigate("/dashboard");
-      } else {
-        alert("Invalid Email or Password!");
       }
-    } catch (err) {
-      alert("Login failed. Please check your credentials or server connection.");
-    } finally {
-      setLoading(false);
+    );
+
+    if (res.data.success) {
+
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      alert("Login Successful!");
+
+      navigate("/dashboard");
+
+    } else {
+      alert("Invalid Email or Password");
     }
-    */
 
-    // Temp error message kyunki backend abhi connected nahi hai
-    alert("Backend is not connected yet! Use: test@gmail.com / 1234");
-    setLoading(false);
-  };
+  } catch (err) {
+    alert("Login Failed");
+    console.log(err);
+  }
 
+  setLoading(false);
+};
   return (
     <div className="login-container">
       <div className="login-left">

@@ -4,25 +4,25 @@ import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
 
 function Header() {
   const [showProfileBox, setShowProfileBox] = useState(false);
- const [user, setUser] = useState(() => {
-  const savedUser = localStorage.getItem("currentUser");
+const [user, setUser] = useState(() => {
+  const savedUser = localStorage.getItem("user");
 
   return savedUser
     ? JSON.parse(savedUser)
     : {
-        name: "Guest",
+        full_name: "Guest",
         profileImage: "",
       };
 });
 
 useEffect(() => {
   const updateUser = () => {
-    const savedUser = localStorage.getItem("currentUser");
+  const savedUser = localStorage.getItem("user");
 
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  };
+  if (savedUser) {
+    setUser(JSON.parse(savedUser));
+  }
+};
 
   updateUser();
 
@@ -62,7 +62,7 @@ useEffect(() => {
           </div>
           <div className="profile-info-text">
             {/* Yahan 'Yashika' ki jagah dynamic {userName} use kiya hai */}
-            <span className="user-name">{user.name}</span>
+            <span className="user-name">{user.full_name}</span>
             <span className="user-role">Student Portal</span>
           </div>
         </div>
@@ -85,9 +85,9 @@ useEffect(() => {
             }}
           >
             <div style={{ fontSize: "0.9rem", color: "#475569", lineHeight: "2" }}>
-              <p style={{ margin: 0 }}><strong>Name:</strong>{user.name}</p>
+              <p style={{ margin: 0 }}><strong>Name:</strong>{user.full_name}</p>
               <p style={{ margin: 0 }}><strong>Roll No:</strong> ICFAI-2026-001</p>
-              <p style={{ margin: 0 }}><strong>Course:</strong> B.Tech Computer Science</p>
+              <p style={{ margin: 0 }}><strong>Course:</strong> {user.program}</p>
             </div>
             <button
               onClick={() => setShowProfileBox(false)}

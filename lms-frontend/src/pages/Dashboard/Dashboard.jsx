@@ -1,5 +1,4 @@
-import React from "react";
-
+import React, { useState, useEffect } from "react";
 // 1. Internal Dashboard Components
 import WelcomeCard from "./WelcomeCard/WelcomeCard";
 import StatsCards from "./StatsCards/StatsCards";
@@ -14,6 +13,13 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.css";
 
 const Dashboard = () => {
+  const [userName, setUserName] = useState("Student");
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user && user.name) {
+      setUserName(user.name);
+    }
+  }, []);
   const ongoingCourses = [
     {
       id: 1,

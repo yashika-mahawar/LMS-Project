@@ -8,32 +8,39 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [skills, setSkills] = useState(['React.js', 'UI/UX Design', 'Project Management']);
   
-  const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem("currentUser");
-    return savedUser ? JSON.parse(savedUser) : { name: "", email: "", phone: "", profileImage: "" };
-  });
+ const [user, setUser] = useState(() => {
+  const savedUser = localStorage.getItem("user");
+
+  return savedUser
+    ? JSON.parse(savedUser)
+    : {
+        full_name: "",
+        email: "",
+        phone: "",
+        program: "",
+        profileImage: "",
+      };
+});
 
   // IMPORTANT: Yeh useEffect ensure karega ki agar tumne 
   // EditProfile se data change kiya, toh Profile page turant update ho jaye
   useEffect(() => {
-    const handleStorageChange = () => {
-      const savedUser = localStorage.getItem("currentUser");
-      if (savedUser) {
-        setUser(JSON.parse(savedUser));
-      }
-    };
+  const handleStorageChange = () => {
+    const savedUser = localStorage.getItem("user");
 
-    // 'storage' event tab trigger hota hai jab localStorage update hota hai
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Har 500ms mein check karega agar naam change hua hai (fallback for same-tab updates)
-    const interval = setInterval(handleStorageChange, 500);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      clearInterval(interval);
-    };
-  }, []);
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+  };
+
+  handleStorageChange();
+
+  window.addEventListener("storage", handleStorageChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorageChange);
+  };
+}, []);
 
   const fileInputRef = useRef(null);
 
@@ -45,7 +52,7 @@ const Profile = () => {
         const base64Image = reader.result;
         const updatedUser = { ...user, profileImage: base64Image };
         setUser(updatedUser);
-        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+        localStorage.setItem("user", JSON.stringify(updatedUser));
       };
       reader.readAsDataURL(file);
     }
@@ -93,8 +100,8 @@ const Profile = () => {
             
             <div>
               {/* Ab yahan wahi naam aayega jo tumne Signup ya EditProfile mein dala hai */}
-              <h1 style={{ margin: '0', fontSize: '2.5rem', letterSpacing: '-0.02em' }}>{user.name || "User Name"}</h1>
-              <p style={{ margin: '8px 0', fontSize: '1.1rem', opacity: '0.9' }}>B.Tech Computer Science | ICFAI University</p>
+              <h1 style={{ margin: '0', fontSize: '2.5rem', letterSpacing: '-0.02em' }}>{user.full_name || "User Name"}</h1>
+              <p style={{ margin: '8px 0', fontSize: '1.1rem', opacity: '0.9' }}>{user.program} | ICFAI University</p>
             </div>
           </div>
 
