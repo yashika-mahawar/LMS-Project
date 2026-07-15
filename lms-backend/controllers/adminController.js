@@ -153,13 +153,14 @@ export const getCourses = async (req, res) => {
 // ================= ADD COURSE =================
 export const addCourse = async (req, res) => {
   try {
-    const { title, duration, fee, image_url } = req.body;
+    const { title, description, duration, fee, image_url } = req.body;
 
     const { data, error } = await supabase
       .from("courses")
       .insert([
         {
           title,
+              description,
           duration,
           fee,
           image_url,
@@ -192,12 +193,13 @@ export const addCourse = async (req, res) => {
 export const updateCourse = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, duration, fee } = req.body;
+    const { title, description, duration, fee } = req.body;
 
     const { data, error } = await supabase
       .from("courses")
       .update({
         title,
+        description,
         duration,
         fee,
       })

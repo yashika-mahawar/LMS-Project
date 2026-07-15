@@ -14,6 +14,7 @@ const [loading, setLoading] = useState(true);
 
 const [newCourse, setNewCourse] = useState({
   title: "",
+    description: "",
   duration: "",
   fee: "",
   image_url: "",
@@ -47,6 +48,7 @@ const fetchCourses = async () => {
       `http://localhost:5000/api/admin/courses/${editId}`,
       {
         title: tempData.title,
+            description: tempData.description,
         duration: tempData.duration,
         fee: tempData.fee,
       }
@@ -91,6 +93,7 @@ const handleAddCourse = async () => {
 
     setNewCourse({
       title: "",
+        description: "",
       duration: "",
       fee: "",
       image_url: "",
@@ -127,6 +130,7 @@ const handleAddCourse = async () => {
           <thead>
             <tr>
               <th>Course Name</th>
+                <th>Description</th>
               <th>Duration</th>
               <th>Fee</th>
               <th>Actions</th>
@@ -138,6 +142,17 @@ const handleAddCourse = async () => {
                 {editId === course.id ? (
                   <>
                     <td><input value={tempData.title} onChange={(e) => setTempData({...tempData, title: e.target.value})} /></td>
+                    <td>
+  <input
+    value={tempData.description}
+    onChange={(e) =>
+      setTempData({
+        ...tempData,
+        description: e.target.value,
+      })
+    }
+  />
+</td>
                     <td><input value={tempData.duration} onChange={(e) => setTempData({...tempData, duration: e.target.value})} /></td>
                     <td><input value={tempData.fee} onChange={(e) => setTempData({...tempData, fee: e.target.value})} /></td>
                     <td>
@@ -148,6 +163,7 @@ const handleAddCourse = async () => {
                 ) : (
                   <>
                     <td>{course.title}</td>
+                    <td>{course.description}</td>
                     <td>{course.duration}</td>
                     <td>{course.fee}</td>
                     <td>
@@ -177,6 +193,17 @@ const handleAddCourse = async () => {
           })
         }
       />
+      <input
+  type="text"
+  placeholder="Course Description"
+  value={newCourse.description}
+  onChange={(e) =>
+    setNewCourse({
+      ...newCourse,
+      description: e.target.value,
+    })
+  }
+/>
 
       <input
         type="text"

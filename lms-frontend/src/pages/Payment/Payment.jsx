@@ -23,15 +23,17 @@ function Payment() {
   try {
 
     // ₹49,999  ---> 49999
-    const amount = Number(
-      course.fee.replace(/[₹,]/g, "")
-    );
+    const amount =
+  typeof course.fee === "number"
+    ? course.fee
+    : Number(String(course.fee).replace(/[₹,]/g, ""));
 
     console.log("Amount:", amount);
 
     const token = localStorage.getItem("token");
     const user = JSON.parse(localStorage.getItem("user"));
-
+console.log("User:", user);
+console.log("Token:", token);
 const { data } = await axios.post(
   "http://localhost:5000/api/payment/create-order",
   {

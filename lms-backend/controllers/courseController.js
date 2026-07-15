@@ -11,7 +11,10 @@ export async function getCourses(req, res) {
     });
   }
 
-  res.status(200).json(data);
+    res.status(200).json({
+    success: true,
+    courses: data,
+  });
 }
 
 export async function getCourseById(req, res) {

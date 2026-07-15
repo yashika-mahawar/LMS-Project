@@ -48,7 +48,7 @@ function CourseDetails() {
       <section className="course-details">
         {/* LEFT IMAGE */}
         <div className="course-image">
-      <img src={course.image} alt={course.title} />
+      <img src={course.image_url || course.image} alt={course.title} />
         </div>
 
         {/* RIGHT CONTENT */}

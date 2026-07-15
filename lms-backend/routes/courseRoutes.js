@@ -17,6 +17,6 @@ import {
 router.get("/courses", getCourses);
 router.get("/courses/:id", getCourseById);
 router.post("/courses", createCourse);
-router.put("/courses/:id", authMiddleware, roleMiddleware(["admin"]), updateCourse);
+router.put("/:id", authMiddleware, roleMiddleware(["admin"]), updateCourse);
 
 export default router;
