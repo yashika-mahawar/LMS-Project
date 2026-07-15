@@ -433,3 +433,84 @@ td {
   border-radius: 50%;
   object-fit: cover;
 }
+.header-box{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+.modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.45);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    z-index:999;
+}
+
+.course-modal{
+
+    width:450px;
+
+    background:#fff;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+.course-modal h2{
+
+    margin-bottom:10px;
+
+    color:#4338ca;
+}
+
+.course-modal input{
+
+    padding:12px;
+
+    border:1px solid #ddd;
+
+    border-radius:10px;
+
+    outline:none;
+
+    font-size:15px;
+}
+
+.modal-buttons{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:12px;
+
+    margin-top:10px;
+}
+
+.cancel-btn{
+
+    background:#ef4444;
+
+    color:#fff;
+
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+}

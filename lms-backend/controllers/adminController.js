@@ -123,3 +123,132 @@ export const deleteStudent = async (req, res) => {
 
   }
 };
+// ================= GET ALL COURSES =================
+export const getCourses = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("courses")
+      .select("*")
+      .order("title");
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      courses: data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
+// ================= ADD COURSE =================
+export const addCourse = async (req, res) => {
+  try {
+    const { title, duration, fee, image_url } = req.body;
+
+    const { data, error } = await supabase
+      .from("courses")
+      .insert([
+        {
+          title,
+          duration,
+          fee,
+          image_url,
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.status(201).json({
+  success: true,
+  message: "Course added successfully",
+  course: data,
+});
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
+// ================= UPDATE COURSE =================
+export const updateCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, duration, fee } = req.body;
+
+    const { data, error } = await supabase
+      .from("courses")
+      .update({
+        title,
+        duration,
+        fee,
+      })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      course: data,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+
+// ================= DELETE COURSE =================
+export const deleteCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await supabase
+      .from("courses")
+      .delete()
+      .eq("id", id);
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Course deleted successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};

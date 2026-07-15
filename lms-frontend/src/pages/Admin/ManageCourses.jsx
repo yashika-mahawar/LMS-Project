@@ -1,50 +1,127 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
 import './AdminDashboard.css';
 
 const ManageCourses = () => {
-  const [courses, setCourses] = useState([
-    { id: 1, title: "B.Tech Computer Science", duration: "4 Years", fee: "₹49,999" },
-    { id: 2, title: "MBA", duration: "2 Years", fee: "₹69,999" },
-    { id: 3, title: "BCA", duration: "3 Years", fee: "₹39,999" },
-    { id: 4, title: "MCA", duration: "2 Years", fee: "₹45,999" },
-    { id: 5, title: "M.Tech", duration: "2 Years", fee: "₹79,999" },
-    { id: 6, title: "LLB", duration: "3 Years", fee: "₹59,999" },
-    { id: 7, title: "BA", duration: "3 Years", fee: "₹29,999" },
-    { id: 8, title: "B.Com", duration: "3 Years", fee: "₹34,999" },
-    { id: 9, title: "Diploma in IT", duration: "2 Years", fee: "₹19,999" },
-    { id: 10, title: "Cyber Security", duration: "1 Year", fee: "₹24,999" },
-  ]);
+  const [courses, setCourses] = useState([]);
+const [loading, setLoading] = useState(true);
 
   const [editId, setEditId] = useState(null);
   const [tempData, setTempData] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
+const [newCourse, setNewCourse] = useState({
+  title: "",
+  duration: "",
+  fee: "",
+  image_url: "",
+});
+useEffect(() => {
+  fetchCourses();
+}, []);
+const fetchCourses = async () => {
+  try {
+    const res = await axios.get(
+      "http://localhost:5000/api/admin/courses"
+    );
+
+    setCourses(res.data.courses);
+    setLoading(false);
+
+  } catch (err) {
+    console.log("Fetch Error:", err);
+    setLoading(false);
+  }
+};
   const startEdit = (course) => {
     setEditId(course.id);
     setTempData({ ...course });
   };
 
-  const saveEdit = () => {
-    setCourses(courses.map(c => (c.id === editId ? tempData : c)));
+  const saveEdit = async () => {
+  try {
+
+    await axios.put(
+      `http://localhost:5000/api/admin/courses/${editId}`,
+      {
+        title: tempData.title,
+        duration: tempData.duration,
+        fee: tempData.fee,
+      }
+    );
+
     setEditId(null);
-  };
 
-  const deleteCourse = (id) => {
-    if (window.confirm("Are you sure you want to delete this course?")) {
-      setCourses(courses.filter(c => c.id !== id));
-    }
-  };
+    fetchCourses();
 
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+  const deleteCourse = async (id) => {
+
+  if (!window.confirm("Delete this course?")) return;
+
+  try {
+
+    await axios.delete(
+      `http://localhost:5000/api/admin/courses/${id}`
+    );
+
+    fetchCourses();
+
+  } catch (err) {
+
+    console.log(err);
+
+  }
+
+};
+const handleAddCourse = async () => {
+  try {
+    await axios.post(
+      "http://localhost:5000/api/admin/courses",
+      newCourse
+    );
+
+    setShowModal(false);
+
+    setNewCourse({
+      title: "",
+      duration: "",
+      fee: "",
+      image_url: "",
+    });
+
+    fetchCourses();
+
+  } catch (err) {
+    console.log("Add Error:", err);
+  }
+};
   return (
     <div className="admin-wrapper">
       <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
       
       <main className="admin-main">
         <div className="header-box">
-          <h1>Manage Courses</h1>
-          <p>Total active programs: <strong>{courses.length}</strong></p>
-        </div>
+  <div>
+    <h1>Manage Courses</h1>
+    <p>
+      Total active programs: <strong>{courses.length}</strong>
+    </p>
+  </div>
+
+  <button
+    className="glow-btn"
+    onClick={() => setShowModal(true)}
+  >
+    + Add Course
+  </button>
+</div>
 
         <table className="course-table">
           <thead>
@@ -83,6 +160,81 @@ const ManageCourses = () => {
             ))}
           </tbody>
         </table>
+        {showModal && (
+  <div className="modal-overlay">
+    <div className="course-modal">
+
+      <h2>Add New Course</h2>
+
+      <input
+        type="text"
+        placeholder="Course Name"
+        value={newCourse.title}
+        onChange={(e) =>
+          setNewCourse({
+            ...newCourse,
+            title: e.target.value,
+          })
+        }
+      />
+
+      <input
+        type="text"
+        placeholder="Duration"
+        value={newCourse.duration}
+        onChange={(e) =>
+          setNewCourse({
+            ...newCourse,
+            duration: e.target.value,
+          })
+        }
+      />
+
+      <input
+        type="number"
+        placeholder="Fee"
+        value={newCourse.fee}
+        onChange={(e) =>
+          setNewCourse({
+            ...newCourse,
+            fee: e.target.value,
+          })
+        }
+      />
+
+      <input
+        type="text"
+        placeholder="Image URL"
+        value={newCourse.image_url}
+        onChange={(e) =>
+          setNewCourse({
+            ...newCourse,
+            image_url: e.target.value,
+          })
+        }
+      />
+
+      <div className="modal-buttons">
+
+        <button
+          className="glow-btn"
+          onClick={handleAddCourse}
+        >
+          Save
+        </button>
+
+        <button
+          className="cancel-btn"
+          onClick={() => setShowModal(false)}
+        >
+          Cancel
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+)}
       </main>
     </div>
   );
