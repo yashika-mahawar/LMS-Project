@@ -35,10 +35,16 @@ function Login() {
       alert("Invalid Email or Password");
     }
 
-  } catch (err) {
-    alert("Login Failed");
-    console.log(err);
-  }
+  } catch (error) {
+  console.log("Full Error:", error);
+  console.log("Backend Response:", error.response?.data);
+
+  alert(
+    error.response?.data?.message ||
+    error.response?.data?.error ||
+    "Login Failed"
+  );
+}
 
   setLoading(false);
 };

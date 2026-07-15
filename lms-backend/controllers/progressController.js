@@ -32,6 +32,25 @@ export const saveProgress = async (req, res) => {
         error: error.message,
       });
     }
+    if (is_completed) {
+
+  // Video title
+  const { data: video } = await supabase
+    .from("videos")
+    .select("title")
+    .eq("id", video_id)
+    .single();
+
+  await supabase.from("activities").insert([
+    {
+      user_id,
+      title: "Video Completed",
+      description: `Completed ${video?.title}`,
+      type: "video_completed",
+    },
+  ]);
+
+}
 
     return res.status(200).json({
       success: true,

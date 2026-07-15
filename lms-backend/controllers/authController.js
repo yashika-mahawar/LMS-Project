@@ -108,3 +108,34 @@ export async function getProfile(req, res) {
     user: req.user,
   });
 }
+export async function updateProfileImage(req, res) {
+  try {
+    const { id } = req.params;
+    const { profile_image } = req.body;
+
+    const { data, error } = await supabase
+      .from("users")
+      .update({
+        profile_image: profile_image,
+      })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
+    }
+
+    res.status(200).json({
+      message: "Profile image updated",
+      user: data,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+}

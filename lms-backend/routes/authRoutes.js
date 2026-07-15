@@ -3,12 +3,16 @@ const router = express.Router();
 
 import authMiddleware from "../middleware/authMiddleware.js";
 import roleMiddleware from "../middleware/roleMiddleware.js";
-import { registerUser, loginUser, getProfile } from "../controllers/authController.js";
-
+import { 
+  registerUser, 
+  loginUser, 
+  getProfile,
+  updateProfileImage
+} from "../controllers/authController.js";
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 router.get("/profile", authMiddleware, getProfile);
-
+router.put("/update-profile/:id",updateProfileImage);
 // Admin dashboard only
 router.get(
   "/admin/dashboard",

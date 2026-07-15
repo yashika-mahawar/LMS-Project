@@ -16,7 +16,7 @@ import LiveClass from "../pages/LiveClass/LiveClass";
 import Assignments from '../pages/Dashboard/Assignments/Assignments';
 import Progress from '../pages/Dashboard/Progress/Progress';
 import Admission from "../pages/Admissions/Admissions"; 
-
+import AdminProtectedRoute from "../components/ProtectedRoute/AdminProtectedRoute";
 // 🔥 AUTH PAGES IMPORT
 import ForgotPassword from "../pages/Auth/ForgotPassword";
 import VerifyOTP from "../pages/Auth/VerifyOTP";
@@ -59,10 +59,43 @@ function AppRoutes() {
       
       {/* 🔥 ADMIN ROUTES */}
       <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin" element={<AdminDashboard />} />
-      <Route path="/admin/manage-courses" element={<ManageCourses />} />
-      <Route path="/admin/videos" element={<ManageVideos />} />
-      <Route path="/admin/students" element={<ManageStudents />} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+
+<Route
+  path="/admin"
+  element={
+    <AdminProtectedRoute>
+      <AdminDashboard />
+    </AdminProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/manage-courses"
+  element={
+    <AdminProtectedRoute>
+      <ManageCourses />
+    </AdminProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/videos"
+  element={
+    <AdminProtectedRoute>
+      <ManageVideos />
+    </AdminProtectedRoute>
+  }
+/>
+
+<Route
+  path="/admin/students"
+  element={
+    <AdminProtectedRoute>
+      <ManageStudents />
+    </AdminProtectedRoute>
+  }
+/>
     </Routes>
   );
 }

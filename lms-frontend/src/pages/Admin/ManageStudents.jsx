@@ -1,30 +1,63 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './AdminDashboard.css';
-
+import axios from "axios";
 const ManageStudents = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  const [students] = useState([
-    { id: 1, name: "Aarav Sharma", course: "B.Tech Computer Science", status: "Active" },
-    { id: 2, name: "Priya Verma", course: "MBA", status: "Active" },
-    { id: 3, name: "Rahul Singh", course: "BCA", status: "Inactive" },
-    { id: 4, name: "Sneha Gupta", course: "MCA", status: "Active" },
-    { id: 5, name: "Vikram Mehta", course: "Cyber Security", status: "Active" },
-    { id: 6, name: "Ananya Rao", course: "M.Tech", status: "Active" },
-    { id: 7, name: "Karan Johar", course: "LLB", status: "Pending" },
-    { id: 8, name: "Ishaan Khatter", course: "BA", status: "Active" },
-    { id: 9, name: "Zara Khan", course: "B.Com", status: "Active" },
-    { id: 10, name: "Manoj Bajpayee", course: "Diploma in IT", status: "Active" }
-  ]);
+  const [students, setStudents] = useState([]);
+const [loading, setLoading] = useState(true);
+const fetchStudents = async () => {
+  try {
+    const response = await axios.get(
+      "http://localhost:5000/api/admin/students"
+    );
 
-  const filtered = useMemo(() => students.filter(s => 
-    s.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-    s.course.toLowerCase().includes(searchTerm.toLowerCase())
-  ), [searchTerm, students]);
+    setStudents(response.data.students);
+
+  } catch (error) {
+    console.log("Fetch Students Error:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+const handleDelete = async (id) => {
+
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this student?"
+  );
+
+  if(!confirmDelete) return;
+
+  try {
+
+    await axios.delete(
+      `http://localhost:5000/api/admin/students/${id}`
+    );
+
+    // refresh data
+    fetchStudents();
+
+  } catch(error){
+
+    console.log("Delete Error:", error);
+
+  }
+
+};
+useEffect(() => {
+  fetchStudents();
+}, []);
+  const filtered = useMemo(() => 
+  students.filter(s =>
+    s.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.program?.toLowerCase().includes(searchTerm.toLowerCase())
+  ),
+[searchTerm, students]);
 
   const currentData = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -46,18 +79,80 @@ const ManageStudents = () => {
               <tr><th>Student Name</th><th>Course</th><th>Status</th><th>Actions</th></tr>
             </thead>
             <tbody>
-              {currentData.map((s) => (
-                <tr key={s.id}>
-                  <td><div className="avatar-name"><span>{s.name[0]}</span> {s.name}</div></td>
-                  <td><span className="course-tag">{s.course}</span></td>
-                  <td><span className={`status-dot ${s.status.toLowerCase()}`}>{s.status}</span></td>
-                  <td>
-                    <button className="glow-btn edit"><FaEdit /></button>
-                    <button className="glow-btn delete"><FaTrash /></button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+
+{
+ loading ? (
+   <tr>
+    <td colSpan="4">
+      Loading Students...
+    </td>
+   </tr>
+ )
+ :
+ currentData.length === 0 ? (
+   <tr>
+    <td colSpan="4">
+      No Students Found
+    </td>
+   </tr>
+ )
+ :
+ currentData.map((s)=>(
+   <tr key={s.id}>
+      <td>
+        <div className="avatar-name">
+
+    {
+      s.profile_image ? (
+        <img
+          src={s.profile_image}
+          alt={s.full_name}
+          className="student-avatar"
+        />
+      )
+      :
+      (
+        <span>
+          {s.full_name?.[0]}
+        </span>
+      )
+    }
+
+    {s.full_name}
+
+  </div>
+      </td>
+
+      <td>
+        <span className="course-tag">
+          {s.program}
+        </span>
+      </td>
+
+      <td>
+        <span className="status-dot active">
+          Active
+        </span>
+      </td>
+
+      <td>
+        <button className="glow-btn edit">
+          <FaEdit />
+        </button>
+
+        <button 
+          className="glow-btn delete"
+          onClick={() => handleDelete(s.id)}
+        >
+          <FaTrash />
+        </button>
+      </td>
+
+   </tr>
+ ))
+}
+
+</tbody>
           </table>
         </div>
 

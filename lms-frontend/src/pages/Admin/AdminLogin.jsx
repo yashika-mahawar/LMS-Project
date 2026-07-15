@@ -2,24 +2,41 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaUserShield, FaArrowRight } from "react-icons/fa";
 import "./AdminLogin.css";
-
+import axios from "axios";
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    
-    // Simple Admin Auth Check
-    if (email === "admin@icfai.com" && password === "admin123") {
-      localStorage.setItem("isAdmin", "true"); // Admin access set kar diya
-      navigate("/admin"); // Redirect to Admin Dashboard
-    } else {
-      setError("Invalid Admin Credentials!");
+  const handleLogin = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/api/auth/login",
+      {
+        email,
+        password,
+      }
+    );
+
+    if (res.data.user.role !== "admin") {
+      setError("Access Denied! Admin Only.");
+      return;
     }
-  };
+
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("admin", JSON.stringify(res.data.user));
+
+    navigate("/admin");
+
+  } catch (err) {
+    setError(
+      err.response?.data?.message || "Login Failed"
+    );
+  }
+};
 
   return (
     <div className="admin-login-wrapper">

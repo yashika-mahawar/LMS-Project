@@ -3,7 +3,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import EditProfile from './EditProfile';
 import ChangePassword from './ChangePassword';
 import { FaUserCircle, FaShieldAlt, FaCamera, FaPlus, FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa';
-
+import axios from "axios";
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [skills, setSkills] = useState(['React.js', 'UI/UX Design', 'Project Management']);
@@ -44,19 +44,66 @@ const Profile = () => {
 
   const fileInputRef = useRef(null);
 
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        const base64Image = reader.result;
-        const updatedUser = { ...user, profileImage: base64Image };
-        setUser(updatedUser);
-        localStorage.setItem("user", JSON.stringify(updatedUser));
+  const handleImageChange = async (event) => {
+
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+
+  try {
+
+    // temporary preview
+    const reader = new FileReader();
+
+    reader.onloadend = async () => {
+
+      const imageUrl = reader.result;
+
+
+      const updatedUser = {
+        ...user,
+        profileImage: imageUrl
       };
-      reader.readAsDataURL(file);
-    }
-  };
+
+
+      setUser(updatedUser);
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(updatedUser)
+      );
+       console.log("Sending image update");
+console.log("USER ID:", user.id);
+console.log("IMAGE:", imageUrl.substring(0,50));
+
+      // Save image URL in database
+      await axios.put(
+        `http://localhost:5000/api/auth/update-profile/${user.id}`,
+        {
+          profile_image: imageUrl
+        }
+      );
+
+
+      console.log("Profile image saved");
+
+    };
+
+
+    reader.readAsDataURL(file);
+
+
+  } catch(error){
+
+    console.log(
+      "Image Upload Error:",
+      error
+    );
+
+  }
+
+};
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', fontFamily: "'Inter', sans-serif" }}>

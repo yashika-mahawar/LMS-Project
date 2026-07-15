@@ -30,6 +30,7 @@ function Payment() {
     console.log("Amount:", amount);
 
     const token = localStorage.getItem("token");
+    const user = JSON.parse(localStorage.getItem("user"));
 
 const { data } = await axios.post(
   "http://localhost:5000/api/payment/create-order",
@@ -58,6 +59,8 @@ handler: async (response) => {
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,
         razorpay_signature: response.razorpay_signature,
+        user_id: user.id,
+    course_id: course.id,
       }
     );
 

@@ -3,15 +3,57 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import WelcomeCard from '../Dashboard/WelcomeCard/WelcomeCard'; 
 import { FaUserGraduate, FaBook, FaVideo, FaBell, FaSearch, FaUserCircle, FaChartLine } from 'react-icons/fa';
 import './AdminDashboard.css';
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 const AdminDashboard = () => {
+  const [statsData, setStatsData] = useState({
+  students: 0,
+  courses: 0,
+  videos: 0,
+  enrollments: 0,
+});
+useEffect(() => {
+  fetchDashboard();
+}, []);
+
+const fetchDashboard = async () => {
+  try {
+    const res = await axios.get(
+      "http://localhost:5000/api/admin/dashboard"
+    );
+
+    setStatsData(res.data);
+  } catch (err) {
+    console.log(err);
+  }
+};
   // Stats ko array mein rakha taaki code clean rahe
   const stats = [
-    { title: "Total Students", value: "1,284", icon: <FaUserGraduate />, color: "#4318ff" },
-    { title: "Active Courses", value: "42", icon: <FaBook />, color: "#05cd99" },
-    { title: "Live Sessions", value: "12", icon: <FaVideo />, color: "#ffb547" },
-    { title: "Monthly Growth", value: "+15%", icon: <FaChartLine />, color: "#ef4444" }
-  ];
+  {
+    title: "Total Students",
+    value: statsData.students,
+    icon: <FaUserGraduate />,
+    color: "#4318ff",
+  },
+  {
+    title: "Total Courses",
+    value: statsData.courses,
+    icon: <FaBook />,
+    color: "#05cd99",
+  },
+  {
+    title: "Total Videos",
+    value: statsData.videos,
+    icon: <FaVideo />,
+    color: "#ffb547",
+  },
+  {
+    title: "Total Enrollments",
+    value: statsData.enrollments,
+    icon: <FaChartLine />,
+    color: "#ef4444",
+  },
+];
 
   return (
     <div className="admin-wrapper">

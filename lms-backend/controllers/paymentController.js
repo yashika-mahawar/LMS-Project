@@ -1,7 +1,7 @@
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import dotenv from "dotenv";
-
+import { supabase } from "../config/supabase.js";
 dotenv.config();
 
 if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_SECRET) {
@@ -57,11 +57,12 @@ console.log("Amount Type:", typeof amount);
 export const verifyPayment = async (req, res) => {
   try {
     const {
-      razorpay_order_id,
-      razorpay_payment_id,
-      razorpay_signature,
-    } = req.body;
-
+  razorpay_order_id,
+  razorpay_payment_id,
+  razorpay_signature,
+  user_id,
+  course_id,
+} = req.body;
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
     const expectedSignature = crypto
@@ -70,11 +71,33 @@ export const verifyPayment = async (req, res) => {
       .digest("hex");
 
     if (expectedSignature === razorpay_signature) {
-      return res.json({
-        success: true,
-        message: "Payment Verified",
-      });
-    }
+
+  // Course title nikaalo
+  const { data: course, error: courseError } = await supabase
+    .from("courses")
+    .select("title")
+    .eq("id", course_id)
+    .single();
+
+  if (courseError) {
+    throw courseError;
+  }
+
+  // Activity insert karo
+  await supabase.from("activities").insert([
+    {
+      user_id,
+      title: "Payment Successful",
+      description: `${course.title} purchased successfully`,
+      type: "payment",
+    },
+  ]);
+
+  return res.json({
+    success: true,
+    message: "Payment Verified",
+  });
+}
 
     return res.status(400).json({
       success: false,

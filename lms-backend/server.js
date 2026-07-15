@@ -11,6 +11,7 @@ import progressRoutes from "./routes/progressRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
 import liveClassRoutes from "./routes/liveClassRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -21,8 +22,11 @@ app.use(cors({
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
-
-app.use(express.json());
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({
+  extended: true,
+  limit: "10mb",
+}));
 app.use((req, res, next) => {
   console.log(`REQ RECEIVED: ${req.method} ${req.url}`);
   next();
@@ -36,6 +40,7 @@ app.use("/api/progress", progressRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/live-classes",liveClassRoutes);
 app.use("/api/activities", activityRoutes);
+app.use("/api/admin", adminRoutes);
 // Testing endpoint
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend working fine 🚀" });

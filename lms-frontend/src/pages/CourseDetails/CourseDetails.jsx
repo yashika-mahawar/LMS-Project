@@ -93,7 +93,12 @@ function CourseDetails() {
             <li>Internship Opportunities</li>
             <li>Modern Computer Labs</li>
           </ul>
-
+           <button
+            className="enroll-btn"
+            onClick={handleEnroll} 
+          >
+            Enroll Now
+          </button>
           
         </div>
       </section>
