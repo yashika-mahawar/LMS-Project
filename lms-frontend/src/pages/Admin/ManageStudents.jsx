@@ -3,11 +3,11 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import { FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './AdminDashboard.css';
 import axios from "axios";
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 const ManageStudents = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
   const [students, setStudents] = useState([]);
 const [loading, setLoading] = useState(true);
 const fetchStudents = async () => {
@@ -64,13 +64,14 @@ useEffect(() => {
   return (
     <div className="admin-wrapper">
       <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
+
       <main className="admin-main">
-        <div className="glass-header">
+<AdminHeader
+    searchTerm={searchTerm}
+    setSearchTerm={setSearchTerm}
+/>      
+   <div className="glass-header">
           <h1>Student Directory</h1>
-          <div className="search-glow">
-            <FaSearch />
-            <input placeholder="Filter students..." onChange={(e) => setSearchTerm(e.target.value)} />
-          </div>
         </div>
 
         <div className="table-container">

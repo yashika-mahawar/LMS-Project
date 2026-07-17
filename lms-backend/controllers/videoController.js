@@ -1,5 +1,5 @@
 import { supabase } from "../config/supabase.js";
-
+import { createNotification } from "../utils/createNotification.js";
 // Sabhi videos laane ke liye (Admin ke liye)
 export const getAllVideos = async (req, res) => {
     const { data, error } = await supabase.from('videos').select('*');
@@ -19,7 +19,9 @@ export const getVideosByCourse = async (req, res) => {
 
     if (error) return res.status(500).json({ error: error.message });
     res.json(data);
+    
 };
+
 export const addVideo = async (req, res) => {
   try {
     const {
@@ -52,7 +54,25 @@ export const addVideo = async (req, res) => {
 
     if (error) {
   console.log("SUPABASE ERROR:", error);
+const { data: students } = await supabase
+  .from("users")
+  .select("id")
+  .eq("role", "student");
 
+// Admin
+await createNotification(
+  "admin",
+  `New Video Added`
+);
+
+// Students
+for (const student of students) {
+  await createNotification(
+    "student",
+    `New Video Added`,
+    student.id
+  );
+}
   return res.status(500).json({
     success: false,
     message: error.message,

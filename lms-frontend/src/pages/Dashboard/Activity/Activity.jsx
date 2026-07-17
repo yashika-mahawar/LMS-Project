@@ -40,8 +40,18 @@ const Activity = () => {
                 <p>{act.description}</p>
 
                 <small>
-                  {new Date(act.created_at).toLocaleString()}
-                </small>
+  {new Date(
+    act.created_at.replace(" ", "T") + "Z"
+  ).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata",
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  })}
+</small>
               </div>
             </div>
           ))

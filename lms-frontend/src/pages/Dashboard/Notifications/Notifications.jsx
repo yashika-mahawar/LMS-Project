@@ -11,10 +11,9 @@ const Notifications = () => {
         const user = JSON.parse(localStorage.getItem("user"));
 
         const res = await axios.get(
-          `http://localhost:5000/api/activities/${user.id}`
-        );
-
-        setNotifications(res.data.data || []);
+  `http://localhost:5000/api/notifications/${user.id}`
+);
+setNotifications(res.data.notifications || []);
       } catch (err) {
         console.log(err);
       }
@@ -32,11 +31,20 @@ const Notifications = () => {
           <p>No Notifications</p>
         ) : (
           notifications.map((note) => (
-            <div key={note.id} className="alert-box">
-              <h4 className="alert-heading">{note.title}</h4>
-              <p className="alert-desc">{note.description}</p>
-            </div>
-          ))
+  <div key={note.id} className="alert-box">
+    <p className="alert-desc">{note.message}</p>
+
+    <small
+      style={{
+        color: "#777",
+        display: "block",
+        marginTop: "6px",
+      }}
+    >
+      {new Date(note.created_at).toLocaleDateString()}
+    </small>
+  </div>
+))
         )}
       </div>
     </div>

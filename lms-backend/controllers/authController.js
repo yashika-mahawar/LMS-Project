@@ -1,7 +1,7 @@
 import { supabase } from "../config/supabase.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
+import { createNotification } from "../utils/createNotification.js";
 export async function registerUser(req, res) {
   const { full_name, email, password, role, program } = req.body;
 
@@ -47,7 +47,10 @@ export async function registerUser(req, res) {
       message: error.message,
     });
   }
-
+await createNotification(
+  "admin",
+  `${full_name} registered as a new student`
+);
   const token = jwt.sign(
     {
       id: data.id,

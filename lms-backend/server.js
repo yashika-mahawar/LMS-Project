@@ -12,6 +12,7 @@ import paymentRoutes from "./routes/paymentRoutes.js";
 import liveClassRoutes from "./routes/liveClassRoutes.js";
 import activityRoutes from "./routes/activityRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -41,6 +42,7 @@ app.use("/api/payment", paymentRoutes);
 app.use("/api/live-classes",liveClassRoutes);
 app.use("/api/activities", activityRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/notifications", notificationRoutes);
 // Testing endpoint
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend working fine 🚀" });

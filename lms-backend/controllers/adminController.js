@@ -1,5 +1,5 @@
 import { supabase } from "../config/supabase.js";
-
+import { createNotification } from "../utils/createNotification.js";
 export const getDashboardStats = async (req, res) => {
   try {
     const [
@@ -33,6 +33,108 @@ export const getDashboardStats = async (req, res) => {
       videos,
       enrollments,
     });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+// ================= RECENT ENROLLMENTS =================
+
+export const getRecentEnrollments = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("enrollment")
+      .select(`
+        id,
+        created_at,
+        users (
+          full_name,
+          profile_image
+        ),
+        courses (
+          title
+        )
+      `)
+      .order("created_at", { ascending: false })
+      .limit(5);
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      enrollments: data,
+    });
+
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+  }
+};
+// ================= NOTIFICATIONS =================
+
+export const getNotifications = async (req, res) => {
+  try {
+
+    const { data, error } = await supabase
+      .from("notifications")
+      .select("*")
+        .eq("role", "admin")
+      .order("created_at", { ascending: false })
+      .limit(10);
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      notifications: data,
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
+
+  }
+};
+// ================= RECENT STUDENTS =================
+
+export const getRecentStudents = async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("id, full_name, email, program, profile_image")
+      .eq("role", "student")
+      .order("created_at", { ascending: false })
+      .limit(5);
+
+    if (error) {
+      return res.status(500).json({
+        success: false,
+        error: error.message,
+      });
+    }
+
+    res.json({
+      success: true,
+      students: data,
+    });
+
   } catch (err) {
     res.status(500).json({
       success: false,
@@ -175,7 +277,26 @@ export const addCourse = async (req, res) => {
         error: error.message,
       });
     }
+// Sab students nikalo
+const { data: students } = await supabase
+  .from("users")
+  .select("id")
+  .eq("role", "student");
 
+// Admin notification
+await createNotification(
+  "admin",
+  `New Course Added: ${title}`
+);
+
+// Students notification
+for (const student of students) {
+  await createNotification(
+    "student",
+    `New Course Added: ${title}`,
+    student.id
+  );
+}
     res.status(201).json({
   success: true,
   message: "Course added successfully",

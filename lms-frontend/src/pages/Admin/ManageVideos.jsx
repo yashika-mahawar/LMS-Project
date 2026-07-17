@@ -8,9 +8,11 @@ import {
   FaPlus,
 } from "react-icons/fa";
 import './AdminDashboard.css';
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import axios from "axios";
 const ManageVideos = () => {
   const [courses, setCourses] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 const [videos, setVideos] = useState([]);
   const [edit, setEdit] = useState({ courseId: null, moduleIdx: null });
   const [tempUrl, setTempUrl] = useState("");
@@ -120,10 +122,36 @@ const handleAddVideo = async () => {
     console.log(err);
   }
 };
+const visibleCourses = courses.filter((course) => {
+
+  // agar search empty hai to saare courses dikhao
+  if (!searchTerm.trim()) return true;
+
+  const search = searchTerm.toLowerCase();
+
+  return videos.some((video) => {
+
+    if (video.course_id !== course.id) return false;
+
+    return (
+      String(video.title || "").toLowerCase().includes(search) ||
+      String(video.duration || "").toLowerCase().includes(search) ||
+      String(video.video_url || "").toLowerCase().includes(search) ||
+      String(video.module_number || "").toLowerCase().includes(search)
+    );
+
+  });
+
+});
   return (
     <div className="admin-wrapper">
       <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
       <main className="admin-main">
+        <AdminHeader
+  searchTerm={searchTerm}
+  setSearchTerm={setSearchTerm}
+  placeholder="Search videos..."
+/>
         <div className="header-box">
   <div>
     <h1>Manage Videos</h1>
@@ -140,7 +168,7 @@ const handleAddVideo = async () => {
     &nbsp; Add Video
   </button>
 </div>
-        {courses.map((course) => (
+        {visibleCourses.map((course) => (
           <div key={course.id} style={{ marginBottom: '40px', background: '#fff', padding: '20px', borderRadius: '15px' }}>
             <h2 style={{ color: "#4318ff", marginBottom: "15px" }}>
   {course.title}
@@ -155,10 +183,45 @@ const handleAddVideo = async () => {
   <th>Actions</th>
 </tr>
 </thead>
-              <tbody>
-  {videos
-    .filter((video) => video.course_id === course.id)
-    .map((video) => (
+
+          <tbody>
+
+{videos
+.filter((video) => {
+  if (video.course_id !== course.id) return false;
+
+  const search = searchTerm.toLowerCase();
+
+return (
+  String(video.title || "").toLowerCase().includes(search) ||
+  String(video.duration || "").toLowerCase().includes(search) ||
+  String(video.video_url || "").toLowerCase().includes(search) ||
+  String(video.module_number || "").toLowerCase().includes(search)
+);
+}).length === 0 ? (
+
+<tr>
+  <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
+    No videos found.
+  </td>
+</tr>
+
+) : (
+videos
+.filter((video) => {
+  if (video.course_id !== course.id) return false;
+
+  const search = searchTerm.toLowerCase();
+
+  return (
+    video.title?.toLowerCase().includes(search) ||
+    String(video.duration || "").toLowerCase().includes(search) ||
+    video.video_url?.toLowerCase().includes(search) ||
+    String(video.module_number).includes(search)
+  );
+})
+.map((video) => (
+   
       <tr key={video.id}>
         <td>
           {editVideoId === video.id ? (
@@ -265,8 +328,9 @@ const handleAddVideo = async () => {
   )}
 </td>
         
-      </tr>
-    ))}
+            </tr>
+    ))
+)}
 </tbody>
             </table>
           </div>
@@ -288,7 +352,7 @@ const handleAddVideo = async () => {
       >
         <option value="">Select Course</option>
 
-        {courses.map((course) => (
+        {visibleCourses.map((course) => (
           <option
             key={course.id}
             value={course.id}

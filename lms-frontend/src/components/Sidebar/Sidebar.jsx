@@ -35,6 +35,7 @@ function Sidebar({ isAdmin }) {
     { name: "Manage Courses", path: "/admin/manage-courses", icon: <FaBookOpen /> }, 
     { name: "Manage Videos", path: "/admin/videos", icon: <FaPlus /> },
     { name: "Manage Students", path: "/admin/students", icon: <FaUsers /> },
+    { name: "Live Classes", path: "/admin/live-classes", icon: <FaCalendarAlt /> },
   ];
 
   const menuItems = isAdmin ? adminMenu : studentMenu;

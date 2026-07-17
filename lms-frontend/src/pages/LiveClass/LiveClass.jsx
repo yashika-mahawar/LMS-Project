@@ -7,6 +7,7 @@ import axios from "axios";
 const LiveClass = () => {
   const [selectedCourse, setSelectedCourse] = useState('All');
 const [liveSchedule, setLiveSchedule] = useState([]);
+const [enrolledCourses, setEnrolledCourses] = useState([]);
 const [loading, setLoading] = useState(true);
 useEffect(() => {
   const fetchLiveClasses = async () => {
@@ -18,7 +19,18 @@ useEffect(() => {
       console.log("Live Classes:", response.data);
 
       setLiveSchedule(response.data.data || []);
+      const enrolledRes = await axios.get(
+  "http://localhost:5000/api/enrollments/my-courses",
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  }
+);
 
+setEnrolledCourses(
+  enrolledRes.data.data.map((item) => item.courses.title)
+);
     } catch (error) {
       console.error("Live class fetch error:", error);
     } finally {
@@ -29,12 +41,19 @@ useEffect(() => {
   fetchLiveClasses();
 }, []);
 
-  const filteredSchedule = selectedCourse === 'All' 
-    ? liveSchedule 
-    : liveSchedule.filter(item => item.course === selectedCourse);
+  const filteredSchedule =
+  selectedCourse === "All"
+    ? liveSchedule
+    : liveSchedule.filter(
+        (item) => item.courses?.title === selectedCourse
+      );
+
 
   // Poore 10 course types short aliases filter navigation list ke liye
-  const coursePillsList = ['All', 'B.Tech Computer Science', 'MBA', 'BCA', 'MCA', 'M.Tech', 'LLB', 'BA', 'B.Com', 'Diploma in IT', 'Cyber Security'];
+const coursePillsList = [
+  "All",
+  ...enrolledCourses,
+];
 
   return (
     <div className="live-layout-wrapper">
@@ -87,8 +106,15 @@ useEffect(() => {
                     <FaCalendarAlt style={{ color: '#4f46e5' }} /> <span>{session.date}</span>
                   </div>
                   <div className="meta-info-row">
-                    <FaClock style={{ color: '#16a34a' }} /> <span>{session.time}</span>
-                  </div>
+  <FaClock style={{ color: '#16a34a' }} /> 
+  <span>
+    {new Date(`1970-01-01T${session.time}`).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true
+    })}
+  </span>
+</div>
                 </div>
 
                 <div className="action-btn-zone">

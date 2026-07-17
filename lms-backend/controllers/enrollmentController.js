@@ -1,5 +1,5 @@
 import { supabase } from "../config/supabase.js";
-
+import { createNotification } from "../utils/createNotification.js";
 export async function enrollCourse(req, res) {
   try {
     const user_id = req.user.id;
@@ -31,7 +31,22 @@ export async function enrollCourse(req, res) {
         console.error("Insert Error:", error);
         return res.status(500).json({ message: error.message });
     }
+const { data: course } = await supabase
+  .from("courses")
+  .select("title")
+  .eq("id", course_id)
+  .single();
 
+const { data: student } = await supabase
+  .from("users")
+  .select("full_name")
+  .eq("id", user_id)
+  .single();
+
+await createNotification(
+  "admin",
+  `${student.full_name} enrolled in ${course.title}`
+);
     res.status(201).json({ message: "Course enrolled successfully", enrollment: data });
     
   } catch (err) {

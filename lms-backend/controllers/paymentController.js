@@ -1,6 +1,7 @@
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import dotenv from "dotenv";
+import { createNotification } from "../utils/createNotification.js";
 import { supabase } from "../config/supabase.js";
 dotenv.config();
 
@@ -78,7 +79,16 @@ export const verifyPayment = async (req, res) => {
     .select("title")
     .eq("id", course_id)
     .single();
+const { data: user } = await supabase
+  .from("users")
+  .select("full_name")
+  .eq("id", user_id)
+  .single();
 
+await createNotification(
+  "admin",
+  `${user.full_name} completed payment for ${course.title}`
+);
   if (courseError) {
     throw courseError;
   }

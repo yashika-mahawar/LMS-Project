@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
-
+import axios from "axios";
 function Header() {
   const [showProfileBox, setShowProfileBox] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+const [notifications, setNotifications] = useState([]);
 const [user, setUser] = useState(() => {
   const savedUser = localStorage.getItem("user");
 
@@ -32,6 +35,29 @@ useEffect(() => {
     window.removeEventListener("userUpdated", updateUser);
   };
 }, []);
+const fetchNotifications = async () => {
+  try {
+
+    const savedUser = JSON.parse(
+      localStorage.getItem("user")
+    );
+
+    if (!savedUser?.id) return;
+
+    const res = await axios.get(
+      `http://localhost:5000/api/notifications/${savedUser.id}`
+    );
+
+setNotifications(res.data.notifications || []);
+  } catch (err) {
+
+    console.log(err);
+
+  }
+};
+useEffect(() => {
+  fetchNotifications();
+}, []);
 
   return (
     <header className="dashboard-header" style={{ position: "relative" }}>
@@ -41,10 +67,77 @@ useEffect(() => {
       </div>
 
       <div className="header-right">
-        <div className="notification" title="Notifications">
-          <FaBell className="bell-icon" />
-          <span className="badge">3</span>
-        </div>
+        <div
+  className="notification"
+  title="Notifications"
+  style={{ position: "relative" }}
+>
+
+  <FaBell
+    className="bell-icon"
+    onClick={() =>
+      setShowNotifications(!showNotifications)
+    }
+    style={{ cursor: "pointer" }}
+  />
+
+  <span className="badge">
+  {notifications?.length || 0}
+</span>
+
+  {showNotifications && (
+
+    <div
+      style={{
+        position: "absolute",
+        top: "40px",
+        right: "0",
+        width: "300px",
+        background: "#fff",
+        borderRadius: "10px",
+        padding: "15px",
+        boxShadow: "0 5px 15px rgba(0,0,0,.2)",
+        zIndex: 999,
+      }}
+    >
+
+      <h4>Notifications</h4>
+
+{notifications?.length === 0 ? (
+        <p>No Notifications</p>
+
+      ) : (
+
+notifications?.map((note) => (
+          <div
+            key={note.id}
+            style={{
+              borderBottom: "1px solid #eee",
+              padding: "10px 0",
+            }}
+          >
+
+            <p>{note.message}</p>
+
+            <small>
+
+              {new Date(
+                note.created_at
+              ).toLocaleDateString()}
+
+            </small>
+
+          </div>
+
+        ))
+
+      )}
+
+    </div>
+
+  )}
+
+</div>
 
         {/* Profile Segment */}
         <div 

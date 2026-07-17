@@ -3,11 +3,11 @@ import axios from "axios";
 import Sidebar from '../../components/Sidebar/Sidebar';
 import { FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
 import './AdminDashboard.css';
-
+import AdminHeader from "../../components/AdminHeader/AdminHeader";
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
 const [loading, setLoading] = useState(true);
-
+const [searchTerm, setSearchTerm] = useState("");
   const [editId, setEditId] = useState(null);
   const [tempData, setTempData] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -105,17 +105,34 @@ const handleAddCourse = async () => {
     console.log("Add Error:", err);
   }
 };
+const filteredCourses = courses.filter((course) => {
+  const search = searchTerm.toLowerCase();
+
+  return (
+    course.title?.toLowerCase().includes(search) ||
+    course.description?.toLowerCase().includes(search) ||
+    course.duration?.toLowerCase().includes(search) ||
+    String(course.fee).includes(search)
+  );
+});
   return (
     <div className="admin-wrapper">
       <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
       
       <main className="admin-main">
-        <div className="header-box">
+
+  <AdminHeader
+    searchTerm={searchTerm}
+    setSearchTerm={setSearchTerm}
+    placeholder="Search courses..."
+  />
+
+  <div className="header-box">
   <div>
     <h1>Manage Courses</h1>
     <p>
-      Total active programs: <strong>{courses.length}</strong>
-    </p>
+  Total active programs: <strong>{filteredCourses.length}</strong>
+</p>
   </div>
 
   <button
@@ -137,44 +154,112 @@ const handleAddCourse = async () => {
             </tr>
           </thead>
           <tbody>
-            {courses.map((course) => (
-              <tr key={course.id}>
-                {editId === course.id ? (
-                  <>
-                    <td><input value={tempData.title} onChange={(e) => setTempData({...tempData, title: e.target.value})} /></td>
-                    <td>
-  <input
-    value={tempData.description}
-    onChange={(e) =>
-      setTempData({
-        ...tempData,
-        description: e.target.value,
-      })
-    }
-  />
-</td>
-                    <td><input value={tempData.duration} onChange={(e) => setTempData({...tempData, duration: e.target.value})} /></td>
-                    <td><input value={tempData.fee} onChange={(e) => setTempData({...tempData, fee: e.target.value})} /></td>
-                    <td>
-                      <button onClick={saveEdit} className="icon-btn save"><FaSave color="green" /></button>
-                      <button onClick={() => setEditId(null)} className="icon-btn cancel"><FaTimes color="gray" /></button>
-                    </td>
-                  </>
-                ) : (
-                  <>
-                    <td>{course.title}</td>
-                    <td>{course.description}</td>
-                    <td>{course.duration}</td>
-                    <td>{course.fee}</td>
-                    <td>
-                      <button onClick={() => startEdit(course)} className="icon-btn edit"><FaEdit color="#4318ff" /></button>
-                      <button onClick={() => deleteCourse(course.id)} className="icon-btn trash"><FaTrash color="red" /></button>
-                    </td>
-                  </>
-                )}
-              </tr>
-            ))}
-          </tbody>
+
+  {filteredCourses.length === 0 ? (
+
+    <tr>
+      <td colSpan="5" style={{ textAlign: "center", padding: "30px" }}>
+        No courses found.
+      </td>
+    </tr>
+
+  ) : (
+
+    filteredCourses.map((course) => (
+      <tr key={course.id}>
+        {editId === course.id ? (
+          <>
+            <td>
+              <input
+                value={tempData.title}
+                onChange={(e) =>
+                  setTempData({
+                    ...tempData,
+                    title: e.target.value,
+                  })
+                }
+              />
+            </td>
+
+            <td>
+              <input
+                value={tempData.description}
+                onChange={(e) =>
+                  setTempData({
+                    ...tempData,
+                    description: e.target.value,
+                  })
+                }
+              />
+            </td>
+
+            <td>
+              <input
+                value={tempData.duration}
+                onChange={(e) =>
+                  setTempData({
+                    ...tempData,
+                    duration: e.target.value,
+                  })
+                }
+              />
+            </td>
+
+            <td>
+              <input
+                value={tempData.fee}
+                onChange={(e) =>
+                  setTempData({
+                    ...tempData,
+                    fee: e.target.value,
+                  })
+                }
+              />
+            </td>
+
+            <td>
+              <button onClick={saveEdit} className="icon-btn save">
+                <FaSave color="green" />
+              </button>
+
+              <button
+                onClick={() => setEditId(null)}
+                className="icon-btn cancel"
+              >
+                <FaTimes color="gray" />
+              </button>
+            </td>
+          </>
+        ) : (
+          <>
+            <td>{course.title}</td>
+            <td>{course.description}</td>
+            <td>{course.duration}</td>
+            <td>{course.fee}</td>
+
+            <td>
+              <button
+                onClick={() => startEdit(course)}
+                className="icon-btn edit"
+              >
+                <FaEdit color="#4318ff" />
+              </button>
+
+              <button
+                onClick={() => deleteCourse(course.id)}
+                className="icon-btn trash"
+              >
+                <FaTrash color="red" />
+              </button>
+            </td>
+          </>
+        )}
+      </tr>
+    ))
+
+  )}
+
+</tbody>
         </table>
         {showModal && (
   <div className="modal-overlay">

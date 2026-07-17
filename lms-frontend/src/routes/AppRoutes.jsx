@@ -28,7 +28,7 @@ import AdminDashboard from "../pages/Admin/AdminDashboard";
 import ManageCourses from "../pages/Admin/ManageCourses";
 import ManageVideos from "../pages/Admin/ManageVideos";
 import ManageStudents from "../pages/Admin/ManageStudents";
-
+import AdminLiveClasses from "../pages/Admin/AdminLiveClasses";
 function AppRoutes() {
   return (
     <Routes>
@@ -93,6 +93,14 @@ function AppRoutes() {
   element={
     <AdminProtectedRoute>
       <ManageStudents />
+    </AdminProtectedRoute>
+  }
+/>
+<Route
+  path="/admin/live-classes"
+  element={
+    <AdminProtectedRoute>
+      <AdminLiveClasses />
     </AdminProtectedRoute>
   }
 />

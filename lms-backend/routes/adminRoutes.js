@@ -7,6 +7,9 @@ import {
   addCourse,
   updateCourse,
   deleteCourse,
+  getRecentEnrollments,
+  getRecentStudents,
+  getNotifications,
 } from "../controllers/adminController.js";
 const router = express.Router();
 
@@ -21,4 +24,7 @@ router.post("/courses", addCourse);
 router.put("/courses/:id", updateCourse);
 
 router.delete("/courses/:id", deleteCourse);
+router.get("/recent-enrollments", getRecentEnrollments);
+router.get("/recent-students", getRecentStudents);
+router.get("/notifications", getNotifications);
 export default router;
