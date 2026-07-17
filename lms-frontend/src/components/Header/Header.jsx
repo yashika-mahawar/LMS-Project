@@ -11,7 +11,7 @@ const [user, setUser] = useState(() => {
     ? JSON.parse(savedUser)
     : {
         full_name: "Guest",
-        profileImage: "",
+        profile_image: "",
       };
 });
 
@@ -54,9 +54,17 @@ useEffect(() => {
           style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "10px" }}
         >
           <div className="profile-avatar-wrapper" style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden' }}>
-            {user.profileImage ? (
-              <img src={user.profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            ) : (
+            {user.profile_image ? (
+  <img 
+    src={user.profile_image} 
+    alt="Profile" 
+    style={{ 
+      width: '100%', 
+      height: '100%', 
+      objectFit: 'cover' 
+    }} 
+  />
+) : (
               <FaUserCircle className="avatar-svg" size={40} color="#cbd5e1" />
             )}
           </div>

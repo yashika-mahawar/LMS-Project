@@ -130,7 +130,15 @@ if (activeIdx < modules.length - 1) {
   const currentModule = modules[activeIdx];
 
   if (!currentModule) return <div>Loading or No Data Available...</div>;
+const getEmbedUrl = (url) => {
+  const videoId = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([^?&]+)/
+  )?.[1];
 
+  return videoId
+    ? `https://www.youtube-nocookie.com/embed/${videoId}`
+    : "";
+};
   return (
     <div
       style={{
@@ -189,14 +197,14 @@ if (activeIdx < modules.length - 1) {
               <div className="video-container">
                 <div className="player-wrapper">
                   <iframe
-  src={currentModule.video_url.replace("watch?v=", "embed/") + "?enablejsapi=1"}
+  src={`${getEmbedUrl(currentModule.video_url)}?rel=0`}
   width="100%"
   height="100%"
   title="Course Video"
   frameBorder="0"
-  allow="autoplay; encrypted-media" 
+  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
   allowFullScreen
-></iframe>
+/>
                 </div>
               </div>
               <div

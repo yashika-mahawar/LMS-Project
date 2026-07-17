@@ -1,11 +1,21 @@
 import express from "express";
 const router = express.Router();
+import {
+  getAllVideos,
+  getVideosByCourse,
+  addVideo,
+    deleteVideo,
+      updateVideo,
+} from "../controllers/videoController.js";
+router.get("/", getAllVideos);
 
-// Controller import karo (.js extension ke sath)
-import { getAllVideos, getVideosByCourse } from "../controllers/videoController.js";
+router.get("/:course_id", getVideosByCourse);
 
-// Routes define karo
-router.get("/", getAllVideos); // Route: /api/videos/
-router.get("/:course_id", getVideosByCourse); // Route: /api/videos/:course_id
+router.post("/", addVideo);
+router.put("/:id", updateVideo);
+router.delete("/:id", deleteVideo);
+
+
+
 
 export default router;
