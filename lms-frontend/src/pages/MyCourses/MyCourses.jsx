@@ -130,11 +130,14 @@ if (user) {
                  const progress = progressMap[course.id];
                 if (!course) return null;
 
-                const imagePath = course.image_url
-                  ? course.image_url.startsWith("/")
-                    ? course.image_url
-                    : `/${course.image_url}`
-                  : "/Course1.jpg";
+                const imagePath =
+  !course.image_url
+    ? "/Course1.jpg"
+    : course.image_url.startsWith("http")
+    ? course.image_url
+    : course.image_url.startsWith("/")
+    ? course.image_url
+    : `/${course.image_url}`;
 
                 return (
                   <div
