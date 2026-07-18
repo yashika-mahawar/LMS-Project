@@ -167,3 +167,30 @@
     flex: 1 1 100%;
   }
 }
+.search-box{
+position:relative;
+}
+
+.search-dropdown{
+position:absolute;
+top:55px;
+left:0;
+width:100%;
+background:white;
+border-radius:10px;
+box-shadow:0 8px 20px rgba(0,0,0,.15);
+overflow:hidden;
+z-index:999;
+}
+
+.search-item{
+padding:12px 15px;
+cursor:pointer;
+transition:.3s;
+border-bottom:1px solid #eee;
+}
+
+.search-item:hover{
+background:#eef2ff;
+color:#4f46e5;
+}

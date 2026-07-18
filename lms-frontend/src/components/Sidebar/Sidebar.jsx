@@ -33,7 +33,13 @@ function Sidebar({ isAdmin }) {
     { name: "Dashboard", path: "/admin", icon: <FaHome /> },
     // 🔥 Yahan path update kar diya hai:
     { name: "Manage Courses", path: "/admin/manage-courses", icon: <FaBookOpen /> }, 
+
     { name: "Manage Videos", path: "/admin/videos", icon: <FaPlus /> },
+    {
+    name: "Manage Assignments",
+    path: "/admin/assignments",
+    icon: <FaFileAlt />,
+  },
     { name: "Manage Students", path: "/admin/students", icon: <FaUsers /> },
     { name: "Live Classes", path: "/admin/live-classes", icon: <FaCalendarAlt /> },
   ];

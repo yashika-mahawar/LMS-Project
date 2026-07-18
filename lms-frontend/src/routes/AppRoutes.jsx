@@ -29,6 +29,7 @@ import ManageCourses from "../pages/Admin/ManageCourses";
 import ManageVideos from "../pages/Admin/ManageVideos";
 import ManageStudents from "../pages/Admin/ManageStudents";
 import AdminLiveClasses from "../pages/Admin/AdminLiveClasses";
+import AdminAssignments from "../pages/Admin/AdminAssignments";
 function AppRoutes() {
   return (
     <Routes>
@@ -101,6 +102,14 @@ function AppRoutes() {
   element={
     <AdminProtectedRoute>
       <AdminLiveClasses />
+    </AdminProtectedRoute>
+  }
+/>
+<Route
+  path="/admin/assignments"
+  element={
+    <AdminProtectedRoute>
+      <AdminAssignments />
     </AdminProtectedRoute>
   }
 />

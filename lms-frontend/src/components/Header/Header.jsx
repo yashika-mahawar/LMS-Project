@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 function Header() {
+  const navigate = useNavigate();
+  const [search, setSearch] = useState("");
+const [results, setResults] = useState([]);
   const [showProfileBox, setShowProfileBox] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
 
@@ -35,6 +39,14 @@ useEffect(() => {
     window.removeEventListener("userUpdated", updateUser);
   };
 }, []);
+const searchItems = [
+  { name: "Dashboard", path: "/dashboard" },
+  { name: "My Courses", path: "/my-courses" },
+  { name: "Profile", path: "/profile" },
+  { name: "Assignments", path: "/assignments" },
+  { name: "Progress", path: "/progress" },
+  { name: "Live Classes", path: "/live-classes" },
+];
 const fetchNotifications = async () => {
   try {
 
@@ -56,14 +68,53 @@ setNotifications(res.data.notifications || []);
   }
 };
 useEffect(() => {
+  if (search.trim() === "") {
+    setResults([]);
+    return;
+  }
+
+  const filtered = searchItems.filter((item) =>
+    item.name.toLowerCase().includes(search.toLowerCase())
+  );
+
+  setResults(filtered);
+}, [search]);
+useEffect(() => {
   fetchNotifications();
 }, []);
-
   return (
     <header className="dashboard-header" style={{ position: "relative" }}>
       <div className="search-box">
         <FaSearch className="search-icon" />
-        <input type="text" placeholder="Search your courses, assignments, updates..." />
+        <input
+  type="text"
+  placeholder="Search your courses, assignments, updates..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+/>
+{results.length > 0 && (
+  <div className="search-dropdown">
+
+    {results.map((item) => (
+
+      <div
+        key={item.path}
+        className="search-item"
+        onClick={() => {
+          navigate(item.path);
+          setSearch("");
+          setResults([]);
+        }}
+      >
+
+        {item.name}
+
+      </div>
+
+    ))}
+
+  </div>
+)}
       </div>
 
       <div className="header-right">

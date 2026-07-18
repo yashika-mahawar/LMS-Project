@@ -5,7 +5,7 @@ import WelcomeCard from "./WelcomeCard/WelcomeCard";
 import StatsCards from "./StatsCards/StatsCards";
 import Activity from "./Activity/Activity";
 import Notifications from "./Notifications/Notifications";
-
+import { useNavigate } from "react-router-dom";
 // 2. Global Shared Components
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar"; 
@@ -14,6 +14,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import "./Dashboard.css";
 
 const Dashboard = () => {
+    const navigate = useNavigate();
   const [userName, setUserName] = useState("Student");
   const [ongoingCourses, setOngoingCourses] = useState([]);
   useEffect(() => {
@@ -140,17 +141,18 @@ const Dashboard = () => {
                 My Learning
               </h2>
               <button
-                style={{
-                  background: "none",
-                  border: "none",
-                  color: "#4f46e5",
-                  fontWeight: "600",
-                  cursor: "pointer",
-                  fontSize: "0.9rem",
-                }}
-              >
-                View All
-              </button>
+  onClick={() => navigate("/my-courses")}
+  style={{
+    background: "none",
+    border: "none",
+    color: "#4f46e5",
+    fontWeight: "600",
+    cursor: "pointer",
+    fontSize: "0.9rem",
+  }}
+>
+  View All →
+</button>
             </div>
 
             <div

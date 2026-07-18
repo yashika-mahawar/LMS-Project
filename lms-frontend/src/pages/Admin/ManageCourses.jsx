@@ -237,21 +237,36 @@ const filteredCourses = courses.filter((course) => {
             <td>{course.duration}</td>
             <td>{course.fee}</td>
 
-            <td>
-              <button
-                onClick={() => startEdit(course)}
-                className="icon-btn edit"
-              >
-                <FaEdit color="#4318ff" />
-              </button>
+           <td>
 
-              <button
-                onClick={() => deleteCourse(course.id)}
-                className="icon-btn trash"
-              >
-                <FaTrash color="red" />
-              </button>
-            </td>
+  <div
+    className="actions"
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      gap: "12px",
+    }}
+  >
+
+    <button
+      onClick={() => startEdit(course)}
+      className="icon-btn edit"
+    >
+      <FaEdit color="#4318ff" />
+    </button>
+
+
+    <button
+      onClick={() => deleteCourse(course.id)}
+      className="icon-btn trash"
+    >
+      <FaTrash color="red" />
+    </button>
+
+  </div>
+
+</td>
           </>
         )}
       </tr>

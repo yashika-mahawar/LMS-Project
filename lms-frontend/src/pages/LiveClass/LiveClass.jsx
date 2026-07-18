@@ -13,13 +13,12 @@ useEffect(() => {
   const fetchLiveClasses = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/live-classes"
-      );
+  "http://localhost:5000/api/live-classes"
+);
 
-      console.log("Live Classes:", response.data);
+console.log("Live Classes:", response.data);
 
-      setLiveSchedule(response.data.data || []);
-      const enrolledRes = await axios.get(
+const enrolledRes = await axios.get(
   "http://localhost:5000/api/enrollments/my-courses",
   {
     headers: {
@@ -28,9 +27,17 @@ useEffect(() => {
   }
 );
 
-setEnrolledCourses(
-  enrolledRes.data.data.map((item) => item.courses.title)
+const enrolledTitles = enrolledRes.data.data.map(
+  (item) => item.courses.title
 );
+
+setEnrolledCourses(enrolledTitles);
+
+const filteredClasses = (response.data.data || []).filter(
+  (live) => enrolledTitles.includes(live.courses?.title)
+);
+
+setLiveSchedule(filteredClasses);
     } catch (error) {
       console.error("Live class fetch error:", error);
     } finally {
@@ -48,6 +55,25 @@ setEnrolledCourses(
         (item) => item.courses?.title === selectedCourse
       );
 
+const getClassStatus = (session) => {
+  const now = new Date();
+
+  // date + time ko ek Date object banao
+  const classStart = new Date(`${session.date}T${session.time}`);
+
+  // 1 hour duration maan rahe hain
+  const classEnd = new Date(classStart.getTime() + 60 * 60 * 1000);
+
+  if (now < classStart) {
+    return "Upcoming";
+  }
+
+  if (now >= classStart && now <= classEnd) {
+    return "Live";
+  }
+
+  return "Completed";
+};
 
   // Poore 10 course types short aliases filter navigation list ke liye
 const coursePillsList = [
@@ -87,8 +113,12 @@ const coursePillsList = [
           </div>
              {loading && <h3>Loading Live Classes...</h3>}
           <div className="schedule-cards-list">
-            {filteredSchedule.map((session) => (
-              <div key={session.id} className="schedule-card-item">
+  {filteredSchedule.map((session) => {
+
+    const status = getClassStatus(session);
+
+    return (
+      <div key={session.id} className="schedule-card-item">
                 
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                   <span className="course-badge-tag">
@@ -118,25 +148,26 @@ const coursePillsList = [
                 </div>
 
                 <div className="action-btn-zone">
-                  {session.status === 'Live' ? (
-                    <a href={session.meet_link} target="_blank" rel="noreferrer">
-                      <button className="live-btn-broadcast">
-                        <FaVideo /> Join Broadcast Now
-                      </button>
-                    </a>
-                  ) : session.status === 'Upcoming' ? (
-                    <button disabled className="upcoming-btn-disabled">
-                      Class Scheduled
-                    </button>
-                  ) : (
-                    <button disabled className="completed-btn-disabled">
-                      <FaCheckCircle /> Session Concluded
-                    </button>
-                  )}
-                </div>
+  {status === "Live" ? (
+    <a href={session.meet_link} target="_blank" rel="noreferrer">
+      <button className="live-btn-broadcast">
+        <FaVideo /> Join Now
+      </button>
+    </a>
+  ) : status === "Upcoming" ? (
+    <button disabled className="upcoming-btn-disabled">
+      Class Scheduled
+    </button>
+  ) : (
+    <button disabled className="completed-btn-disabled">
+      <FaCheckCircle /> Session Concluded
+    </button>
+  )}
+</div>
 
               </div>
-            ))}
+                        );
+          })}
           </div>
 
         </main>
