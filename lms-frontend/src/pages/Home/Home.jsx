@@ -10,7 +10,9 @@ function Home() {
       <Navbar />
       <Hero />
       <CourseCard />
-      <FacultyCard />
+      <div id="faculty">
+   <FacultyCard />
+</div>
       <Footer />
     </>
   );

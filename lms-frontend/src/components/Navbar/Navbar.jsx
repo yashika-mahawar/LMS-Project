@@ -1,8 +1,51 @@
 import "./Navbar.css";
 import { Link } from "react-router-dom";
 import logo from "../../assets/icfailogo.png";
-
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 function Navbar() {
+
+const [search,setSearch] = useState("");
+const navigate = useNavigate();
+
+
+const handleSearch = (e)=>{
+
+ if(e.key === "Enter"){
+
+   const value = search.toLowerCase();
+
+   if(value.includes("course")){
+
+      navigate("/");
+      setTimeout(()=>{
+        document.getElementById("courses")?.scrollIntoView({
+          behavior:"smooth"
+        });
+      },100);
+
+   }
+
+   else if(value.includes("faculty")){
+
+      navigate("/");
+      setTimeout(()=>{
+        document.getElementById("faculty")?.scrollIntoView({
+          behavior:"smooth"
+        });
+      },100);
+
+   }
+
+   else if(value.includes("about")){
+
+      navigate("/about");
+
+   }
+
+ }
+
+};
   return (
     <header className="navbar">
       <div className="logo-section">
@@ -11,7 +54,14 @@ function Navbar() {
 
       {/* Search Bar */}
       <div className="search-container">
-        <input type="text" placeholder="Search..." className="search-input" />
+        <input
+  type="text"
+  placeholder="Search..."
+  className="search-input"
+  value={search}
+  onChange={(e)=>setSearch(e.target.value)}
+  onKeyDown={handleSearch}
+/>
       </div>
 
      <nav>
