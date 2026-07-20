@@ -21,9 +21,9 @@ const Dashboard = () => {
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  if (user && user.name) {
-    setUserName(user.name);
-  }
+  if (user) {
+  setUserName(user.full_name || user.name || "Student");
+}
 
 
   const fetchProgress = async () => {
@@ -113,7 +113,7 @@ const Dashboard = () => {
         >
           {/* Welcome Section */}
           <section style={{ marginBottom: "24px" }}>
-            <WelcomeCard />
+            <WelcomeCard isAdmin={false} />
           </section>
 
           {/* Stats Section */}
