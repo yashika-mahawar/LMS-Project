@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "./CourseCard.css";
-
+import API from "../../services/api"; // path apne folder ke hisaab se dekh lena
 function CourseCard() {
   const [courses, setCourses] = useState([]);
   useEffect(() => {
@@ -11,11 +11,8 @@ function CourseCard() {
 
 const fetchCourses = async () => {
   try {
-    const res = await axios.get(
-  `${import.meta.env.VITE_API_URL}/api/courses/courses`
-);
+    const res = await API.get("/api/courses/courses"); // ya jo bhi endpoint ho
     setCourses(res.data.courses);
-
   } catch (err) {
     console.log(err);
   }
