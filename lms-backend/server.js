@@ -21,8 +21,12 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
+// CORS configuration
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: [
+    "http://localhost:5173",
+    "https://lms-frontend-xmbw.onrender.com" // <--- Yeh tumhare frontend ka live Render URL hai
+  ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
