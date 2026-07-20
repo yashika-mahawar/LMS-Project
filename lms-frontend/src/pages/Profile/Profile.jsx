@@ -4,6 +4,7 @@ import EditProfile from './EditProfile';
 import ChangePassword from './ChangePassword';
 import { FaUserCircle, FaShieldAlt, FaCamera, FaPlus, FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa';
 import axios from "axios";
+import API from "../../services/api"; // (path apne folder structure ke hisaab se check kar lena)
 const Profile = () => {
   const [activeTab, setActiveTab] = useState('profile');
   const [skills, setSkills] = useState(['React.js', 'UI/UX Design', 'Project Management']);
@@ -79,12 +80,11 @@ console.log("IMAGE:", imageUrl.substring(0,50));
 
       // Save image URL in database
       await axios.put(
-        `http://localhost:5000/api/auth/update-profile/${user.id}`,
-        {
-          profile_image: imageUrl
-        }
-      );
-
+  `${import.meta.env.VITE_API_URL}/api/auth/update-profile/${user.id}`,
+  {
+    profile_image: imageUrl
+  }
+);
 
       console.log("Profile image saved");
 
