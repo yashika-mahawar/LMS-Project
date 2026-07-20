@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { FaSearch, FaBell, FaUserCircle } from "react-icons/fa";
 import axios from "axios";
+import API from "../../services/api";
 import { useNavigate } from "react-router-dom";
 function Header() {
   const navigate = useNavigate();
@@ -56,9 +57,9 @@ const fetchNotifications = async () => {
 
     if (!savedUser?.id) return;
 
-    const res = await axios.get(
-      `http://localhost:5000/api/notifications/${savedUser.id}`
-    );
+    const res = await API.get(
+  `/notifications/${savedUser.id}`
+);
 
 setNotifications(res.data.notifications || []);
   } catch (err) {

@@ -6,6 +6,7 @@ import './AdminDashboard.css';
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API from "../../services/api";
 import {
   ResponsiveContainer,
   BarChart,
@@ -59,9 +60,7 @@ useEffect(() => {
 }, []);
 const fetchDashboard = async () => {
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/admin/dashboard"
-    );
+    const res = await API.get("/admin/dashboard");
 
     setStatsData(res.data);
   } catch (err) {
@@ -70,10 +69,7 @@ const fetchDashboard = async () => {
 };
 const fetchRecentEnrollments = async () => {
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/admin/recent-enrollments"
-    );
-    
+    const res = await API.get("/admin/recent-enrollments");
 
     setRecentEnrollments(res.data.enrollments);
   } catch (err) {

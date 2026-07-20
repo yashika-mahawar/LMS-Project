@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./AdminHeader.css";
 import axios from "axios";
+import API from "../../services/api";
 import { useEffect, useState } from "react";
 
 function AdminHeader({
@@ -24,9 +25,7 @@ useEffect(() => {
 
     try {
 
-      const res = await axios.get(
-        "http://localhost:5000/api/admin/notifications"
-      );
+      const res = await API.get("/admin/notifications");
 
       setNotifications(res.data.notifications);
 

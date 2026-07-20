@@ -9,6 +9,7 @@ import {
   FaTimes,
 } from "react-icons/fa";
 import axios from "axios";
+import API from "../../services/api";
 import "./AdminDashboard.css";
 
 const AdminAssignments = () => {
@@ -34,9 +35,7 @@ const AdminAssignments = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/courses/courses"
-      );
+      const res = await API.get("/courses/courses");
 
       setCourses(res.data.courses);
     } catch (err) {
@@ -46,9 +45,7 @@ const AdminAssignments = () => {
 
   const fetchAssignments = async () => {
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/assignments"
-    );
+    const res = await API.get("/assignments");
 
     setAssignments(res.data.data || []);
 
@@ -60,10 +57,10 @@ const AdminAssignments = () => {
 
   const handleAddAssignment = async () => {
     try {
-      await axios.post(
-        "http://localhost:5000/api/assignments",
-        assignmentForm
-      );
+      await API.post(
+  "/assignments",
+  assignmentForm
+);
 
       fetchAssignments();
 
@@ -98,10 +95,10 @@ const AdminAssignments = () => {
 
     try {
 
-      await axios.put(
-        `http://localhost:5000/api/assignments/${editAssignmentId}`,
-        assignmentForm
-      );
+      await API.put(
+  `/assignments/${editAssignmentId}`,
+  assignmentForm
+);
 
       fetchAssignments();
 
@@ -119,9 +116,9 @@ const AdminAssignments = () => {
 
     try {
 
-      await axios.delete(
-        `http://localhost:5000/api/assignments/${id}`
-      );
+      await API.delete(
+  `/assignments/${id}`
+);
 
       fetchAssignments();
 
