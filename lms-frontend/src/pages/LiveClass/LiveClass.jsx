@@ -4,6 +4,7 @@ import Header from '../../components/Header/Header';
 import { FaVideo, FaCalendarAlt, FaClock, FaChalkboardTeacher, FaCheckCircle } from 'react-icons/fa';
 import './LiveClass.css';
 import axios from "axios";
+import API from "../../services/api";
 const LiveClass = () => {
   const [selectedCourse, setSelectedCourse] = useState('All');
 const [liveSchedule, setLiveSchedule] = useState([]);
@@ -12,14 +13,14 @@ const [loading, setLoading] = useState(true);
 useEffect(() => {
   const fetchLiveClasses = async () => {
     try {
-      const response = await axios.get(
-  "http://localhost:5000/api/live-classes"
-);
+const response = await axios.get(
+  `${import.meta.env.VITE_API_URL}/api/live-classes`
+);     
 
 console.log("Live Classes:", response.data);
 
 const enrolledRes = await axios.get(
-  "http://localhost:5000/api/enrollments/my-courses",
+  `${import.meta.env.VITE_API_URL}/api/enrollments/my-courses`,
   {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
