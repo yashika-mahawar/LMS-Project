@@ -6,11 +6,11 @@ import { FaBookReader, FaClock } from "react-icons/fa";
 import "./MyCourses.css";
 // MyCourses.jsx ke upar
 import axios from 'axios'; 
-
+import API from "../../services/api";
 // ... useEffect ke andar
 const fetchEnrolledCourses = async () => {
   try {
-    const response = await axios.get("http://localhost:5000/api/enrollments/my-courses", {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/enrollments/my-courses`, {
     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
 });
     console.log("Backend se aaya data:", response.data); // Yeh check karo
@@ -29,7 +29,7 @@ useEffect(() => {
   const fetchCourses = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:5000/api/enrollments/my-courses", {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/enrollments/my-courses`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       
@@ -43,8 +43,8 @@ useEffect(() => {
 
 if (user) {
   const progressRes = await axios.get(
-    `http://localhost:5000/api/progress/user/${user.id}`
-  );
+  `${import.meta.env.VITE_API_URL}/api/progress/user/${user.id}`
+);
 
   const map = {};
 
