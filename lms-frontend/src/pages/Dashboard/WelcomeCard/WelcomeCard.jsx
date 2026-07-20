@@ -1,55 +1,50 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
+import API from "../../services/api"; // Central API service
 import './WelcomeCard.css';
-import API from "../../services/api";
 
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState("Student");
   const [lastCourse, setLastCourse] = useState(null);
+
   useEffect(() => {
-  const fetchLastCourse = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-
-if (!user) return;
-
-if (!isAdmin) {
-  setUserName(user.full_name || user.name || "Student");
-}
-
-if (isAdmin) return;
-
-      const response = await API.get(
-  `/api/progress/user/${user.id}`
-);
-
-const courses = response.data.courses;
-
-
-      if (courses && courses.length > 0) {
-        setLastCourse(courses[0]);
-      }
-
-    } catch (error) {
-      console.error("Welcome Card Error:", error);
+    const user = JSON.parse(localStorage.getItem("user"));
+    
+    if (user) {
+      // LocalStorage se dynamically user ka naam set kar rahe hain
+      setUserName(user.full_name || user.name || "Student");
     }
-  };
 
-  fetchLastCourse();
-}, [isAdmin]);
+    if (!user || isAdmin) return;
+
+    const fetchLastCourse = async () => {
+      try {
+        // Central API use ki progress fetch karne ke liye (No localhost!)
+        const response = await API.get(`/api/progress/user/${user.id}`);
+        const courses = response.data.courses;
+
+        if (courses && courses.length > 0) {
+          setLastCourse(courses[0]);
+        }
+      } catch (error) {
+        console.error("Welcome Card Error:", error);
+      }
+    };
+
+    fetchLastCourse();
+  }, [isAdmin]);
+
   const handleAction = () => {
     if (isAdmin) {
-      // Yahan path update kar diya hai taaki route match ho sake
       navigate("/admin/manage-courses");
     } else {
       if (lastCourse) {
-  navigate(`/learning/${lastCourse.courseId}`);
-} else {
-  alert("Please enroll in a course first!");
-}
+        navigate(`/learning/${lastCourse.courseId}`);
+      } else {
+        alert("Please enroll in a course first!");
+      }
     }
   };
 
@@ -57,11 +52,11 @@ const courses = response.data.courses;
     <div className={`welcome-card-banner ${isAdmin ? 'admin-theme' : ''}`}>
       <div className="welcome-text-content">
         <h1>
-  {isAdmin 
-    ? "👋 Welcome Back, Admin" 
-    : `👋 Welcome Back, ${userName}`
-  }
-</h1>
+          {isAdmin 
+            ? "👋 Welcome Back, Admin" 
+            : `👋 Welcome Back, ${userName}`
+          }
+        </h1>
         <p>
           {isAdmin 
             ? "Manage your university portal, student data, and course curriculum." 
