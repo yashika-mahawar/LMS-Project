@@ -57,9 +57,7 @@ const fetchNotifications = async () => {
 
     if (!savedUser?.id) return;
 
-    const res = await API.get(
-  `/notifications/${savedUser.id}`
-);
+    const res = await API.get( `/api/notifications/${savedUser.id}`);
 
 setNotifications(res.data.notifications || []);
   } catch (err) {
