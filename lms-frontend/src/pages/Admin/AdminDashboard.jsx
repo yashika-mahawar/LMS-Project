@@ -101,7 +101,7 @@ const fetchRecentEnrollments = async () => {
     color: "#ffb547",
   },
   {
-    title: "Total Enrollments",
+    title: "Total Course Enrollments",
     value: statsData.enrollments,
     icon: <FaChartLine />,
     color: "#ef4444",
@@ -178,7 +178,7 @@ radius={[8,8,0,0]}
 
 <section className="recent-students">
 
-<h3>Recent Enrollments</h3>
+<h3>Recent Course Enrollments</h3>
 
 <table>
 

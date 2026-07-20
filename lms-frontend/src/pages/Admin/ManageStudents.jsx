@@ -137,17 +137,19 @@ useEffect(() => {
       </td>
 
       <td>
-        <button className="glow-btn edit">
-          <FaEdit />
-        </button>
+  <div className="actions">
+    <button className="glow-btn edit">
+      <FaEdit />
+    </button>
 
-        <button 
-          className="glow-btn delete"
-          onClick={() => handleDelete(s.id)}
-        >
-          <FaTrash />
-        </button>
-      </td>
+    <button
+      className="glow-btn delete"
+      onClick={() => handleDelete(s.id)}
+    >
+      <FaTrash />
+    </button>
+  </div>
+</td>
 
    </tr>
  ))

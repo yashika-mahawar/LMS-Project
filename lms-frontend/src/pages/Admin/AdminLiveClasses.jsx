@@ -164,40 +164,42 @@ return (
   </tr>
 </thead>
 
-<tbody>
+  <tbody>
   {liveClasses.map((item) => (
     <tr key={item.id}>
       <td>{item.topic}</td>
+
       <td>{item.faculty}</td>
+
       <td>{item.courses?.title}</td>
+
       <td>{item.date}</td>
+
       <td>
-  {new Date(`1970-01-01T${item.time}`)
-    .toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true
-    })}
-</td>
-
-      <td className="action-buttons">
-
-        <button
-          className="edit-btn"
-          onClick={() => handleEdit(item)}
-        >
-          <FaEdit /> 
-        </button>
-
-        <button
-          className="delete-btn"
-          onClick={() => handleDelete(item.id)}
-        >
-          <FaTrash /> 
-        </button>
-
+        {new Date(`1970-01-01T${item.time}`).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
+        })}
       </td>
 
+      <td>
+        <div className="actions">
+          <button
+            className="glow-btn edit"
+            onClick={() => handleEdit(item)}
+          >
+            <FaEdit />
+          </button>
+
+          <button
+            className="glow-btn delete"
+            onClick={() => handleDelete(item.id)}
+          >
+            <FaTrash />
+          </button>
+        </div>
+      </td>
     </tr>
   ))}
 </tbody>

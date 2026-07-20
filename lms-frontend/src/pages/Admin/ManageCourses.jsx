@@ -1,13 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import {
+  FaEdit,
+  FaTrash,
+  FaSave,
+  FaTimes,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa";
 import axios from "axios";
 import Sidebar from '../../components/Sidebar/Sidebar';
-import { FaEdit, FaTrash, FaSave, FaTimes } from 'react-icons/fa';
 import './AdminDashboard.css';
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 const ManageCourses = () => {
   const [courses, setCourses] = useState([]);
 const [loading, setLoading] = useState(true);
 const [searchTerm, setSearchTerm] = useState("");
+const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 5;
   const [editId, setEditId] = useState(null);
   const [tempData, setTempData] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +30,11 @@ const [newCourse, setNewCourse] = useState({
 });
 useEffect(() => {
   fetchCourses();
+  setCurrentPage(1);
 }, []);
+useEffect(() => {
+  setCurrentPage(1);
+}, [searchTerm]);
 const fetchCourses = async () => {
   try {
     const res = await axios.get(
@@ -115,6 +128,11 @@ const filteredCourses = courses.filter((course) => {
     String(course.fee).includes(search)
   );
 });
+
+const currentData = useMemo(() => {
+  const start = (currentPage - 1) * itemsPerPage;
+  return filteredCourses.slice(start, start + itemsPerPage);
+}, [filteredCourses, currentPage]);
   return (
     <div className="admin-wrapper">
       <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
@@ -165,7 +183,7 @@ const filteredCourses = courses.filter((course) => {
 
   ) : (
 
-    filteredCourses.map((course) => (
+    currentData.map((course) => (
       <tr key={course.id}>
         {editId === course.id ? (
           <>
@@ -276,6 +294,31 @@ const filteredCourses = courses.filter((course) => {
 
 </tbody>
         </table>
+        <div className="modern-pagination">
+  <button
+    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+    disabled={currentPage === 1}
+  >
+    <FaChevronLeft />
+  </button>
+
+  <span className="page-info">
+    Page {currentPage}
+  </span>
+
+  <button
+    onClick={() =>
+      setCurrentPage((p) =>
+        p < Math.ceil(filteredCourses.length / itemsPerPage)
+          ? p + 1
+          : p
+      )
+    }
+    disabled={currentPage >= Math.ceil(filteredCourses.length / itemsPerPage)}
+  >
+    <FaChevronRight />
+  </button>
+</div>
         {showModal && (
   <div className="modal-overlay">
     <div className="course-modal">

@@ -12,7 +12,7 @@ const Contact = () => {
           
           <div className="contact-details">
             <div className="contact-item"><FaMapMarkerAlt className="icon" /> <span>Jaipur, Rajasthan</span></div>
-            <div className="contact-item"><FaEnvelope className="icon" /> <span>admissions@icfai.edu</span></div>
+            <div className="contact-item"><FaEnvelope className="icon" /> <span>admissions@icfaiuniversity.edu</span></div>
             <div className="contact-item"><FaPhone className="icon" /> <span>+91 98765 43210</span></div>
           </div>
         </div>

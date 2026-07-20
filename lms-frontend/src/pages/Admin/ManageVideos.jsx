@@ -13,6 +13,9 @@ import axios from "axios";
 const ManageVideos = () => {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+const itemsPerPage = 5;
+  const [selectedCourse, setSelectedCourse] = useState("all");
 const [videos, setVideos] = useState([]);
   const [edit, setEdit] = useState({ courseId: null, moduleIdx: null });
   const [tempUrl, setTempUrl] = useState("");
@@ -31,7 +34,25 @@ const [videoForm, setVideoForm] = useState({
   fetchCourses();
   fetchVideos();
 }, []);
+useEffect(() => {
+  setCurrentPage(1);
+}, [selectedCourse, searchTerm]);
+useEffect(() => {
+  const search = searchTerm.trim().toLowerCase();
 
+  if (!search) {
+    setSelectedCourse("all");
+    return;
+  }
+
+  const matchedCourse = courses.find((course) =>
+    course.title.toLowerCase().includes(search)
+  );
+
+  if (matchedCourse) {
+    setSelectedCourse(matchedCourse.id);
+  }
+}, [searchTerm, courses]);
 const fetchCourses = async () => {
   try {
     const res = await axios.get("http://localhost:5000/api/courses/courses");
@@ -122,27 +143,31 @@ const handleAddVideo = async () => {
     console.log(err);
   }
 };
-const visibleCourses = courses.filter((course) => {
 
-  // agar search empty hai to saare courses dikhao
-  if (!searchTerm.trim()) return true;
-
+const filteredVideos = videos.filter((video) => {
   const search = searchTerm.toLowerCase();
 
-  return videos.some((video) => {
+  // Is video ka course nikaalo
+  const course = courses.find((c) => c.id === video.course_id);
 
-    if (video.course_id !== course.id) return false;
+  const matchCourse =
+    selectedCourse === "all"
+      ? true
+      : video.course_id === selectedCourse;
 
-    return (
-      String(video.title || "").toLowerCase().includes(search) ||
-      String(video.duration || "").toLowerCase().includes(search) ||
-      String(video.video_url || "").toLowerCase().includes(search) ||
-      String(video.module_number || "").toLowerCase().includes(search)
-    );
+  const matchSearch =
+    video.title?.toLowerCase().includes(search) ||
+    video.video_url?.toLowerCase().includes(search) ||
+    String(video.duration || "").toLowerCase().includes(search) ||
+    String(video.module_number).includes(search) ||
+    course?.title?.toLowerCase().includes(search);
 
-  });
-
+  return matchCourse && matchSearch;
 });
+const currentVideos = filteredVideos.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
   return (
     <div className="admin-wrapper">
       <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
@@ -168,12 +193,36 @@ const visibleCourses = courses.filter((course) => {
     &nbsp; Add Video
   </button>
 </div>
-        {visibleCourses.map((course) => (
-          <div key={course.id} style={{ marginBottom: '40px', background: '#fff', padding: '20px', borderRadius: '15px' }}>
-            <h2 style={{ color: "#4318ff", marginBottom: "15px" }}>
-  {course.title}
-</h2>
-            <table className="course-table">
+<div className="course-tabs">
+
+  <button
+    className={selectedCourse === "all" ? "active-tab" : ""}
+    onClick={() => setSelectedCourse("all")}
+  >
+    All
+  </button>
+
+  {courses.map((course) => (
+    <button
+      key={course.id}
+      className={selectedCourse === course.id ? "active-tab" : ""}
+      onClick={() => setSelectedCourse(course.id)}
+    >
+      {course.title}
+    </button>
+  ))}
+
+</div>
+        <div
+  style={{
+    marginBottom: "40px",
+    background: "#fff",
+    padding: "20px",
+    borderRadius: "15px",
+  }}
+>
+  <table className="course-table">      
+            
               <thead>
 <tr>
   <th>Title</th>
@@ -183,45 +232,13 @@ const visibleCourses = courses.filter((course) => {
   <th>Actions</th>
 </tr>
 </thead>
-
-          <tbody>
-
-{videos
-.filter((video) => {
-  if (video.course_id !== course.id) return false;
-
-  const search = searchTerm.toLowerCase();
-
-return (
-  String(video.title || "").toLowerCase().includes(search) ||
-  String(video.duration || "").toLowerCase().includes(search) ||
-  String(video.video_url || "").toLowerCase().includes(search) ||
-  String(video.module_number || "").toLowerCase().includes(search)
-);
-}).length === 0 ? (
-
-<tr>
-  <td colSpan="5" style={{ textAlign: "center", padding: "20px" }}>
-    No videos found.
-  </td>
-</tr>
-
-) : (
-videos
-.filter((video) => {
-  if (video.course_id !== course.id) return false;
-
-  const search = searchTerm.toLowerCase();
-
-  return (
-    video.title?.toLowerCase().includes(search) ||
-    String(video.duration || "").toLowerCase().includes(search) ||
-    video.video_url?.toLowerCase().includes(search) ||
-    String(video.module_number).includes(search)
-  );
-})
-.map((video) => (
-   
+<tbody>
+  {currentVideos.length === 0 ? (
+    <tr>
+      <td colSpan="5">No videos found.</td>
+    </tr>
+  ) : (
+    currentVideos.map((video) => (
       <tr key={video.id}>
         <td>
           {editVideoId === video.id ? (
@@ -286,55 +303,80 @@ videos
             video.module_number
           )}
         </td>
-          <td>
-  {editVideoId === video.id ? (
-    <>
-      <button
-        className="icon-btn"
-        onClick={saveEdit}
-      >
-        <FaSave color="green" />
-      </button>
 
-      <button
-        className="icon-btn"
-        onClick={() => {
-          setEditVideoId(null);
-          setEdit({
-            courseId: null,
-            moduleIdx: null,
-          });
-        }}
-      >
-        <FaTimes color="gray" />
-      </button>
-    </>
-  ) : (
-    <>
-      <button
-        className="icon-btn"
-        onClick={() => startEdit(course.id, video)}
-      >
-        <FaEdit color="#4318ff" />
-      </button>
+        <td>
+          {editVideoId === video.id ? (
+            <>
+              <button className="icon-btn" onClick={saveEdit}>
+                <FaSave color="green" />
+              </button>
 
-      <button
-        className="icon-btn"
-        onClick={() => deleteVideo(video.id)}
-      >
-        <FaTrash color="red" />
-      </button>
-    </>
-  )}
-</td>
-        
-            </tr>
+              <button
+                className="icon-btn"
+                onClick={() => {
+                  setEditVideoId(null);
+                  setEdit({
+                    courseId: null,
+                    moduleIdx: null,
+                  });
+                }}
+              >
+                <FaTimes color="gray" />
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                className="icon-btn"
+                onClick={() => startEdit(video.course_id, video)}
+              >
+                <FaEdit color="#4318ff" />
+              </button>
+
+              <button
+                className="icon-btn"
+                onClick={() => deleteVideo(video.id)}
+              >
+                <FaTrash color="red" />
+              </button>
+            </>
+          )}
+        </td>
+      </tr>
     ))
-)}
+  )}
 </tbody>
             </table>
+            <div className="modern-pagination">
+  <button
+    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+    disabled={currentPage === 1}
+  >
+    ◀
+  </button>
+
+  <span className="page-info">
+    Page {currentPage}
+  </span>
+
+  <button
+    onClick={() =>
+      setCurrentPage((p) =>
+        p < Math.ceil(filteredVideos.length / itemsPerPage)
+          ? p + 1
+          : p
+      )
+    }
+    disabled={
+      currentPage >=
+      Math.ceil(filteredVideos.length / itemsPerPage)
+    }
+  >
+    ▶
+  </button>
+</div>
           </div>
-        ))}
+        
         {showModal && (
   <div className="modal-overlay">
     <div className="course-modal">
@@ -351,8 +393,7 @@ videos
         }
       >
         <option value="">Select Course</option>
-
-        {visibleCourses.map((course) => (
+{courses.map((course) => (
           <option
             key={course.id}
             value={course.id}
