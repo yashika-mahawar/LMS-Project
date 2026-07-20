@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import API from "../../services/api"; // (path apne folder structure ke hisaab se check kar lena)
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,12 +15,12 @@ function Login() {
 
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      {
-        email,
-        password,
-      }
-    );
+  `${import.meta.env.VITE_API_URL}/api/auth/login`,
+  {
+    email,
+    password,
+  }
+);
 
     if (res.data.success) {
 
