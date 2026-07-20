@@ -10,6 +10,7 @@ import {
 import './AdminDashboard.css';
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import axios from "axios";
+import API from "../../services/api";
 const ManageVideos = () => {
   const [courses, setCourses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,7 +56,7 @@ useEffect(() => {
 }, [searchTerm, courses]);
 const fetchCourses = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/courses/courses");
+    const res = await API.get("/api/courses/courses");
     setCourses(res.data.courses);
   } catch (err) {
     console.log(err);
@@ -64,7 +65,7 @@ const fetchCourses = async () => {
 
 const fetchVideos = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/videos");
+    const res = await API.get("/api/videos");
     setVideos(res.data);
   } catch (err) {
     console.log(err);
@@ -88,10 +89,10 @@ const fetchVideos = async () => {
 };
   const saveEdit = async () => {
   try {
-    await axios.put(
-      `http://localhost:5000/api/videos/${editVideoId}`,
-      videoForm
-    );
+    await API.put(
+  `/api/videos/${editVideoId}`,
+  videoForm
+);
 
     fetchVideos();
 
@@ -110,9 +111,7 @@ const deleteVideo = async (id) => {
   if (!window.confirm("Delete this video?")) return;
 
   try {
-    await axios.delete(
-      `http://localhost:5000/api/videos/${id}`
-    );
+    await API.delete(`/api/videos/${id}`);
 
     fetchVideos();
 
@@ -122,10 +121,10 @@ const deleteVideo = async (id) => {
 };
 const handleAddVideo = async () => {
   try {
-    await axios.post(
-      "http://localhost:5000/api/videos",
-      videoForm
-    );
+    await API.post(
+  "/api/videos",
+  videoForm
+);
 
     fetchVideos();
 

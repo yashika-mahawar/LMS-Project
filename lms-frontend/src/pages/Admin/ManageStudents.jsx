@@ -3,6 +3,7 @@ import Sidebar from '../../components/Sidebar/Sidebar';
 import { FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './AdminDashboard.css';
 import axios from "axios";
+import API from "../../services/api";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 const ManageStudents = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -12,9 +13,9 @@ const ManageStudents = () => {
 const [loading, setLoading] = useState(true);
 const fetchStudents = async () => {
   try {
-    const response = await axios.get(
-      "http://localhost:5000/api/admin/students"
-    );
+    const response = await API.get(
+  "/api/admin/students"
+);
 
     setStudents(response.data.students);
 
@@ -34,9 +35,9 @@ const handleDelete = async (id) => {
 
   try {
 
-    await axios.delete(
-      `http://localhost:5000/api/admin/students/${id}`
-    );
+    await API.delete(
+  `/api/admin/students/${id}`
+);
 
     // refresh data
     fetchStudents();

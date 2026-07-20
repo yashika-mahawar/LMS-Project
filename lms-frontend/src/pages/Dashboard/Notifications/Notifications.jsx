@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Notifications.css";
+import API from "../../../services/api";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -10,8 +11,8 @@ const Notifications = () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        const res = await axios.get(
-  `http://localhost:5000/api/notifications/${user.id}`
+        const res = await API.get(
+  `/api/notifications/${user.id}`
 );
 setNotifications(res.data.notifications || []);
       } catch (err) {

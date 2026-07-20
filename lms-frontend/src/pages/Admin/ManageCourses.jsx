@@ -8,6 +8,7 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import axios from "axios";
+import API from "../../services/api";
 import Sidebar from '../../components/Sidebar/Sidebar';
 import './AdminDashboard.css';
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
@@ -37,10 +38,9 @@ useEffect(() => {
 }, [searchTerm]);
 const fetchCourses = async () => {
   try {
-    const res = await axios.get(
-      "http://localhost:5000/api/admin/courses"
-    );
-
+   const res = await API.get(
+  "/api/admin/courses"
+);
     setCourses(res.data.courses);
     setLoading(false);
 
@@ -57,8 +57,8 @@ const fetchCourses = async () => {
   const saveEdit = async () => {
   try {
 
-    await axios.put(
-      `http://localhost:5000/api/admin/courses/${editId}`,
+    await API.put(
+  `/api/admin/courses/${editId}`,
       {
         title: tempData.title,
             description: tempData.description,
@@ -82,10 +82,9 @@ const fetchCourses = async () => {
 
   try {
 
-    await axios.delete(
-      `http://localhost:5000/api/admin/courses/${id}`
-    );
-
+    await API.delete(
+  `/api/admin/courses/${id}`
+);
     fetchCourses();
 
   } catch (err) {
@@ -97,10 +96,10 @@ const fetchCourses = async () => {
 };
 const handleAddCourse = async () => {
   try {
-    await axios.post(
-      "http://localhost:5000/api/admin/courses",
-      newCourse
-    );
+    await API.post(
+  "/api/admin/courses",
+  newCourse
+);
 
     setShowModal(false);
 

@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from '../../../components/Sidebar/Sidebar';
 import Header from '../../../components/Header/Header';
 import { useEffect, useState } from "react";
+import API from "../../../services/api";
 const Progress = () => {
   const [progressData, setProgressData] = useState(null);
   useEffect(() => {
@@ -11,11 +12,11 @@ const Progress = () => {
     if (!user) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/progress/user/${user.id}`
-      );
+      const response = await API.get(
+  `/api/progress/user/${user.id}`
+);
 
-      const result = await response.json();
+const result = response.data;
 
       if (result.success) {
         setProgressData(result);

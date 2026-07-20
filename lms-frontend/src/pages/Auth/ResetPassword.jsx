@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
-
+import API from "../../services/api";
 function ResetPassword() {
   const [newPassword, setNewPassword] = useState("");
   const location = useLocation();
@@ -14,7 +14,13 @@ function ResetPassword() {
   const handleReset = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/auth/reset-password", { email, newPassword });
+      await API.post(
+  "/api/auth/reset-password",
+  {
+    email,
+    newPassword,
+  }
+);
       alert("Password Reset Successfully!");
       navigate("/login");
     } catch (err) { alert("Failed to reset password."); }

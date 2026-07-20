@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import API from "../../services/api";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import {
@@ -32,7 +33,9 @@ useEffect(() => {
 
 const fetchCourses = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/courses/courses");
+    const res = await API.get(
+  "/api/courses/courses"
+);
     setCourses(res.data.courses);
   } catch (err) {
     console.log(err);
@@ -41,7 +44,9 @@ const fetchCourses = async () => {
 
 const fetchLiveClasses = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/live-classes");
+    const res = await API.get(
+  "/api/live-classes"
+);
     setLiveClasses(res.data.data);
   } catch (err) {
     console.log(err);
@@ -53,17 +58,17 @@ const handleSaveLiveClass = async () => {
 
     if (editingId) {
 
-      await axios.put(
-        `http://localhost:5000/api/live-classes/${editingId}`,
-        liveForm
-      );
+      await API.put(
+  `/api/live-classes/${editingId}`,
+  liveForm
+);
 
     } else {
 
-      await axios.post(
-        "http://localhost:5000/api/live-classes",
-        liveForm
-      );
+      await API.post(
+  "/api/live-classes",
+  liveForm
+);
 
     }
 
@@ -106,9 +111,9 @@ const handleDelete = async (id) => {
 
   try {
 
-    await axios.delete(
-      `http://localhost:5000/api/live-classes/${id}`
-    );
+    await API.delete(
+  `/api/live-classes/${id}`
+);
 
     fetchLiveClasses();
 
@@ -143,7 +148,20 @@ return (
 
         <button
           className="glow-btn"
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+  setEditingId(null);
+
+  setLiveForm({
+    topic: "",
+    faculty: "",
+    date: "",
+    time: "",
+    meet_link: "",
+    course_id: "",
+  });
+
+  setShowModal(false);
+}}
         >
           <FaPlus />
           &nbsp; Add Live Class

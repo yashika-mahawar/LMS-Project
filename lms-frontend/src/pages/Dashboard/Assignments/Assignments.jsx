@@ -3,7 +3,7 @@ import Sidebar from "../../../components/Sidebar/Sidebar";
 import Header from "../../../components/Header/Header";
 import { FaClipboardList, FaClock } from "react-icons/fa";
 import axios from "axios";
-
+import API from "../../../services/api";
 const Assignments = () => {
   const [filteredAssignments, setFilteredAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -14,27 +14,20 @@ const Assignments = () => {
 
   const fetchAssignments = async () => {
     try {
-      const token = localStorage.getItem("token");
 
       // Student enrolled courses
-      const enrolledRes = await axios.get(
-        "http://localhost:5000/api/enrollments/my-courses",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const enrolledRes = await API.get(
+  "/api/enrollments/my-courses"
+);
 
       const enrolledTitles = enrolledRes.data.data.map(
         (item) => item.courses.title
       );
 
       // All assignments
-      const assignmentRes = await axios.get(
-        "http://localhost:5000/api/assignments"
-      );
-
+      const assignmentRes = await API.get(
+  "/api/assignments"
+);
       // Sirf enrolled course ke assignments
       const filtered = (assignmentRes.data.data || []).filter((item) =>
         enrolledTitles.includes(item.courses?.title)

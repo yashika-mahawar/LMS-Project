@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Activity.css";
-
+import API from "../../../services/api";
 const Activity = () => {
   const [activities, setActivities] = useState([]);
 
@@ -10,9 +10,9 @@ const Activity = () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        const res = await axios.get(
-          `http://localhost:5000/api/activities/${user.id}`
-        );
+        const res = await API.get(
+  `/api/activities/${user.id}`
+);
 
         setActivities(res.data.data || []);
       } catch (err) {

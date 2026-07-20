@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
-
+import API from "../../services/api";
 function VerifyOTP() {
   const [otp, setOtp] = useState("");
   const location = useLocation();
@@ -12,7 +12,10 @@ function VerifyOTP() {
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/verify-otp", { email, otp });
+      const res = await API.post(
+  "/api/auth/verify-otp",
+  { email, otp }
+);
       if (res.data.success) navigate("/reset-password", { state: { email } });
     } catch (err) { alert("Invalid or Expired OTP!"); }
   };

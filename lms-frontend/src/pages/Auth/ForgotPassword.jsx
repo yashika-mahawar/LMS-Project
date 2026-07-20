@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Auth.css";
-
+import API from "../../services/api";
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
@@ -12,7 +12,7 @@ function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await axios.post("http://localhost:5000/api/auth/forgot-password", { email });
+      import API from "../../services/api";
       alert("OTP sent to your email!");
       navigate("/verify-otp", { state: { email } });
     } catch (err) { alert("Email not found!"); }

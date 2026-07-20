@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUserShield, FaArrowRight } from "react-icons/fa";
 import "./AdminLogin.css";
 import axios from "axios";
+import API from "../../services/api";
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -13,13 +14,13 @@ const AdminLogin = () => {
   e.preventDefault();
 
   try {
-    const res = await axios.post(
-      "http://localhost:5000/api/auth/login",
-      {
-        email,
-        password,
-      }
-    );
+    const res = await API.post(
+  "/api/auth/login",
+  {
+    email,
+    password,
+  }
+);
 
     if (res.data.user.role !== "admin") {
       setError("Access Denied! Admin Only.");
