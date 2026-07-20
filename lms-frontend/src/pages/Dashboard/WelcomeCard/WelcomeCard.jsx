@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
 import './WelcomeCard.css';
-import API from "../../services/api";
-
+import API from "../../../services/api";
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
   const [userName, setUserName] = useState("");
