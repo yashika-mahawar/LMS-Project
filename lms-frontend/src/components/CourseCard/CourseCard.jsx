@@ -12,9 +12,8 @@ function CourseCard() {
 const fetchCourses = async () => {
   try {
     const res = await axios.get(
-      "http://localhost:5000/api/courses/courses"
-    );
-
+  `${import.meta.env.VITE_API_URL}/api/courses/courses`
+);
     setCourses(res.data.courses);
 
   } catch (err) {

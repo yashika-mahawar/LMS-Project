@@ -7,11 +7,10 @@ export const enrollCourse = async (course) => {
     
     // 🔥 Yahan backend API call zaroori hai
     const response = await axios.post(
-      "http://localhost:5000/api/enrollments/enroll", 
-      { course_id: course.id }, // Yahan 'course.id' bhej rahe ho
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
+  `${import.meta.env.VITE_API_URL}/api/enrollments/enroll`,
+  { course_id: course.id },
+  { headers: { Authorization: `Bearer ${token}` } }
+);
     console.log("Database Enrollment Success:", response.data);
 
     // Database success hone ke baad hi localStorage update karo

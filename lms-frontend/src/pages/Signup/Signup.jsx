@@ -34,17 +34,16 @@ function Signup() {
 
   try {
     const res = await axios.post(
-      "http://localhost:5000/api/auth/register",
-      {
-        full_name: formData.name,
-        email: formData.email,
-          phone: formData.phone,
-        password: formData.password,
-        role: "student",
-          program: formData.program,
-      }
-      
-    );
+  `${import.meta.env.VITE_API_URL}/api/auth/register`,
+  {
+    full_name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    password: formData.password,
+    role: "student",
+    program: formData.program,
+  }
+);
     
     localStorage.setItem("token", res.data.token);
 
