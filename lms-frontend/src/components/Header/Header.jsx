@@ -82,6 +82,12 @@ useEffect(() => {
 }, [search]);
 useEffect(() => {
   fetchNotifications();
+
+  const interval = setInterval(() => {
+    fetchNotifications();
+  }, 5000);
+
+  return () => clearInterval(interval);
 }, []);
   return (
     <header className="dashboard-header" style={{ position: "relative" }}>
