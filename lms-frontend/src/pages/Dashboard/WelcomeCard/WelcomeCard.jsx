@@ -7,13 +7,20 @@ import API from "../../services/api";
 
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
+  const [userName, setUserName] = useState("");
   const [lastCourse, setLastCourse] = useState(null);
   useEffect(() => {
   const fetchLastCourse = async () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      if (!user || isAdmin) return;
+if (!user) return;
+
+if (!isAdmin) {
+  setUserName(user.full_name || user.name || "Student");
+}
+
+if (isAdmin) return;
 
       const response = await API.get(
   `/api/progress/user/${user.id}`
@@ -21,7 +28,6 @@ const WelcomeCard = ({ isAdmin }) => {
 
 const courses = response.data.courses;
 
-      const courses = response.data.courses;
 
       if (courses && courses.length > 0) {
         setLastCourse(courses[0]);
@@ -50,7 +56,12 @@ const courses = response.data.courses;
   return (
     <div className={`welcome-card-banner ${isAdmin ? 'admin-theme' : ''}`}>
       <div className="welcome-text-content">
-        <h1>{isAdmin ? "👋 Welcome Back, Admin" : "👋 Welcome Back, Yashika"}</h1>
+        <h1>
+  {isAdmin 
+    ? "👋 Welcome Back, Admin" 
+    : `👋 Welcome Back, ${userName}`
+  }
+</h1>
         <p>
           {isAdmin 
             ? "Manage your university portal, student data, and course curriculum." 
