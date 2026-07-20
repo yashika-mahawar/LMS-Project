@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 // 2. Global Shared Components
 import Header from "../../components/Header/Header";
 import Sidebar from "../../components/Sidebar/Sidebar"; 
-
+import API from "../../services/api";
 // 3. CSS Import
 import "./Dashboard.css";
 
@@ -36,10 +36,9 @@ const Dashboard = () => {
       }
 
 
-      const response = await axios.get(
-        `http://localhost:5000/api/progress/user/${user.id}`
-      );
-
+      const response = await API.get(
+  `/api/progress/user/${user.id}`
+);
 
       console.log("Dashboard Progress:", response.data);
 

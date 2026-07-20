@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./StatsCards.css";
-
+import API from "../../../services/api";
 const StatsCards = () => {
   const [statsData, setStatsData] = useState([]);
   useEffect(() => {
@@ -11,9 +11,9 @@ const StatsCards = () => {
 
       if (!user) return;
 
-      const response = await axios.get(
-        `http://localhost:5000/api/progress/user/${user.id}`
-      );
+      const response = await API.get(
+  `/api/progress/user/${user.id}`
+);
 
       const data = response.data;
 
