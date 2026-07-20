@@ -5,7 +5,16 @@ import './WelcomeCard.css';
 import API from "../../../services/api";
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState("");
+  const [userName, setUserName] = useState(() => {
+  const savedUser = localStorage.getItem("user");
+
+  if (savedUser) {
+    const user = JSON.parse(savedUser);
+    return user.full_name || "Student";
+  }
+
+  return "Student";
+});
   const [lastCourse, setLastCourse] = useState(null);
   useEffect(() => {
   const fetchLastCourse = async () => {
