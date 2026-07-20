@@ -12,7 +12,10 @@ function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      import API from "../../services/api";
+      await API.post(
+  "/api/auth/forgot-password",
+  { email }
+);
       alert("OTP sent to your email!");
       navigate("/verify-otp", { state: { email } });
     } catch (err) { alert("Email not found!"); }
