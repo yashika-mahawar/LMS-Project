@@ -141,16 +141,7 @@ if (!progressData) {
             ))}
           </div>
 
-          <div style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)', color: '#fff', padding: '32px', borderRadius: '16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <h3 style={{ margin: '0 0 6px 0', fontSize: '1.25rem', fontWeight: '700' }}>Great Academic Standings! 🌟</h3>
-              <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8' }}>You have maintained consistent attendance targets.</p>
-            </div>
-            <div style={{ background: 'rgba(255,255,255,0.1)', padding: '12px 20px', borderRadius: '10px' }}>
-              <p style={{ margin: 0, fontSize: '0.75rem', color: '#94a3b8', fontWeight: '600' }}>TOTAL CREDITS</p>
-              <p style={{ margin: 0, fontSize: '1.4rem', fontWeight: '800', color: '#38bdf8' }}>52 / 160</p>
-            </div>
-          </div>
+          
         </main>
       </div>
     </div>
