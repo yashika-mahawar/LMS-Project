@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
 import './WelcomeCard.css';
+import API from "../../services/api";
 
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
@@ -14,9 +15,11 @@ const WelcomeCard = ({ isAdmin }) => {
 
       if (!user || isAdmin) return;
 
-      const response = await axios.get(
-        `http://localhost:5000/api/progress/user/${user.id}`
-      );
+      const response = await API.get(
+  `/api/progress/user/${user.id}`
+);
+
+const courses = response.data.courses;
 
       const courses = response.data.courses;
 
