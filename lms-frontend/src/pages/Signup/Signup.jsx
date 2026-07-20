@@ -2,6 +2,7 @@ import "./Signup.css";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import API from "../../services/api"; // (path apne folder structure ke hisaab se check kar lena)
 function Signup() {
   const [formData, setFormData] = useState({
     name: "",
