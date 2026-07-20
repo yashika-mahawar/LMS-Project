@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Payment.css";
-
+import API from "../../services/api";
 function Payment() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -35,7 +35,7 @@ function Payment() {
 console.log("User:", user);
 console.log("Token:", token);
 const { data } = await axios.post(
-  "http://localhost:5000/api/payment/create-order",
+  `${import.meta.env.VITE_API_URL}/api/payment/create-order`,
   {
     amount: amount * 100,
   },
@@ -56,7 +56,7 @@ const { data } = await axios.post(
 handler: async (response) => {
   try {
     const verify = await axios.post(
-      "http://localhost:5000/api/payment/verify-payment",
+  `${import.meta.env.VITE_API_URL}/api/payment/verify-payment`,
       {
         razorpay_order_id: response.razorpay_order_id,
         razorpay_payment_id: response.razorpay_payment_id,
@@ -69,7 +69,8 @@ handler: async (response) => {
     if (verify.data.success) {
       // --- YAHAN HOGA ENROLLMENT ---
       // Ab hum database mein enrollment record banayenge
-      await axios.post("http://localhost:5000/api/enrollments/enroll", 
+      await axios.post(
+  `${import.meta.env.VITE_API_URL}/api/enrollments/enroll`, 
         { course_id: course.id }, // Yahan 'course.id' dynamic hai!
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
