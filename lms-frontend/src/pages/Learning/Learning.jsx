@@ -7,6 +7,7 @@ import { FaPlayCircle, FaCheckCircle, FaArrowLeft } from "react-icons/fa";
 import "./Learning.css";
 import { supabase } from "../../config/supabase.js";
 import axios from "axios";
+import API from "../../services/api";
 const Learning = () => {
   console.log("Learning Component Render ho raha hai!");
   const { id } = useParams();
@@ -60,12 +61,9 @@ const Learning = () => {
     if (!user || !id) return;
 
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/progress/${id}/${user.id}`
-      );
+      const response = await API.get(`/api/progress/${id}/${user.id}`);
 
-      const result = await response.json();
-
+     const result = response.data;
       if (result.success) {
         setProgress(result);
       }
@@ -96,20 +94,13 @@ if (!user) {
   console.log("SENDING DATA:", payload);
 
   try {
-    const response = await fetch("http://localhost:5000/api/progress/update", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const result = await response.json();
+    const response = await API.post("/api/progress/update", payload);
+    const result = response.data;
     console.log("SERVER RESPONSE:", result);
-    const progressResponse = await fetch(
-  `http://localhost:5000/api/progress/${id}/${user.id}`
+    const progressResponse = await API.get(
+  `/api/progress/${id}/${user.id}`
 );
-
-const progressData = await progressResponse.json();
-
+const progressData = progressResponse.data;
 if (progressData.success) {
   setProgress(progressData);
 }
