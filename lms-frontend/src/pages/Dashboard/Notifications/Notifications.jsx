@@ -12,7 +12,7 @@ const Notifications = () => {
         const user = JSON.parse(localStorage.getItem("user"));
 
         const res = await API.get(
-  `/notifications/${user.id}`
+  `/api/notifications/${user.id}`
 );
 setNotifications(res.data.notifications || []);
       } catch (err) {
