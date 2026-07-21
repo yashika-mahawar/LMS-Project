@@ -352,6 +352,86 @@ export const deleteCourse = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // Courses have dependent rows in several tables (videos, assignments,
+    // live_classes, enrollment) whose foreign keys block a plain delete.
+    // Remove those first, in dependency order, so the course can actually
+    // be deleted instead of failing with a foreign key constraint error.
+    const { data: videos, error: videosFetchError } = await supabase
+      .from("videos")
+      .select("id")
+      .eq("course_id", id);
+
+    if (videosFetchError) {
+      return res.status(500).json({
+        success: false,
+        error: videosFetchError.message,
+      });
+    }
+
+    const videoIds = (videos || []).map((v) => v.id);
+
+    if (videoIds.length > 0) {
+      const { error: progressError } = await supabase
+        .from("progress")
+        .delete()
+        .in("video_id", videoIds);
+
+      if (progressError) {
+        return res.status(500).json({
+          success: false,
+          error: progressError.message,
+        });
+      }
+    }
+
+    const { error: videosError } = await supabase
+      .from("videos")
+      .delete()
+      .eq("course_id", id);
+
+    if (videosError) {
+      return res.status(500).json({
+        success: false,
+        error: videosError.message,
+      });
+    }
+
+    const { error: assignmentsError } = await supabase
+      .from("assignments")
+      .delete()
+      .eq("course_id", id);
+
+    if (assignmentsError) {
+      return res.status(500).json({
+        success: false,
+        error: assignmentsError.message,
+      });
+    }
+
+    const { error: liveClassesError } = await supabase
+      .from("live_classes")
+      .delete()
+      .eq("course_id", id);
+
+    if (liveClassesError) {
+      return res.status(500).json({
+        success: false,
+        error: liveClassesError.message,
+      });
+    }
+
+    const { error: enrollmentError } = await supabase
+      .from("enrollment")
+      .delete()
+      .eq("course_id", id);
+
+    if (enrollmentError) {
+      return res.status(500).json({
+        success: false,
+        error: enrollmentError.message,
+      });
+    }
+
     const { error } = await supabase
       .from("courses")
       .delete()

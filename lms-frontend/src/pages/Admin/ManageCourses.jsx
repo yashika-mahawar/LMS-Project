@@ -89,6 +89,7 @@ const fetchCourses = async () => {
   } catch (err) {
 
     console.log(err);
+    alert(err.response?.data?.error || "Failed to delete course. Please try again.");
 
   }
 
