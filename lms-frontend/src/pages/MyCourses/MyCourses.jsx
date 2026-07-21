@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import Header from "../../components/Header/Header";
 import { Link } from "react-router-dom";
 import { FaBookReader, FaClock } from "react-icons/fa";
 import "./MyCourses.css";
@@ -67,53 +65,18 @@ if (user) {
 
 
   return (
-    <div
-      className="my-courses-wrapper"
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        background: "#f8fafc",
-      }}
-    >
-      <aside
+    <div className="my-courses-wrapper">
+      <h1
         style={{
-          width: "260px",
-          minWidth: "260px",
-          position: "sticky",
-          top: 0,
+          fontSize: "1.8rem",
+          fontWeight: "800",
+          marginBottom: "25px",
         }}
       >
-        <Sidebar />
-      </aside>
+        My Enrolled Courses
+      </h1>
 
-      <div
-        style={{
-          flexGrow: 1,
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <Header />
-
-        <main
-          style={{
-            padding: "32px",
-            maxWidth: "1200px",
-            width: "100%",
-            margin: "0 auto",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: "800",
-              marginBottom: "25px",
-            }}
-          >
-            My Enrolled Courses
-          </h1>
-
-          {loading ? (
+      {loading ? (
             <h3>Loading...</h3>
           ) : myEnrolledCourses.length === 0 ? (
             <h3>No courses enrolled yet!</h3>
@@ -231,8 +194,6 @@ if (user) {
               })}
             </div>
           )}
-        </main>
-      </div>
     </div>
   );
 }

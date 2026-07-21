@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import API from "../../services/api";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import {
   FaPlus,
@@ -121,14 +120,19 @@ const handleDelete = async (id) => {
     console.log(err);
   }
 };
+
+const filteredLiveClasses = liveClasses.filter((item) => {
+  const search = searchTerm.toLowerCase();
+
+  return (
+    item.topic?.toLowerCase().includes(search) ||
+    item.faculty?.toLowerCase().includes(search) ||
+    item.courses?.title?.toLowerCase().includes(search)
+  );
+});
+
 return (
-  <div className="admin-wrapper">
-
-    <div className="sidebar-container">
-      <Sidebar isAdmin={true} />
-    </div>
-
-    <main className="admin-main">
+  <div>
 
       <AdminHeader
         searchTerm={searchTerm}
@@ -160,7 +164,7 @@ return (
     course_id: "",
   });
 
-  setShowModal(false);
+  setShowModal(true);
 }}
         >
           <FaPlus />
@@ -183,7 +187,14 @@ return (
 </thead>
 
   <tbody>
-  {liveClasses.map((item) => (
+  {filteredLiveClasses.length === 0 ? (
+    <tr>
+      <td colSpan="6" style={{ textAlign: "center", padding: "20px" }}>
+        No Live Classes Found
+      </td>
+    </tr>
+  ) : (
+  filteredLiveClasses.map((item) => (
     <tr key={item.id}>
       <td>{item.topic}</td>
 
@@ -219,7 +230,8 @@ return (
         </div>
       </td>
     </tr>
-  ))}
+  ))
+  )}
 </tbody>
 
       </table>
@@ -337,7 +349,7 @@ return (
     course_id: "",
   });
 
-  setShowModal(true);
+  setShowModal(false);
 }}
               >
                 Cancel
@@ -350,8 +362,6 @@ return (
         </div>
 
       )}
-
-    </main>
 
   </div>
 );

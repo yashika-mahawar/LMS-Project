@@ -1,7 +1,24 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import "./Notifications.css";
 import API from "../../../services/api";
+
+const MAX_VISIBLE_NOTIFICATIONS = 5;
+
+const dedupeNotifications = (list) => {
+  const seen = new Set();
+  const unique = [];
+
+  for (const note of list) {
+    const key = note.message?.trim().toLowerCase();
+
+    if (seen.has(key)) continue;
+
+    seen.add(key);
+    unique.push(note);
+  }
+
+  return unique;
+};
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -14,7 +31,7 @@ const Notifications = () => {
         const res = await API.get(
   `/api/notifications/${user.id}`
 );
-setNotifications(res.data.notifications || []);
+setNotifications(dedupeNotifications(res.data.notifications || []).slice(0, MAX_VISIBLE_NOTIFICATIONS));
       } catch (err) {
         console.log(err);
       }

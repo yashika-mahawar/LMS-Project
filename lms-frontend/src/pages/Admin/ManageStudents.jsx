@@ -1,5 +1,4 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar/Sidebar';
 import { FaEdit, FaTrash, FaSearch, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import './AdminDashboard.css';
 import axios from "axios";
@@ -63,14 +62,11 @@ useEffect(() => {
   const currentData = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="admin-wrapper">
-      <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
-
-      <main className="admin-main">
+    <div>
 <AdminHeader
     searchTerm={searchTerm}
     setSearchTerm={setSearchTerm}
-/>      
+/>
    <div className="glass-header">
           <h1>Student Directory</h1>
         </div>
@@ -165,7 +161,6 @@ useEffect(() => {
           <span className="page-info">Page {currentPage}</span>
           <button onClick={() => setCurrentPage(p => p + 1)}><FaChevronRight /></button>
         </div>
-      </main>
     </div>
   );
 };

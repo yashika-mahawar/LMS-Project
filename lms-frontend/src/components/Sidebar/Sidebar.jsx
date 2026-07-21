@@ -11,7 +11,8 @@ import {
   FaUsers,
   FaPlus,
   FaFileAlt,
-  FaCalendarAlt
+  FaCalendarAlt,
+  FaChalkboardTeacher
 } from "react-icons/fa";
 
 function Sidebar({ isAdmin }) {
@@ -42,6 +43,7 @@ function Sidebar({ isAdmin }) {
   },
     { name: "Manage Students", path: "/admin/students", icon: <FaUsers /> },
     { name: "Live Classes", path: "/admin/live-classes", icon: <FaCalendarAlt /> },
+    { name: "Manage Faculty", path: "/admin/faculty", icon: <FaChalkboardTeacher /> },
   ];
 
   const menuItems = isAdmin ? adminMenu : studentMenu;

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from '../../components/Sidebar/Sidebar';
 import {
   FaEdit,
   FaSave,
@@ -168,9 +167,7 @@ const currentVideos = filteredVideos.slice(
   currentPage * itemsPerPage
 );
   return (
-    <div className="admin-wrapper">
-      <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
-      <main className="admin-main">
+    <div>
         <AdminHeader
   searchTerm={searchTerm}
   setSearchTerm={setSearchTerm}
@@ -471,7 +468,6 @@ const currentVideos = filteredVideos.slice(
     </div>
   </div>
 )}
-      </main>
     </div>
   );
 };

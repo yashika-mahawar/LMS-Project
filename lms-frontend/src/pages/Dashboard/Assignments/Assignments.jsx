@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../../components/Sidebar/Sidebar";
-import Header from "../../../components/Header/Header";
 import { FaClipboardList, FaClock } from "react-icons/fa";
 import axios from "axios";
 import API from "../../../services/api";
@@ -42,54 +40,25 @@ const Assignments = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        minHeight: "100vh",
-        background: "#f8fafc",
-      }}
-    >
-      <aside
+    <div>
+      <h1
         style={{
-          width: "260px",
-          minWidth: "260px",
+          marginBottom: "10px",
         }}
       >
-        <Sidebar />
-      </aside>
+        Academic Assignments
+      </h1>
 
-      <div
+      <p
         style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
+          color: "#64748b",
+          marginBottom: "30px",
         }}
       >
-        <Header />
+        Upload and track your continuous internal evaluations.
+      </p>
 
-        <main
-          style={{
-            padding: "40px",
-          }}
-        >
-          <h1
-            style={{
-              marginBottom: "10px",
-            }}
-          >
-            Academic Assignments
-          </h1>
-
-          <p
-            style={{
-              color: "#64748b",
-              marginBottom: "30px",
-            }}
-          >
-            Upload and track your continuous internal evaluations.
-          </p>
-
-          {loading ? (
+      {loading ? (
             <h3>Loading Assignments...</h3>
           ) : filteredAssignments.length === 0 ? (
             <h3>No assignments available.</h3>
@@ -196,8 +165,6 @@ const Assignments = () => {
               </div>
             ))
           )}
-        </main>
-      </div>
     </div>
   );
 };

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 import {
   FaPlus,
@@ -35,7 +34,7 @@ const AdminAssignments = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await API.get("/courses/courses");
+      const res = await API.get("/api/courses/courses");
 
       setCourses(res.data.courses);
     } catch (err) {
@@ -45,7 +44,7 @@ const AdminAssignments = () => {
 
   const fetchAssignments = async () => {
   try {
-    const res = await API.get("/assignments");
+    const res = await API.get("/api/assignments");
 
     setAssignments(res.data.data || []);
 
@@ -58,7 +57,7 @@ const AdminAssignments = () => {
   const handleAddAssignment = async () => {
     try {
       await API.post(
-  "/assignments",
+  "/api/assignments",
   assignmentForm
 );
 
@@ -96,7 +95,7 @@ const AdminAssignments = () => {
     try {
 
       await API.put(
-  `/assignments/${editAssignmentId}`,
+  `/api/assignments/${editAssignmentId}`,
   assignmentForm
 );
 
@@ -117,7 +116,7 @@ const AdminAssignments = () => {
     try {
 
       await API.delete(
-  `/assignments/${id}`
+  `/api/assignments/${id}`
 );
 
       fetchAssignments();
@@ -142,13 +141,7 @@ const filteredAssignments = Array.isArray(assignments)
 
   return (
 
-    <div className="admin-wrapper">
-
-      <div className="sidebar-container">
-        <Sidebar isAdmin={true} />
-      </div>
-
-      <main className="admin-main">
+    <div>
 
         <AdminHeader
           searchTerm={searchTerm}
@@ -438,8 +431,6 @@ const filteredAssignments = Array.isArray(assignments)
           </div>
 
         )}
-
-      </main>
 
     </div>
 

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FaPlusCircle } from 'react-icons/fa';
 import './WelcomeCard.css';
-import API from "../../../services/api";
+import useStudentProgress from "../../../hooks/useStudentProgress";
+
 const WelcomeCard = ({ isAdmin }) => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState(() => {
+  const [userName] = useState(() => {
   const savedUser = localStorage.getItem("user");
 
   if (savedUser) {
@@ -15,38 +16,9 @@ const WelcomeCard = ({ isAdmin }) => {
 
   return "Student";
 });
-  const [lastCourse, setLastCourse] = useState(null);
-  useEffect(() => {
-  const fetchLastCourse = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
+  const { courses } = useStudentProgress();
+  const lastCourse = !isAdmin && courses.length > 0 ? courses[0] : null;
 
-if (!user) return;
-
-if (!isAdmin) {
-  setUserName(user.full_name || user.name || "Student");
-}
-
-if (isAdmin) return;
-
-      const response = await API.get(
-  `/api/progress/user/${user.id}`
-);
-
-const courses = response.data.courses;
-
-
-      if (courses && courses.length > 0) {
-        setLastCourse(courses[0]);
-      }
-
-    } catch (error) {
-      console.error("Welcome Card Error:", error);
-    }
-  };
-
-  fetchLastCourse();
-}, [isAdmin]);
   const handleAction = () => {
     if (isAdmin) {
       // Yahan path update kar diya hai taaki route match ho sake

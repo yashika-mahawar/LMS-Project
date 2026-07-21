@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import API from "../../services/api";
-import Sidebar from '../../components/Sidebar/Sidebar';
 import './AdminDashboard.css';
 import AdminHeader from "../../components/AdminHeader/AdminHeader";
 const ManageCourses = () => {
@@ -133,10 +132,7 @@ const currentData = useMemo(() => {
   return filteredCourses.slice(start, start + itemsPerPage);
 }, [filteredCourses, currentPage]);
   return (
-    <div className="admin-wrapper">
-      <div className="sidebar-container"><Sidebar isAdmin={true} /></div>
-      
-      <main className="admin-main">
+    <div>
 
   <AdminHeader
     searchTerm={searchTerm}
@@ -404,7 +400,6 @@ const currentData = useMemo(() => {
     </div>
   </div>
 )}
-      </main>
     </div>
   );
 };

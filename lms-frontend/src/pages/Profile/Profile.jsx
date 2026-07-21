@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar/Sidebar';
 import EditProfile from './EditProfile';
 import ChangePassword from './ChangePassword';
 import { FaUserCircle, FaShieldAlt, FaCamera, FaPlus, FaLinkedin, FaGithub, FaGlobe } from 'react-icons/fa';
@@ -19,11 +18,11 @@ const Profile = () => {
         email: "",
         phone: "",
         program: "",
-        profileImage: "",
+        profile_image: "",
       };
 });
 
-  // IMPORTANT: Yeh useEffect ensure karega ki agar tumne 
+  // IMPORTANT: Yeh useEffect ensure karega ki agar tumne
   // EditProfile se data change kiya, toh Profile page turant update ho jaye
   useEffect(() => {
   const handleStorageChange = () => {
@@ -37,9 +36,11 @@ const Profile = () => {
   handleStorageChange();
 
   window.addEventListener("storage", handleStorageChange);
+  window.addEventListener("userUpdated", handleStorageChange);
 
   return () => {
     window.removeEventListener("storage", handleStorageChange);
+    window.removeEventListener("userUpdated", handleStorageChange);
   };
 }, []);
 
@@ -64,7 +65,7 @@ const Profile = () => {
 
       const updatedUser = {
         ...user,
-        profileImage: imageUrl
+        profile_image: imageUrl
       };
 
 
@@ -74,9 +75,7 @@ const Profile = () => {
         "user",
         JSON.stringify(updatedUser)
       );
-       console.log("Sending image update");
-console.log("USER ID:", user.id);
-console.log("IMAGE:", imageUrl.substring(0,50));
+      window.dispatchEvent(new Event("userUpdated"));
 
       // Save image URL in database
       await axios.put(
@@ -85,8 +84,6 @@ console.log("IMAGE:", imageUrl.substring(0,50));
     profile_image: imageUrl
   }
 );
-
-      console.log("Profile image saved");
 
     };
 
@@ -106,14 +103,8 @@ console.log("IMAGE:", imageUrl.substring(0,50));
 };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f8fafc', fontFamily: "'Inter', sans-serif" }}>
-      <div style={{ width: '260px', flexShrink: 0, borderRight: '1px solid #e2e8f0' }}>
-        <Sidebar />
-      </div>
-      
-      <div style={{ flex: 1, padding: '40px 32px', overflowY: 'auto' }}>
-        <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-          
+    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+
           <div style={{ 
             background: 'linear-gradient(135deg, #4f46e5 0%, #3730a3 100%)', 
             borderRadius: '28px', padding: '48px', color: 'white', marginBottom: '32px', 
@@ -122,8 +113,8 @@ console.log("IMAGE:", imageUrl.substring(0,50));
           }}>
             <div style={{ position: 'relative' }}>
               <div style={{ width: '130px', height: '130px', borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '5px solid rgba(255,255,255,0.3)', overflow: 'hidden' }}>
-                {user.profileImage ? (
-                  <img src={user.profileImage} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                {user.profile_image ? (
+                  <img src={user.profile_image} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 ) : (
                   <FaUserCircle size={130} color="#cbd5e1" />
                 )}
@@ -179,8 +170,6 @@ console.log("IMAGE:", imageUrl.substring(0,50));
               </div>
             )}
           </div>
-        </div>
-      </div>
     </div>
   );
 };

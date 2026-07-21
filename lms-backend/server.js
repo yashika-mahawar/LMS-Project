@@ -14,6 +14,7 @@ import activityRoutes from "./routes/activityRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import assignmentRoutes from "./routes/assignmentRoutes.js";
+import facultyRoutes from "./routes/facultyRoutes.js";
 
 
 dotenv.config();
@@ -51,6 +52,7 @@ app.use("/api/activities", activityRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/assignments", assignmentRoutes);
+app.use("/api/faculty", facultyRoutes);
 // Testing endpoint
 app.get("/api/test", (req, res) => {
   res.json({ message: "Backend working fine 🚀" });

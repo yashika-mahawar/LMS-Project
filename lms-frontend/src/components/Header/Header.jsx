@@ -48,6 +48,24 @@ const searchItems = [
   { name: "Progress", path: "/progress" },
   { name: "Live Classes", path: "/live-classes" },
 ];
+const MAX_VISIBLE_NOTIFICATIONS = 5;
+
+const dedupeNotifications = (list) => {
+  const seen = new Set();
+  const unique = [];
+
+  for (const note of list) {
+    const key = note.message?.trim().toLowerCase();
+
+    if (seen.has(key)) continue;
+
+    seen.add(key);
+    unique.push(note);
+  }
+
+  return unique;
+};
+
 const fetchNotifications = async () => {
   try {
 
@@ -59,7 +77,7 @@ const fetchNotifications = async () => {
 
     const res = await API.get(`/api/notifications/${savedUser.id}`);
 
-setNotifications(res.data.notifications || []);
+setNotifications(dedupeNotifications(res.data.notifications || []));
   } catch (err) {
 
     console.log(err);
@@ -138,7 +156,7 @@ useEffect(() => {
   />
 
   <span className="badge">
-  {notifications?.length || 0}
+  {notifications.filter((note) => !note.is_read).length}
 </span>
 
   {showNotifications && (
@@ -159,12 +177,12 @@ useEffect(() => {
 
       <h4>Notifications</h4>
 
-{notifications?.length === 0 ? (
+{notifications.length === 0 ? (
         <p>No Notifications</p>
 
       ) : (
 
-notifications?.map((note) => (
+notifications.slice(0, MAX_VISIBLE_NOTIFICATIONS).map((note) => (
           <div
             key={note.id}
             style={{

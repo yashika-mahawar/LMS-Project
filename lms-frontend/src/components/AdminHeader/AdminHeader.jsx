@@ -11,9 +11,28 @@ import axios from "axios";
 import API from "../../services/api";
 import { useEffect, useState } from "react";
 
+const MAX_VISIBLE_NOTIFICATIONS = 5;
+
+const dedupeNotifications = (list) => {
+  const seen = new Set();
+  const unique = [];
+
+  for (const note of list) {
+    const key = note.message?.trim().toLowerCase();
+
+    if (seen.has(key)) continue;
+
+    seen.add(key);
+    unique.push(note);
+  }
+
+  return unique;
+};
+
 function AdminHeader({
   searchTerm = "",
   setSearchTerm,
+  placeholder = "Search...",
 }) {
   const [showProfile, setShowProfile] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -25,9 +44,11 @@ useEffect(() => {
 
     try {
 
-      const res = await API.get("/admin/notifications");
+      const res = await API.get("/api/admin/notifications");
 
-      setNotifications(res.data.notifications);
+      setNotifications(
+        dedupeNotifications(res.data.notifications || []).slice(0, MAX_VISIBLE_NOTIFICATIONS)
+      );
 
     } catch(error){
 
@@ -59,7 +80,7 @@ useEffect(() => {
 
         <input
   type="text"
-  placeholder="Search students..."
+  placeholder={placeholder}
   value={searchTerm}
   onChange={(e) =>
     setSearchTerm && setSearchTerm(e.target.value)

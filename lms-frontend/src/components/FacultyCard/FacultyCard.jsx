@@ -1,28 +1,44 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { FaUserCircle } from 'react-icons/fa';
+import API from '../../services/api';
 import './FacultyCard.css';
 
-const facultyData = [
-  { name: "Dr. A. Sharma", exp: "15+ Years", contact: "+91 98765 43210", email: "asharma@icfai.edu" },
-  { name: "Prof. B. Verma", exp: "12+ Years", contact: "+91 98765 43211", email: "bverma@icfai.edu" },
-  { name: "Dr. C. Gupta", exp: "10+ Years", contact: "+91 98765 43212", email: "cgupta@icfai.edu" },
-  { name: "Prof. D. Singh", exp: "8+ Years", contact: "+91 98765 43213", email: "dsingh@icfai.edu" },
-  { name: "Dr. E. Kapoor", exp: "20+ Years", contact: "+91 98765 43214", email: "ekapoor@icfai.edu" },
-  { name: "Prof. F. Khan", exp: "11+ Years", contact: "+91 98765 43215", email: "fkhan@icfai.edu" },
-  { name: "Dr. G. Reddy", exp: "14+ Years", contact: "+91 98765 43216", email: "greddy@icfai.edu" },
-];
-
 const FacultyCard = () => {
+  const [facultyList, setFacultyList] = useState([]);
+
+  useEffect(() => {
+    const fetchFaculty = async () => {
+      try {
+        const res = await API.get('/api/faculty');
+        setFacultyList(res.data.faculty || []);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchFaculty();
+  }, []);
+
+  if (facultyList.length === 0) return null;
+
   return (
     <section className="faculty-section">
       <h2 className="faculty-title">Meet Our Expert Faculty</h2>
       <div className="faculty-grid">
-        {facultyData.map((f, index) => (
-          <div key={index} className="faculty-card">
+        {facultyList.map((f) => (
+          <div key={f.id} className="faculty-card">
+            <div className="faculty-card-photo">
+              {f.photo ? (
+                <img src={f.photo} alt={f.name} />
+              ) : (
+                <FaUserCircle size={70} color="#cbd5e1" />
+              )}
+            </div>
             <h3>{f.name}</h3>
-            <p><strong>Exp:</strong> {f.exp}</p>
-            <p><strong>Contact:</strong> {f.contact}</p>
-            <p><strong>Email:</strong> {f.email}</p>
-            {/* Button yahan se remove kar diya hai */}
+            {f.designation && <p className="faculty-designation">{f.designation}</p>}
+            {f.experience && <p><strong>Exp:</strong> {f.experience}</p>}
+            {f.contact && <p><strong>Contact:</strong> {f.contact}</p>}
+            {f.email && <p><strong>Email:</strong> {f.email}</p>}
           </div>
         ))}
       </div>

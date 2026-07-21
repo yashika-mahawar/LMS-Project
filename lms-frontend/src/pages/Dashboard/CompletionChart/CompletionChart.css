@@ -1,0 +1,70 @@
+.completion-chart {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.completion-chart--empty {
+  justify-content: center;
+  color: var(--color-text-muted);
+  min-height: 120px;
+}
+
+.completion-chart__donut {
+  position: relative;
+  flex: 0 0 200px;
+  width: 200px;
+}
+
+.completion-chart__center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+.completion-chart__percent {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.completion-chart__caption {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.completion-chart__legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.completion-chart__legend li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.completion-chart__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}

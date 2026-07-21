@@ -41,7 +41,7 @@ const updatedUser = {
 };
 
 localStorage.setItem("user", JSON.stringify(updatedUser));
-window.dispatchEvent(new Event("storage"));    
+window.dispatchEvent(new Event("userUpdated"));
     setMsg('Profile Updated Successfully!');
     setTimeout(() => setMsg(''), 3000);
   };

@@ -15,8 +15,10 @@ import Learning from "../pages/Learning/Learning";
 import LiveClass from "../pages/LiveClass/LiveClass"; 
 import Assignments from '../pages/Dashboard/Assignments/Assignments';
 import Progress from '../pages/Dashboard/Progress/Progress';
-import Admission from "../pages/Admissions/Admissions"; 
+import Admission from "../pages/Admissions/Admissions";
 import AdminProtectedRoute from "../components/ProtectedRoute/AdminProtectedRoute";
+import StudentLayout from "../Layout/StudentLayout";
+import AdminLayout from "../Layout/AdminLayout";
 // 🔥 AUTH PAGES IMPORT
 import ForgotPassword from "../pages/Auth/ForgotPassword";
 import VerifyOTP from "../pages/Auth/VerifyOTP";
@@ -30,6 +32,7 @@ import ManageVideos from "../pages/Admin/ManageVideos";
 import ManageStudents from "../pages/Admin/ManageStudents";
 import AdminLiveClasses from "../pages/Admin/AdminLiveClasses";
 import AdminAssignments from "../pages/Admin/AdminAssignments";
+import ManageFaculty from "../pages/Admin/ManageFaculty";
 function AppRoutes() {
   return (
     <Routes>
@@ -45,13 +48,16 @@ function AppRoutes() {
       <Route path="/verify-otp" element={<VerifyOTP />} />
       <Route path="/reset-password" element={<ResetPassword />} />
 
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/profile" element={<Profile />} />
-      <Route path="/my-courses" element={<MyCourses />} />
+      <Route element={<StudentLayout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/my-courses" element={<MyCourses />} />
+        <Route path="/assignments" element={<Assignments />} />
+        <Route path="/progress" element={<Progress />} />
+      </Route>
+
       <Route path="/course/:id" element={<CourseDetails />} />
       <Route path="/learning/:id" element={<Learning />} />
-      <Route path="/assignments" element={<Assignments />} />
-      <Route path="/progress" element={<Progress />} />
       <Route path="/course-details" element={<CourseDetails />} />
       <Route path="/payment" element={<Payment />} />
       <Route path="/payment-success" element={<PaymentSuccess />} />
@@ -60,59 +66,22 @@ function AppRoutes() {
       
       {/* 🔥 ADMIN ROUTES */}
       <Route path="/admin/login" element={<AdminLogin />} />
-      <Route path="/admin/login" element={<AdminLogin />} />
 
-<Route
-  path="/admin"
-  element={
-    <AdminProtectedRoute>
-      <AdminDashboard />
-    </AdminProtectedRoute>
-  }
-/>
-
-<Route
-  path="/admin/manage-courses"
-  element={
-    <AdminProtectedRoute>
-      <ManageCourses />
-    </AdminProtectedRoute>
-  }
-/>
-
-<Route
-  path="/admin/videos"
-  element={
-    <AdminProtectedRoute>
-      <ManageVideos />
-    </AdminProtectedRoute>
-  }
-/>
-
-<Route
-  path="/admin/students"
-  element={
-    <AdminProtectedRoute>
-      <ManageStudents />
-    </AdminProtectedRoute>
-  }
-/>
-<Route
-  path="/admin/live-classes"
-  element={
-    <AdminProtectedRoute>
-      <AdminLiveClasses />
-    </AdminProtectedRoute>
-  }
-/>
-<Route
-  path="/admin/assignments"
-  element={
-    <AdminProtectedRoute>
-      <AdminAssignments />
-    </AdminProtectedRoute>
-  }
-/>
+      <Route
+        element={
+          <AdminProtectedRoute>
+            <AdminLayout />
+          </AdminProtectedRoute>
+        }
+      >
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/manage-courses" element={<ManageCourses />} />
+        <Route path="/admin/videos" element={<ManageVideos />} />
+        <Route path="/admin/students" element={<ManageStudents />} />
+        <Route path="/admin/live-classes" element={<AdminLiveClasses />} />
+        <Route path="/admin/assignments" element={<AdminAssignments />} />
+        <Route path="/admin/faculty" element={<ManageFaculty />} />
+      </Route>
     </Routes>
   );
 }
