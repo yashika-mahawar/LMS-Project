@@ -219,7 +219,8 @@
 }
 
 /* Unique Table (ManageStudents) */
-.unique-table { width: 100%; border-collapse: separate; border-spacing: 0 15px; }
+.table-container { overflow-x: auto; }
+.unique-table { width: 100%; min-width: 900px; border-collapse: separate; border-spacing: 0 15px; }
 .unique-table thead th { color: #A3AED0; font-size: 0.85rem; padding: 10px 20px; text-transform: uppercase; }
 .unique-table tbody tr { background: #fff; transition: 0.4s; border-radius: 15px; }
 .unique-table tbody tr:hover { transform: scale(1.02); box-shadow: 0 10px 25px rgba(67, 24, 255, 0.15); }
