@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import API from "../../services/api";
 function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -12,14 +12,14 @@ function ForgotPassword() {
     e.preventDefault();
     setLoading(true);
     try {
-      await API.post(
+      const res = await API.post(
   "/api/auth/forgot-password",
-  { email }
+  { phone }
 );
       alert("OTP sent to your WhatsApp number!");
-      navigate("/verify-otp", { state: { email } });
+      navigate("/verify-otp", { state: { email: res.data.email, phone } });
     } catch (err) {
-      alert(err.response?.data?.message || "Email not found!");
+      alert(err.response?.data?.message || "No account found with this WhatsApp number!");
     }
     finally { setLoading(false); }
   };
@@ -29,10 +29,16 @@ function ForgotPassword() {
       <div className="auth-card">
         <h2>Forgot Password</h2>
         <p className="auth-card-subtitle">
-          Enter the email linked to your account and we'll send a verification code to your registered WhatsApp number.
+          Enter the WhatsApp number linked to your account and we'll send a verification code to it.
         </p>
         <form onSubmit={handleSendOTP}>
-          <input type="email" placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} required />
+          <input
+            type="tel"
+            placeholder="Enter your WhatsApp number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            required
+          />
           <button type="submit" disabled={loading}>{loading ? "Sending..." : "Send OTP via WhatsApp"}</button>
         </form>
       </div>
