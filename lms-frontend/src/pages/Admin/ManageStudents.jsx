@@ -51,11 +51,14 @@ const handleDelete = async (id) => {
 useEffect(() => {
   fetchStudents();
 }, []);
-  const filtered = useMemo(() => 
+  const filtered = useMemo(() =>
   students.filter(s =>
     s.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     s.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    s.program?.toLowerCase().includes(searchTerm.toLowerCase())
+    s.program?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.college_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.father_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    s.phone?.toLowerCase().includes(searchTerm.toLowerCase())
   ),
 [searchTerm, students]);
 
@@ -74,7 +77,15 @@ useEffect(() => {
         <div className="table-container">
           <table className="unique-table">
             <thead>
-              <tr><th>Student Name</th><th>Course</th><th>Status</th><th>Actions</th></tr>
+              <tr>
+                <th>Student Name</th>
+                <th>Course</th>
+                <th>College</th>
+                <th>Father's Name</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
             </thead>
             <tbody>
 
@@ -126,6 +137,10 @@ useEffect(() => {
           {s.program}
         </span>
       </td>
+
+      <td>{s.college_name || "—"}</td>
+      <td>{s.father_name || "—"}</td>
+      <td>{s.phone || "—"}</td>
 
       <td>
         <span className="status-dot active">

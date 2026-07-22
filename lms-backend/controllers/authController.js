@@ -5,12 +5,27 @@ import crypto from "crypto";
 import { createNotification } from "../utils/createNotification.js";
 import { sendWhatsAppOtp } from "../utils/sendWhatsAppOtp.js";
 export async function registerUser(req, res) {
-  const { full_name, email, password, role, program, phone } = req.body;
+  const {
+    full_name,
+    email,
+    password,
+    role,
+    program,
+    phone,
+    college_name,
+    father_name,
+  } = req.body;
 
   // Validation
   if (!full_name || !email || !password || !role) {
     return res.status(400).json({
       message: "All fields are required",
+    });
+  }
+
+  if (role === "student" && (!phone || !program || !college_name || !father_name)) {
+    return res.status(400).json({
+      message: "Phone, Program, College Name and Father's Name are required for student registration",
     });
   }
 
@@ -40,6 +55,8 @@ export async function registerUser(req, res) {
         role,
         program,
         phone,
+        college_name,
+        father_name,
       },
     ])
     .select()

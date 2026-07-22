@@ -118,7 +118,7 @@ export const getRecentStudents = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("users")
-      .select("id, full_name, email, program, profile_image")
+      .select("id, full_name, email, program, profile_image, phone, college_name, father_name")
       .eq("role", "student")
       .order("created_at", { ascending: false })
       .limit(5);
@@ -147,7 +147,7 @@ export const getStudents = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("users")
-      .select("id, full_name, email, program, role, profile_image")
+      .select("id, full_name, email, program, role, profile_image, phone, college_name, father_name")
       .eq("role", "student")
       .order("full_name");
 
