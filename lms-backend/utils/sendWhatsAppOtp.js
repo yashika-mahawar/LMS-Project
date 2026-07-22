@@ -31,10 +31,14 @@ function getClient() {
 }
 
 export async function sendWhatsAppOtp(phone, otp) {
-  const whatsappFrom = process.env.TWILIO_WHATSAPP_FROM;
-  if (!whatsappFrom) {
+  const rawFrom = process.env.TWILIO_WHATSAPP_FROM;
+  if (!rawFrom) {
     throw new Error("TWILIO_WHATSAPP_FROM is not set in lms-backend/.env");
   }
+
+  // Accept the env var whether or not it already includes the "whatsapp:"
+  // prefix, so it works regardless of how it was pasted in.
+  const whatsappFrom = rawFrom.replace(/^whatsapp:/i, "");
 
   const client = getClient();
 
