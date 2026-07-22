@@ -123,31 +123,33 @@ function generateOtp() {
 const OTP_TTL_MS = 10 * 60 * 1000;
 
 export async function forgotPassword(req, res) {
-  const { email } = req.body;
+  const { phone } = req.body;
 
-  if (!email) {
-    return res.status(400).json({ message: "Email is required" });
+  if (!phone) {
+    return res.status(400).json({ message: "WhatsApp number is required" });
+  }
+
+  // Match on the last 10 digits so it doesn't matter whether the number was
+  // stored (at signup) or entered here with a country code, spaces, or dashes.
+  const last10 = String(phone).replace(/\D/g, "").slice(-10);
+
+  if (last10.length < 10) {
+    return res.status(400).json({ message: "Enter a valid 10-digit WhatsApp number" });
   }
 
   const { data: user, error } = await supabase
     .from("users")
-    .select("id, phone")
-    .eq("email", email)
+    .select("id, email, phone")
+    .ilike("phone", `%${last10}`)
     .maybeSingle();
 
   if (error) {
-    console.error("[forgotPassword] DB lookup failed for", email, ":", error.message);
+    console.error("[forgotPassword] DB lookup failed for", last10, ":", error.message);
     return res.status(500).json({ message: "DB Error", error: error.message });
   }
   if (!user) {
-    console.warn("[forgotPassword] no user found for email:", email);
-    return res.status(404).json({ message: "Email not found" });
-  }
-  if (!user.phone) {
-    console.warn("[forgotPassword] user", user.id, "has no phone on file");
-    return res.status(400).json({
-      message: "No WhatsApp number is linked to this account. Please contact support.",
-    });
+    console.warn("[forgotPassword] no user found for phone ending in:", last10);
+    return res.status(404).json({ message: "No account found with this WhatsApp number" });
   }
 
   const otp = generateOtp();
@@ -171,7 +173,7 @@ export async function forgotPassword(req, res) {
   }
 
   console.log("[forgotPassword] OTP sent via WhatsApp to user", user.id);
-  res.status(200).json({ success: true, message: "OTP sent via WhatsApp" });
+  res.status(200).json({ success: true, message: "OTP sent via WhatsApp", email: user.email });
 }
 
 export async function verifyOtp(req, res) {
