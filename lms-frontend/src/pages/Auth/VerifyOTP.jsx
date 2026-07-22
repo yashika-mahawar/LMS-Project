@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Auth.css";
@@ -10,6 +10,11 @@ function VerifyOTP() {
   const location = useLocation();
   const navigate = useNavigate();
   const email = location.state?.email;
+  const phone = location.state?.phone;
+
+  useEffect(() => {
+    if (!email || !phone) navigate("/forgot-password");
+  }, [email, phone, navigate]);
 
   const handleVerify = async (e) => {
     e.preventDefault();
@@ -30,7 +35,7 @@ function VerifyOTP() {
   const handleResend = async () => {
     setResending(true);
     try {
-      await API.post("/api/auth/forgot-password", { email });
+      await API.post("/api/auth/forgot-password", { phone });
       alert("A new OTP has been sent to your WhatsApp number!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to resend OTP");
@@ -44,7 +49,7 @@ function VerifyOTP() {
       <div className="auth-card">
         <h2>Verify OTP</h2>
         <p className="auth-card-subtitle">
-          Enter the 6-digit code sent to the WhatsApp number linked to <strong>{email}</strong>.
+          Enter the 6-digit code sent to your WhatsApp number <strong>{phone}</strong>.
         </p>
         <form onSubmit={handleVerify}>
           <input

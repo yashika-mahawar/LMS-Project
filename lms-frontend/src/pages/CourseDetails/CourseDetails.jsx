@@ -2,6 +2,21 @@ import "./CourseDetails.css";
 import Navbar from "../../components/Navbar/Navbar";
 import Footer from "../../components/Footer/Footer";
 import { useLocation, useNavigate } from "react-router-dom";
+import {
+  FaGraduationCap,
+  FaClock,
+  FaChalkboardTeacher,
+  FaBullseye,
+  FaCheckCircle,
+  FaShieldAlt,
+} from "react-icons/fa";
+
+function formatFee(fee) {
+  if (fee === undefined || fee === null || fee === "") return fee;
+  const numeric = Number(String(fee).replace(/[^0-9.]/g, ""));
+  if (Number.isNaN(numeric)) return fee;
+  return `₹${numeric.toLocaleString("en-IN")}`;
+}
 
 function CourseDetails() {
   const navigate = useNavigate();
@@ -48,13 +63,14 @@ function CourseDetails() {
       <section className="course-details">
         {/* LEFT IMAGE */}
         <div className="course-image">
-      <img src={course.image_url || course.image} alt={course.title} />
+          <img src={course.image_url || course.image} alt={course.title} />
         </div>
 
         {/* RIGHT CONTENT */}
         <div className="course-info">
           <span className="course-badge">
-            🎓 Admissions Open 2026
+            <FaGraduationCap />
+            Admissions Open 2026
           </span>
 
           <h1>{course.title}</h1>
@@ -63,43 +79,55 @@ function CourseDetails() {
             {course.description}
           </p>
 
-          {/* INFO CARDS */}
-          <div className="info-grid">
-            <div className="info-box">
-              <h3>⏳ Duration</h3>
-              <p>{course.duration}</p>
-            </div>
-            <div className="info-box">
-              <h3>💰 Fee</h3>
-              <p>{course.fee}</p>
-            </div>
-            <div className="info-box">
-              <h3>🧑‍🏫 Mode</h3>
-              <p>Online / Offline</p>
-            </div>
-            <div className="info-box">
-              <h3>🎯 Eligibility</h3>
-              <p>10+2</p>
-            </div>
-          </div>
-
           {/* HIGHLIGHTS */}
-          <h2>✨ Course Highlights</h2>
+          <h2 className="section-heading">Course Highlights</h2>
           <ul className="highlights">
-            <li>Industry-Oriented Curriculum</li>
-            <li>Experienced Faculty Members</li>
-            <li>Hands-on Projects</li>
-            <li>Placement Assistance</li>
-            <li>Internship Opportunities</li>
-            <li>Modern Computer Labs</li>
+            <li><FaCheckCircle /> Industry-Oriented Curriculum</li>
+            <li><FaCheckCircle /> Experienced Faculty Members</li>
+            <li><FaCheckCircle /> Hands-on Projects</li>
+            <li><FaCheckCircle /> Placement Assistance</li>
+            <li><FaCheckCircle /> Internship Opportunities</li>
+            <li><FaCheckCircle /> Modern Computer Labs</li>
           </ul>
-           <button
-            className="enroll-btn"
-            onClick={handleEnroll} 
-          >
-            Enroll Now
-          </button>
-          
+
+          {/* ENROLLMENT CARD */}
+          <div className="enroll-card">
+            <div className="enroll-card-fee-row">
+              <div>
+                <span className="enroll-card-label">Program Fee</span>
+                <div className="enroll-card-amount">{formatFee(course.fee)}</div>
+              </div>
+              <div className="enroll-card-badge">
+                <FaShieldAlt /> Secure Checkout
+              </div>
+            </div>
+
+            <ul className="enroll-card-meta">
+              <li>
+                <FaClock className="enroll-card-icon" />
+                <span className="enroll-card-meta-label">Duration</span>
+                <strong>{course.duration}</strong>
+              </li>
+              <li>
+                <FaChalkboardTeacher className="enroll-card-icon" />
+                <span className="enroll-card-meta-label">Mode</span>
+                <strong>Online / Offline</strong>
+              </li>
+              <li>
+                <FaBullseye className="enroll-card-icon" />
+                <span className="enroll-card-meta-label">Eligibility</span>
+                <strong>10+2</strong>
+              </li>
+            </ul>
+
+            <button
+              className="enroll-btn"
+              onClick={handleEnroll}
+            >
+              Enroll Now
+            </button>
+            <p className="enroll-card-note">Instant confirmation &middot; No hidden charges</p>
+          </div>
         </div>
       </section>
 
