@@ -62,10 +62,10 @@ function Sidebar({ isAdmin }) {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo" style={{ padding: '20px', display: 'flex', justifyContent: 'center' }}>
-        <img 
-          src="/icfailogo.png" 
-          alt="University Logo" 
-          style={{ width: '160px', height: 'auto' }} 
+        <img
+          src="/tvi-logo.webp"
+          alt="TVI Academy"
+          style={{ width: '160px', height: 'auto' }}
         />
       </div>
 

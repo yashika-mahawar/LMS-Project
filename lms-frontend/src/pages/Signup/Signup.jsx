@@ -94,7 +94,7 @@ localStorage.setItem("user", JSON.stringify(userData));
 
         <div className="auth-brand">
           <FaGraduationCap />
-          <span>ICFAI University</span>
+          <span>TVI Academy</span>
         </div>
 
         <h2>Start Your Learning Journey</h2>

@@ -68,7 +68,7 @@ function Login() {
 
         <div className="auth-brand">
           <FaGraduationCap />
-          <span>ICFAI University</span>
+          <span>TVI Academy</span>
         </div>
 
         <h2>Welcome Back!</h2>

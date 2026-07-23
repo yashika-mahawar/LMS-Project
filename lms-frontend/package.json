@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "@supabase/supabase-js": "^2.110.2",
     "axios": "^1.18.1",
     "react": "^19.2.6",
@@ -19,7 +21,8 @@
     "react-player": "^3.4.0",
     "react-router-dom": "^7.18.0",
     "react-router-hash-link": "^2.4.3",
-    "recharts": "^3.9.2"
+    "recharts": "^3.9.2",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -43,8 +43,8 @@ const WelcomeCard = ({ isAdmin }) => {
 </h1>
         <p>
           {isAdmin 
-            ? "Manage your university portal, student data, and course curriculum." 
-            : "Continue your learning journey at ICFAI University."}
+            ? "Manage your learning platform, student data, and course curriculum."
+            : "Continue your learning journey at TVI Academy."}
         </p>
       </div>
       

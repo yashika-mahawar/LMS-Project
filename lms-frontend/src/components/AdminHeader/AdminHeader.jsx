@@ -63,7 +63,7 @@ useEffect(() => {
 }, []);
   const admin = {
     name: "Administrator",
-    email: "admin@icfai.com",
+    email: "admin@tviacademy.in",
   };
 
   const logout = () => {

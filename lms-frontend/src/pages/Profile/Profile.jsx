@@ -139,7 +139,7 @@ const Profile = () => {
             <div>
               {/* Ab yahan wahi naam aayega jo tumne Signup ya EditProfile mein dala hai */}
               <h1 style={{ margin: '0', fontSize: '2.5rem', letterSpacing: '-0.02em' }}>{user.full_name || "User Name"}</h1>
-              <p style={{ margin: '8px 0', fontSize: '1.1rem', opacity: '0.9' }}>{user.program} | ICFAI University</p>
+              <p style={{ margin: '8px 0', fontSize: '1.1rem', opacity: '0.9' }}>{user.program} | TVI Academy</p>
             </div>
           </div>
 
