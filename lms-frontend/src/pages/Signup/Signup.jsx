@@ -1,5 +1,5 @@
 import "./Signup.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import API from "../../services/api"; // (path apne folder structure ke hisaab se check kar lena)
@@ -29,8 +29,25 @@ function Signup() {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [courses, setCourses] = useState([]);
+  const [loadingCourses, setLoadingCourses] = useState(true);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await API.get("/api/courses/courses");
+        setCourses(res.data.courses || []);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoadingCourses(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -174,17 +191,18 @@ localStorage.setItem("user", JSON.stringify(userData));
           <div className="auth-input-group">
             <FaBookOpen className="auth-input-icon" />
             <select name="program" value={formData.program} onChange={handleChange} required>
-              <option value="" disabled>Select Program</option>
-              <option value="B.Tech Computer Science">B.Tech</option>
-              <option value="BCA">BCA</option>
-              <option value="MBA">MBA</option>
-              <option value="BA">BA</option>
-              <option value="MCA">MCA</option>
-              <option value="B.Com">B.Com</option>
-              <option value="Cyber Security">Cyber Security</option>
-              <option value="M.Tech">M.Tech</option>
-              <option value="LLB">LLB</option>
-              <option value="Diploma in IT">Diploma in IT</option>
+              <option value="" disabled>
+                {loadingCourses
+                  ? "Loading programs..."
+                  : courses.length === 0
+                  ? "No programs available"
+                  : "Select Program"}
+              </option>
+              {courses.map((course) => (
+                <option key={course.id} value={course.title}>
+                  {course.title}
+                </option>
+              ))}
             </select>
           </div>
 

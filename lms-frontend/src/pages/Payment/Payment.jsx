@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Payment.css";
 import API from "../../services/api";
+import Navbar from "../../components/Navbar/Navbar";
+import Footer from "../../components/Footer/Footer";
 function Payment() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -109,26 +111,30 @@ handler: async (response) => {
   }
 };
   return (
-    <div className="payment-page">
-      <h1>Complete Enrollment</h1>
-      <div className="payment-container">
-        <div className="payment-left">
-          <h2>🎓 Your Selection</h2>
-          <div className="course-box">
-            <h3>{course.title}</h3>
-            <p><strong>Duration:</strong> {course.duration}</p>
-            <p className="price">{course.fee}</p>
+    <>
+      <Navbar />
+      <div className="payment-page">
+        <h1>Complete Enrollment</h1>
+        <div className="payment-container">
+          <div className="payment-left">
+            <h2>🎓 Your Selection</h2>
+            <div className="course-box">
+              <h3>{course.title}</h3>
+              <p><strong>Duration:</strong> {course.duration}</p>
+              <p className="price">{course.fee}</p>
+            </div>
+          </div>
+          <div className="payment-right">
+            <h2>💳 Secure Checkout</h2>
+            <button className="pay-now-btn" onClick={handlePayment} disabled={loading}>
+              {loading ? "Initializing Gateway..." : `Pay ${course.fee} Securely`}
+            </button>
+            <p className="note">🔒 100% Secure Payment | Powered by Razorpay</p>
           </div>
         </div>
-        <div className="payment-right">
-          <h2>💳 Secure Checkout</h2>
-          <button className="pay-now-btn" onClick={handlePayment} disabled={loading}>
-            {loading ? "Initializing Gateway..." : `Pay ${course.fee} Securely`}
-          </button>
-          <p className="note">🔒 100% Secure Payment | Powered by Razorpay</p>
-        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 
