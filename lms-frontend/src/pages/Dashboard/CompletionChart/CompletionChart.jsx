@@ -1,11 +1,13 @@
 import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
+import { FaChartPie } from "react-icons/fa";
 import "./CompletionChart.css";
 
 const CompletionChart = ({ enrolledCourses, completedCourses, inProgress, overallProgress }) => {
   if (!enrolledCourses) {
     return (
       <div className="completion-chart completion-chart--empty">
+        <FaChartPie className="completion-chart__empty-icon" />
         <p>Enroll in a course to see your progress</p>
       </div>
     );
@@ -46,17 +48,17 @@ const CompletionChart = ({ enrolledCourses, completedCourses, inProgress, overal
       </div>
 
       <ul className="completion-chart__legend">
-        <li>
+        <li className="completion-chart__chip" style={{ background: "#ecfdf5", color: "#047857" }}>
           <span className="completion-chart__dot" style={{ background: "#22c55e" }} />
-          Completed ({completedCourses})
+          Completed <strong>{completedCourses}</strong>
         </li>
-        <li>
+        <li className="completion-chart__chip" style={{ background: "#fffbeb", color: "#b45309" }}>
           <span className="completion-chart__dot" style={{ background: "#f59e0b" }} />
-          In Progress ({inProgress})
+          In Progress <strong>{inProgress}</strong>
         </li>
-        <li>
-          <span className="completion-chart__dot" style={{ background: "#e2e8f0" }} />
-          Not Started ({notStarted})
+        <li className="completion-chart__chip" style={{ background: "#f8fafc", color: "#475569" }}>
+          <span className="completion-chart__dot" style={{ background: "#94a3b8" }} />
+          Not Started <strong>{notStarted}</strong>
         </li>
       </ul>
     </div>

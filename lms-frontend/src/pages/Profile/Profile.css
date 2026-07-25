@@ -1,121 +1,127 @@
-/* 1. Layout Fix: Sidebar aur Content */
-.profile-page-wrapper {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f1f5f9; /* Thoda darker background for premium look */
-  width: 100%;
+.profile-page {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.sidebar-section {
-  width: 260px;
-  min-width: 260px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  background-color: #1e293b;
+/* Banner */
+.profile-banner {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #4338ca 0%, #4f46e5 55%, #3b82f6 100%);
+  border-radius: 24px;
+  padding: 44px;
+  color: #ffffff;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  box-shadow: 0 16px 32px -10px rgba(79, 70, 229, 0.4);
 }
 
-.profile-content {
-  flex: 1;
-  padding: 40px;
+.profile-avatar-shell {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #ffffff;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: flex-start;
-  min-width: 0;
+  border: 4px solid rgba(255, 255, 255, 0.35);
+  overflow: hidden;
 }
 
-/* 2. Premium Main Card */
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar-camera-btn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: #4338ca;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  padding: 9px;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  transition: transform 0.15s ease;
+}
+
+.profile-avatar-camera-btn:hover {
+  transform: scale(1.08);
+}
+
+.profile-banner-text h1 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.profile-banner-text p {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Card */
 .profile-card {
   background: #ffffff;
-  padding: 40px;
-  border-radius: 24px; /* Zyada smooth corners */
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e2e8f0;
-  width: 100%;
-  max-width: 900px; /* Layout bada kar diya for dual column */
+  border-radius: 24px;
+  padding: 36px;
+  box-shadow: var(--shadow-card);
+  border: 1px solid var(--color-border);
 }
 
-/* 3. Tab Styling */
-.tabs {
+.profile-tabs {
   display: flex;
-  gap: 32px;
-  margin-bottom: 32px;
+  gap: 36px;
   border-bottom: 2px solid #f1f5f9;
+  margin-bottom: 32px;
 }
 
-.tabs button {
-  background: none;
+.profile-tabs button {
+  padding: 14px 4px;
   border: none;
-  padding: 12px 0;
+  background: none;
   cursor: pointer;
   font-weight: 700;
-  color: #64748b;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  color: #64748b;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
   display: flex;
   align-items: center;
   gap: 8px;
+  transition: color 0.2s ease;
 }
 
-.tabs button.active {
-  border-bottom: 3px solid #4f46e5;
-  color: #4f46e5;
+.profile-tabs button.active {
+  color: #4338ca;
+  border-bottom-color: #4338ca;
 }
 
-/* 4. Form Styling (Professional) */
-.profile-form {
-  display: grid; /* Grid use kiya hai for dual column support */
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
+@media (max-width: 640px) {
+  .profile-banner {
+    padding: 28px;
+    text-align: center;
+    justify-content: center;
+  }
 
-/* Bio aur Full-width elements ke liye */
-.full-width {
-  grid-column: span 2;
-}
+  .profile-banner-text h1 {
+    font-size: 1.5rem;
+  }
 
-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: #475569;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  display: block;
-  margin-bottom: 8px;
-}
-
-input, textarea {
-  width: 100%;
-  padding: 14px;
-  border: 1.5px solid #e2e8f0;
-  border-radius: 12px;
-  font-size: 0.95rem;
-  background: #f8fafc;
-  transition: all 0.3s ease;
-  box-sizing: border-box;
-}
-
-input:focus {
-  border-color: #4f46e5;
-  background: #ffffff;
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
-}
-
-.save-btn {
-  grid-column: span 2;
-  padding: 14px;
-  background: #4f46e5;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-}
-
-.save-btn:hover {
-  background: #4338ca;
-  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+  .profile-card {
+    padding: 24px;
+  }
 }

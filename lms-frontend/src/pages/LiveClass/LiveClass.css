@@ -1,32 +1,5 @@
-.live-layout-wrapper {
-  display: flex;
-  min-height: 100vh;
-  background-color: #f3f4f6;
-  font-family: 'Inter', sans-serif;
-}
-
-.responsive-sidebar {
-  width: 260px;
-  min-width: 260px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.live-main-workspace {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.live-container {
-  padding: clamp(20px, 4vw, 40px);
-  max-width: 1200px;
-  width: 100%;
-  margin: 0 auto;
-  box-sizing: border-box;
+.live-class-page {
+  color: var(--color-text);
 }
 
 /* Header Section */
@@ -36,15 +9,16 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 20px;
-  margin-bottom: 32px;
+  margin-bottom: 28px;
   background: white;
   padding: 24px;
-  border-radius: 16px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
 }
 
 .live-header-text h1 {
-  fontSize: 2rem;
+  font-size: 1.7rem;
   font-weight: 800;
   color: #1e293b;
   margin: 0 0 6px 0;
@@ -81,13 +55,34 @@
 
 .filter-pill-btn.active {
   background: #ffffff;
-  color: #4f46e5;
-  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.1);
+  color: #4338ca;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.15);
 }
 
 .filter-pill-btn:hover:not(.active) {
   background: #e2e8f0;
   color: #1e293b;
+}
+
+.empty-state-text {
+  color: var(--color-text-muted);
+}
+
+.live-class-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--color-text-muted);
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+}
+
+.live-class-empty__icon {
+  font-size: 2.2rem;
+  color: #c7d2fe;
 }
 
 /* Schedule Card List Grid */
@@ -113,17 +108,21 @@
 
 .schedule-card-item:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
+  box-shadow: 0 14px 28px -12px rgba(79, 70, 229, 0.25);
+  border-color: #c7d2fe;
+}
+
+.schedule-card-item__info {
+  display: flex;
+  flex-direction: column;
 }
 
 /* Course Tag Badge */
 .course-badge-tag {
   align-self: flex-start;
-  zoom: 1;
   font-size: 0.75rem;
   background: #e0e7ff;
-  color: #4f46e5;
+  color: #4338ca;
   padding: 6px 12px;
   border-radius: 20px;
   font-weight: 700;
@@ -147,6 +146,23 @@
   gap: 8px;
   color: #64748b;
   font-size: 0.9rem;
+}
+
+.meta-info-row--strong {
+  color: #334155;
+  font-weight: 600;
+}
+
+.meta-icon--muted {
+  color: #94a3b8;
+}
+
+.meta-icon--primary {
+  color: #4f46e5;
+}
+
+.meta-icon--success {
+  color: #16a34a;
 }
 
 .date-time-box {
@@ -232,8 +248,7 @@
   100% { transform: scale(1); box-shadow: 0 4px 14px rgba(239, 68, 68, 0.4); }
 }
 
-@media (max-width: 992px) {
-  .responsive-sidebar { display: none !important; }
+@media (max-width: 900px) {
   .schedule-card-item {
     grid-template-columns: 1fr;
     gap: 16px;

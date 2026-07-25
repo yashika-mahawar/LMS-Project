@@ -1,13 +1,17 @@
 import React from "react";
+import { FaBookOpen } from "react-icons/fa";
 import "./CourseProgressCard.css";
 
 const CourseProgressCard = ({ course }) => {
   return (
     <div className="course-progress-card">
       <div>
-        <span className="course-progress-card__badge">
-          {course.completedVideos} / {course.totalVideos} Videos
-        </span>
+        <div className="course-progress-card__top">
+          <span className="course-progress-card__icon"><FaBookOpen /></span>
+          <span className="course-progress-card__badge">
+            {course.completedVideos} / {course.totalVideos} Videos
+          </span>
+        </div>
         <h3 className="course-progress-card__title">{course.title}</h3>
         <p className="course-progress-card__subtext">
           {course.completedVideos} Videos Completed

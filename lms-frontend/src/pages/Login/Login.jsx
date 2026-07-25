@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -20,6 +20,17 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Chrome ignores autocomplete="off" on login fields when it has a saved
+  // password for this site, and silently fills them right after mount.
+  // Force them back to empty once that autofill pass has happened.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setEmail("");
+      setPassword("");
+    }, 60);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLogin = async (e) => {
   e.preventDefault();
@@ -96,7 +107,7 @@ function Login() {
           <h2>Sign in to your account</h2>
           <p className="auth-form-subtitle">Enter your details to continue learning.</p>
 
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} autoComplete="off">
             <div className="auth-input-group">
               <FaEnvelope className="auth-input-icon" />
               <input
@@ -104,6 +115,7 @@ function Login() {
                 placeholder="Email Address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                autoComplete="off"
                 required
               />
             </div>
@@ -115,6 +127,7 @@ function Login() {
                 placeholder="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                autoComplete="off"
                 required
               />
               <button

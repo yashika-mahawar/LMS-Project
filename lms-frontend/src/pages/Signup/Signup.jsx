@@ -49,6 +49,16 @@ function Signup() {
     fetchCourses();
   }, []);
 
+  // Chrome ignores autocomplete="off" on email/password fields when it has
+  // a saved credential for this site, and silently fills them right after
+  // mount. Force those two back to empty once that autofill pass happens.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFormData((prev) => ({ ...prev, email: "", password: "" }));
+    }, 60);
+    return () => clearTimeout(timer);
+  }, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -121,7 +131,7 @@ localStorage.setItem("user", JSON.stringify(userData));
       </div>
 
       <div className="signup-right">
-        <form className="signup-form" onSubmit={handleSignup}>
+        <form className="signup-form" onSubmit={handleSignup} autoComplete="off">
           <span className="auth-form-badge">Student Registration</span>
           <h2>Create your account</h2>
           <p className="auth-form-subtitle">Fill in your details to get started.</p>
@@ -134,6 +144,7 @@ localStorage.setItem("user", JSON.stringify(userData));
               placeholder="Full Name"
               value={formData.name}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -146,6 +157,7 @@ localStorage.setItem("user", JSON.stringify(userData));
               placeholder="Father's Name"
               value={formData.fatherName}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -158,6 +170,7 @@ localStorage.setItem("user", JSON.stringify(userData));
               placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -172,6 +185,7 @@ localStorage.setItem("user", JSON.stringify(userData));
               title="Enter a valid phone number"
               value={formData.phone}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -184,6 +198,7 @@ localStorage.setItem("user", JSON.stringify(userData));
               placeholder="College Name"
               value={formData.collegeName}
               onChange={handleChange}
+              autoComplete="off"
               required
             />
           </div>
@@ -215,6 +230,7 @@ localStorage.setItem("user", JSON.stringify(userData));
               minLength={6}
               value={formData.password}
               onChange={handleChange}
+              autoComplete="new-password"
               required
             />
             <button

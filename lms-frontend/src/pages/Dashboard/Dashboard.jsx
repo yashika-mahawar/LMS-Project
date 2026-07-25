@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { FaChartPie, FaGraduationCap } from "react-icons/fa";
 import WelcomeCard from "./WelcomeCard/WelcomeCard";
 import StatsCards from "./StatsCards/StatsCards";
 import CompletionChart from "./CompletionChart/CompletionChart";
@@ -26,7 +27,10 @@ const Dashboard = () => {
 
       <section className="dashboard-section">
         <div className="section-header-flex">
-          <h2 className="section-title">Completion Overview</h2>
+          <h2 className="section-title">
+            <span className="section-title-icon"><FaChartPie /></span>
+            Completion Overview
+          </h2>
         </div>
         <CompletionChart
           enrolledCourses={enrolledCourses}
@@ -38,7 +42,10 @@ const Dashboard = () => {
 
       <section className="dashboard-section">
         <div className="section-header-flex">
-          <h2 className="section-title">My Learning</h2>
+          <h2 className="section-title">
+            <span className="section-title-icon"><FaGraduationCap /></span>
+            My Learning
+          </h2>
           <button className="view-all-btn" onClick={() => navigate("/my-courses")}>
             View All →
           </button>

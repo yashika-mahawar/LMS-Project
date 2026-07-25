@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaBookOpen, FaCheckCircle, FaHourglassHalf, FaChartLine } from "react-icons/fa";
 import useStudentProgress from "../../../hooks/useStudentProgress";
 import './Progress.css';
 
@@ -17,6 +18,8 @@ const Progress = () => {
       value: enrolledCourses,
       subtext: "Total Enrolled",
       color: "var(--color-primary)",
+      bg: "#eef2ff",
+      icon: <FaBookOpen />,
     },
     {
       id: 2,
@@ -24,6 +27,8 @@ const Progress = () => {
       value: completedCourses,
       subtext: "Finished",
       color: "var(--color-success-dark)",
+      bg: "#ecfdf5",
+      icon: <FaCheckCircle />,
     },
     {
       id: 3,
@@ -31,6 +36,8 @@ const Progress = () => {
       value: inProgress,
       subtext: "Ongoing",
       color: "var(--color-warning)",
+      bg: "#fffbeb",
+      icon: <FaHourglassHalf />,
     },
     {
       id: 4,
@@ -38,6 +45,8 @@ const Progress = () => {
       value: `${overallProgress}%`,
       subtext: "Across All Courses",
       color: "var(--color-primary-cyan)",
+      bg: "#ecfeff",
+      icon: <FaChartLine />,
     },
   ];
 
@@ -75,6 +84,9 @@ const Progress = () => {
 
         {stats.map((stat) => (
           <div key={stat.id} className="progress-stat-card">
+            <div className="progress-stat-card__icon" style={{ color: stat.color, background: stat.bg }}>
+              {stat.icon}
+            </div>
             <p className="progress-stat-card__label">{stat.label}</p>
             <h2 className="progress-stat-card__value" style={{ color: stat.color }}>
               {stat.value}

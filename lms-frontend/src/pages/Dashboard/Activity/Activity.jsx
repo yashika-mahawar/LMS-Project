@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { FaHistory } from "react-icons/fa";
 import "./Activity.css";
 import API from "../../../services/api";
 const Activity = () => {
@@ -25,11 +26,14 @@ const Activity = () => {
 
   return (
     <div className="activity-card-inner">
-      <h3 className="sub-module-title">⏳ Recent Activity</h3>
+      <h3 className="sub-module-title">
+        <span className="sub-module-icon"><FaHistory /></span>
+        Recent Activity
+      </h3>
 
       <div className="timeline-container">
         {activities.length === 0 ? (
-          <p>No Activity Yet</p>
+          <p className="empty-state-text">No activity yet — get started with a course!</p>
         ) : (
           activities.map((act) => (
             <div key={act.id} className="timeline-item">

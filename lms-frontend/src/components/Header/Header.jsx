@@ -106,7 +106,7 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, []);
   return (
-    <header className="dashboard-header" style={{ position: "relative" }}>
+    <header className="dashboard-header">
       <div className="search-box">
         <FaSearch className="search-icon" />
         <input
@@ -141,18 +141,13 @@ useEffect(() => {
       </div>
 
       <div className="header-right">
-        <div
-  className="notification"
-  title="Notifications"
-  style={{ position: "relative" }}
->
+        <div className="notification" title="Notifications">
 
   <FaBell
     className="bell-icon"
     onClick={() =>
       setShowNotifications(!showNotifications)
     }
-    style={{ cursor: "pointer" }}
   />
 
   <span className="badge">
@@ -161,34 +156,19 @@ useEffect(() => {
 
   {showNotifications && (
 
-    <div
-      style={{
-        position: "absolute",
-        top: "40px",
-        right: "0",
-        width: "300px",
-        background: "#fff",
-        borderRadius: "10px",
-        padding: "15px",
-        boxShadow: "0 5px 15px rgba(0,0,0,.2)",
-        zIndex: 999,
-      }}
-    >
+    <div className="notification-dropdown">
 
-      <h4>Notifications</h4>
+      <h4 className="notification-dropdown__heading">Notifications</h4>
 
 {notifications.length === 0 ? (
-        <p>No Notifications</p>
+        <p className="notification-dropdown__empty">You're all caught up — no new notifications.</p>
 
       ) : (
 
 notifications.slice(0, MAX_VISIBLE_NOTIFICATIONS).map((note) => (
           <div
             key={note.id}
-            style={{
-              borderBottom: "1px solid #eee",
-              padding: "10px 0",
-            }}
+            className="notification-dropdown__item"
           >
 
             <p>{note.message}</p>
@@ -214,25 +194,19 @@ notifications.slice(0, MAX_VISIBLE_NOTIFICATIONS).map((note) => (
 </div>
 
         {/* Profile Segment */}
-        <div 
-          className="profile" 
-          title="View Profile" 
-          onClick={() => setShowProfileBox(!showProfileBox)} 
-          style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "10px" }}
+        <div
+          className="profile"
+          title="View Profile"
+          onClick={() => setShowProfileBox(!showProfileBox)}
         >
-          <div className="profile-avatar-wrapper" style={{ width: '40px', height: '40px', borderRadius: '50%', overflow: 'hidden' }}>
+          <div className="profile-avatar-wrapper">
             {user.profile_image ? (
-  <img 
-    src={user.profile_image} 
-    alt="Profile" 
-    style={{ 
-      width: '100%', 
-      height: '100%', 
-      objectFit: 'cover' 
-    }} 
+  <img
+    src={user.profile_image}
+    alt="Profile"
   />
 ) : (
-              <FaUserCircle className="avatar-svg" size={40} color="#cbd5e1" />
+              <FaUserCircle className="avatar-svg" size={40} />
             )}
           </div>
           <div className="profile-info-text">
@@ -244,38 +218,15 @@ notifications.slice(0, MAX_VISIBLE_NOTIFICATIONS).map((note) => (
 
         {/* Dropdown Box */}
         {showProfileBox && (
-          <div
-            style={{
-              position: "absolute",
-              top: "70px",
-              right: "20px",
-              width: "260px",
-              background: "#ffffff",
-              padding: "20px",
-              borderRadius: "12px",
-              boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
-              border: "1px solid #e2e8f0",
-              zIndex: 1000,
-              color: "#333"
-            }}
-          >
-            <div style={{ fontSize: "0.9rem", color: "#475569", lineHeight: "2" }}>
-              <p style={{ margin: 0 }}><strong>Name:</strong>{user.full_name}</p>
-              <p style={{ margin: 0 }}><strong>Roll No:</strong> ICFAI-2026-001</p>
-              <p style={{ margin: 0 }}><strong>Course:</strong> {user.program}</p>
+          <div className="profile-dropdown">
+            <div className="profile-dropdown__info">
+              <p><strong>Name:</strong> {user.full_name}</p>
+              <p><strong>Roll No:</strong> ICFAI-2026-001</p>
+              <p><strong>Course:</strong> {user.program}</p>
             </div>
             <button
+              className="profile-dropdown__close-btn"
               onClick={() => setShowProfileBox(false)}
-              style={{
-                marginTop: "15px",
-                width: "100%",
-                padding: "8px",
-                background: "#4f46e5",
-                color: "#fff",
-                border: "none",
-                borderRadius: "6px",
-                cursor: "pointer",
-              }}
             >
               Close
             </button>

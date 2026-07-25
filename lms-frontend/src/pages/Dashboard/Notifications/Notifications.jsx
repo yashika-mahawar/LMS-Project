@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { FaBell } from "react-icons/fa";
 import "./Notifications.css";
 import API from "../../../services/api";
 
@@ -42,11 +43,14 @@ setNotifications(dedupeNotifications(res.data.notifications || []).slice(0, MAX_
 
   return (
     <div className="notifications-card-inner">
-      <h3 className="sub-module-title">🔔 Notifications</h3>
+      <h3 className="sub-module-title">
+        <span className="sub-module-icon"><FaBell /></span>
+        Notifications
+      </h3>
 
       <div className="notifications-stack">
         {notifications.length === 0 ? (
-          <p>No Notifications</p>
+          <p className="empty-state-text">You're all caught up — no new notifications.</p>
         ) : (
           notifications.map((note) => (
   <div key={note.id} className="alert-box">

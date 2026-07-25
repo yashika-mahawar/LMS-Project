@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { FaPlusCircle } from 'react-icons/fa';
+import { FaPlusCircle, FaPlay } from 'react-icons/fa';
 import './WelcomeCard.css';
 import useStudentProgress from "../../../hooks/useStudentProgress";
 
@@ -32,27 +32,41 @@ const WelcomeCard = ({ isAdmin }) => {
     }
   };
 
+  const today = new Date().toLocaleDateString("en-IN", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+  });
+
   return (
     <div className={`welcome-card-banner ${isAdmin ? 'admin-theme' : ''}`}>
-      <div className="welcome-text-content">
-        <h1>
-  {isAdmin 
-    ? "👋 Welcome Back, Admin" 
-    : `👋 Welcome Back, ${userName}`
-  }
-</h1>
-        <p>
-          {isAdmin 
-            ? "Manage your university portal, student data, and course curriculum." 
-            : "Continue your learning journey at ICFAI University."}
-        </p>
+      <div className="welcome-blob welcome-blob-1"></div>
+      <div className="welcome-blob welcome-blob-2"></div>
+
+      <div className="welcome-identity">
+        <div className="welcome-avatar">{userName.charAt(0).toUpperCase()}</div>
+
+        <div className="welcome-text-content">
+          <span className="welcome-eyebrow">{isAdmin ? "Admin Console" : today}</span>
+          <h1>
+    {isAdmin
+      ? "Welcome Back, Admin"
+      : `Welcome back, ${userName.split(" ")[0]}`
+    }
+  </h1>
+          <p>
+            {isAdmin
+              ? "Manage your university portal, student data, and course curriculum."
+              : "Continue your learning journey at ICFAI University."}
+          </p>
+        </div>
       </div>
-      
+
       <button className="continue-learning-btn" onClick={handleAction}>
         {isAdmin ? (
-          <><FaPlusCircle style={{ marginRight: '8px' }} /> Manage Courses</>
+          <><FaPlusCircle /> Manage Courses</>
         ) : (
-          <><span className="play-icon">▶</span> Continue Learning</>
+          <><FaPlay /> Continue Learning</>
         )}
       </button>
     </div>

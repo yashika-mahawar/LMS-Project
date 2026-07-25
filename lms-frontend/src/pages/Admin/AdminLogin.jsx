@@ -50,21 +50,25 @@ const AdminLogin = () => {
         
         {error && <p style={{ color: "#ef4444", fontSize: "0.8rem", marginBottom: "10px" }}>{error}</p>}
         
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleLogin} autoComplete="off">
           <div className="field">
-            <input 
-              type="email" 
-              placeholder="Admin Email" 
-              required 
+            <input
+              type="email"
+              name="admin-login-email"
+              placeholder="Admin Email"
+              required
+              autoComplete="off"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="field">
-            <input 
-              type="password" 
-              placeholder="Password" 
-              required 
+            <input
+              type="password"
+              name="admin-login-password"
+              placeholder="Password"
+              required
+              autoComplete="new-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import Header from '../../components/Header/Header';
 import { FaVideo, FaCalendarAlt, FaClock, FaChalkboardTeacher, FaCheckCircle } from 'react-icons/fa';
 import './LiveClass.css';
 import axios from "axios";
@@ -15,7 +13,7 @@ useEffect(() => {
     try {
 const response = await axios.get(
   `${import.meta.env.VITE_API_URL}/api/live-classes`
-);     
+);
 
 console.log("Live Classes:", response.data);
 
@@ -83,96 +81,91 @@ const coursePillsList = [
 ];
 
   return (
-    <div className="live-layout-wrapper">
-      <aside className="responsive-sidebar">
-        <Sidebar />
-      </aside>
+    <div className="live-class-page">
+      <div className="live-header-meta">
+        <div className="live-header-text">
+          <h1>Live Lectures Hub</h1>
+          <p>Join streaming webinars, interactive workshops, and clear doubts live.</p>
+        </div>
 
-      <div className="live-main-workspace">
-        <Header />
+        {/* 10 COURSE COMPLETE FILTER PILLS */}
+        <div className="course-filter-container">
+          {coursePillsList.map((course) => (
+            <button
+              key={course}
+              onClick={() => setSelectedCourse(course)}
+              className={`filter-pill-btn ${selectedCourse === course ? 'active' : ''}`}
+            >
+              {course === 'B.Tech Computer Science' ? 'B.Tech' : course === 'Diploma in IT' ? 'Diploma' : course}
+            </button>
+          ))}
+        </div>
+      </div>
 
-        <main className="live-container">
-          
-          <div className="live-header-meta" style={{ display: 'flex', flexDirection: 'column', alignItems: 'stretch', gap: '20px' }}>
-            <div className="live-header-text">
-              <h1>Live Lectures Hub</h1>
-              <p>Join streaming webinars, interactive workshops, and clear doubts live.</p>
-            </div>
-            
-            {/* 10 COURSE COMPLETE FILTER PILLS */}
-            <div className="course-filter-container">
-              {coursePillsList.map((course) => (
-                <button
-                  key={course}
-                  onClick={() => setSelectedCourse(course)}
-                  className={`filter-pill-btn ${selectedCourse === course ? 'active' : ''}`}
-                >
-                  {course === 'B.Tech Computer Science' ? 'B.Tech' : course === 'Diploma in IT' ? 'Diploma' : course}
-                </button>
-              ))}
-            </div>
-          </div>
-             {loading && <h3>Loading Live Classes...</h3>}
-          <div className="schedule-cards-list">
-  {filteredSchedule.map((session) => {
+      {loading ? (
+        <p className="empty-state-text">Loading Live Classes...</p>
+      ) : filteredSchedule.length === 0 ? (
+        <div className="live-class-empty">
+          <FaVideo className="live-class-empty__icon" />
+          <p>No live classes scheduled for this course yet.</p>
+        </div>
+      ) : (
+        <div className="schedule-cards-list">
+          {filteredSchedule.map((session) => {
+            const status = getClassStatus(session);
 
-    const status = getClassStatus(session);
-
-    return (
-      <div key={session.id} className="schedule-card-item">
-                
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
+            return (
+              <div key={session.id} className="schedule-card-item">
+                <div className="schedule-card-item__info">
                   <span className="course-badge-tag">
- {session.courses?.title}
-</span>
+                    {session.courses?.title}
+                  </span>
                   <h3 className="class-title-text">{session.topic}</h3>
                   <div className="meta-info-row">
-                    <FaChalkboardTeacher style={{ color: '#94a3b8' }} /> 
+                    <FaChalkboardTeacher className="meta-icon meta-icon--muted" />
                     <span>Faculty: {session.faculty}</span>
                   </div>
                 </div>
 
                 <div className="date-time-box">
-                  <div className="meta-info-row" style={{ color: '#334155', fontWeight: '600' }}>
-                    <FaCalendarAlt style={{ color: '#4f46e5' }} /> <span>{session.date}</span>
+                  <div className="meta-info-row meta-info-row--strong">
+                    <FaCalendarAlt className="meta-icon meta-icon--primary" />
+                    <span>{session.date}</span>
                   </div>
                   <div className="meta-info-row">
-  <FaClock style={{ color: '#16a34a' }} /> 
-  <span>
-    {new Date(`1970-01-01T${session.time}`).toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: true
-    })}
-  </span>
-</div>
+                    <FaClock className="meta-icon meta-icon--success" />
+                    <span>
+                      {new Date(`1970-01-01T${session.time}`).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true
+                      })}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="action-btn-zone">
-  {status === "Live" ? (
-    <a href={session.meet_link} target="_blank" rel="noreferrer">
-      <button className="live-btn-broadcast">
-        <FaVideo /> Join Now
-      </button>
-    </a>
-  ) : status === "Upcoming" ? (
-    <button disabled className="upcoming-btn-disabled">
-      Class Scheduled
-    </button>
-  ) : (
-    <button disabled className="completed-btn-disabled">
-      <FaCheckCircle /> Session Concluded
-    </button>
-  )}
-</div>
-
+                  {status === "Live" ? (
+                    <a href={session.meet_link} target="_blank" rel="noreferrer">
+                      <button className="live-btn-broadcast">
+                        <FaVideo /> Join Now
+                      </button>
+                    </a>
+                  ) : status === "Upcoming" ? (
+                    <button disabled className="upcoming-btn-disabled">
+                      Class Scheduled
+                    </button>
+                  ) : (
+                    <button disabled className="completed-btn-disabled">
+                      <FaCheckCircle /> Session Concluded
+                    </button>
+                  )}
+                </div>
               </div>
-                        );
+            );
           })}
-          </div>
-
-        </main>
-      </div>
+        </div>
+      )}
     </div>
   );
 };

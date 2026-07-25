@@ -54,6 +54,7 @@ function AppRoutes() {
         <Route path="/my-courses" element={<MyCourses />} />
         <Route path="/assignments" element={<Assignments />} />
         <Route path="/progress" element={<Progress />} />
+        <Route path="/live-classes" element={<LiveClass />} />
       </Route>
 
       <Route path="/course/:id" element={<CourseDetails />} />
@@ -62,7 +63,6 @@ function AppRoutes() {
       <Route path="/payment" element={<Payment />} />
       <Route path="/payment-success" element={<PaymentSuccess />} />
       <Route path="/payment-failure" element={<PaymentFailure />} />
-      <Route path="/live-classes" element={<LiveClass />} />
       
       {/* 🔥 ADMIN ROUTES */}
       <Route path="/admin/login" element={<AdminLogin />} />

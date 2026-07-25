@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaClipboardList, FaClock } from "react-icons/fa";
-import axios from "axios";
 import API from "../../../services/api";
+import "./Assignments.css";
 const Assignments = () => {
   const [filteredAssignments, setFilteredAssignments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,131 +40,58 @@ const Assignments = () => {
   };
 
   return (
-    <div>
-      <h1
-        style={{
-          marginBottom: "10px",
-        }}
-      >
-        Academic Assignments
-      </h1>
-
-      <p
-        style={{
-          color: "#64748b",
-          marginBottom: "30px",
-        }}
-      >
+    <div className="assignments-page">
+      <h1 className="assignments-title">Academic Assignments</h1>
+      <p className="assignments-subtitle">
         Upload and track your continuous internal evaluations.
       </p>
 
       {loading ? (
-            <h3>Loading Assignments...</h3>
-          ) : filteredAssignments.length === 0 ? (
-            <h3>No assignments available.</h3>
-          ) : (
-            filteredAssignments.map((task) => (
-              <div
-                key={task.id}
-                style={{
-                  background: "#fff",
-                  padding: "20px",
-                  borderRadius: "14px",
-                  border: "1px solid #e2e8f0",
-                  marginBottom: "20px",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "16px",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "#eef2ff",
-                      padding: "12px",
-                      borderRadius: "10px",
-                    }}
-                  >
-                    <FaClipboardList color="#4f46e5" size={20} />
-                  </div>
-
-                  <div>
-                    <h3
-                      style={{
-                        margin: 0,
-                      }}
-                    >
-                      {task.title}
-                    </h3>
-
-                    <p
-                      style={{
-                        marginTop: "6px",
-                        color: "#64748b",
-                      }}
-                    >
-                      {task.courses?.title}
-                    </p>
-
-                    <p
-                      style={{
-                        marginTop: "4px",
-                        color: "#ef4444",
-                        fontWeight: "600",
-                      }}
-                    >
-                      Due: {task.due_date}
-                    </p>
-
-                    {task.description && (
-                      <p
-                        style={{
-                          marginTop: "8px",
-                          color: "#555",
-                        }}
-                      >
-                        {task.description}
-                      </p>
-                    )}
-
-                    {task.file_url && (
-                      <a
-                        href={task.file_url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        View Assignment
-                      </a>
-                    )}
-                  </div>
+        <p className="empty-state-text">Loading Assignments...</p>
+      ) : filteredAssignments.length === 0 ? (
+        <div className="assignments-empty">
+          <FaClipboardList className="assignments-empty__icon" />
+          <p>No assignments available.</p>
+        </div>
+      ) : (
+        <div className="assignments-list">
+          {filteredAssignments.map((task) => (
+            <div key={task.id} className="assignment-card">
+              <div className="assignment-card__main">
+                <div className="assignment-card__icon">
+                  <FaClipboardList size={20} />
                 </div>
 
                 <div>
-                  <span
-                    style={{
-                      background: "#fef2f2",
-                      color: "#ef4444",
-                      padding: "8px 16px",
-                      borderRadius: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      fontWeight: "600",
-                    }}
-                  >
-                    <FaClock />
-                    Pending
-                  </span>
+                  <h3 className="assignment-card__title">{task.title}</h3>
+                  <p className="assignment-card__course">{task.courses?.title}</p>
+                  <p className="assignment-card__due">Due: {task.due_date}</p>
+
+                  {task.description && (
+                    <p className="assignment-card__desc">{task.description}</p>
+                  )}
+
+                  {task.file_url && (
+                    <a
+                      href={task.file_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="assignment-card__link"
+                    >
+                      View Assignment
+                    </a>
+                  )}
                 </div>
               </div>
-            ))
-          )}
+
+              <span className="assignment-card__status">
+                <FaClock />
+                Pending
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
