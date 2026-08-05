@@ -121,19 +121,20 @@ const Profile = () => {
             accept="image/*"
           />
 
-          <button
-            className="profile-avatar-camera-btn"
-            onClick={() => fileInputRef.current.click()}
-          >
-            <FaCamera size={14} />
-          </button>
-        </div>
-
-        <div className="profile-banner-text">
-          <h1>{user.full_name || "User Name"}</h1>
-          <p>{user.program} | ICFAI University</p>
-        </div>
-      </div>
+              <button 
+                onClick={() => fileInputRef.current.click()} 
+                style={{ position: 'absolute', bottom: '5px', right: '5px', background: '#4f46e5', border: '2px solid #fff', borderRadius: '50%', padding: '10px', cursor: 'pointer', color: '#fff' }}
+              >
+                <FaCamera size={14} />
+              </button>
+            </div>
+            
+            <div>
+              {/* Ab yahan wahi naam aayega jo tumne Signup ya EditProfile mein dala hai */}
+              <h1 style={{ margin: '0', fontSize: '2.5rem', letterSpacing: '-0.02em' }}>{user.full_name || "User Name"}</h1>
+              <p style={{ margin: '8px 0', fontSize: '1.1rem', opacity: '0.9' }}>{user.program} | ICFAI University</p>
+            </div>
+          </div>
 
       <div className="profile-card">
         <div className="profile-tabs">

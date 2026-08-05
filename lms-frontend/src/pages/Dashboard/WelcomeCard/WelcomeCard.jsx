@@ -40,26 +40,18 @@ const WelcomeCard = ({ isAdmin }) => {
 
   return (
     <div className={`welcome-card-banner ${isAdmin ? 'admin-theme' : ''}`}>
-      <div className="welcome-blob welcome-blob-1"></div>
-      <div className="welcome-blob welcome-blob-2"></div>
-
-      <div className="welcome-identity">
-        <div className="welcome-avatar">{userName.charAt(0).toUpperCase()}</div>
-
-        <div className="welcome-text-content">
-          <span className="welcome-eyebrow">{isAdmin ? "Admin Console" : today}</span>
-          <h1>
-    {isAdmin
-      ? "Welcome Back, Admin"
-      : `Welcome back, ${userName.split(" ")[0]}`
-    }
-  </h1>
-          <p>
-            {isAdmin
-              ? "Manage your university portal, student data, and course curriculum."
-              : "Continue your learning journey at ICFAI University."}
-          </p>
-        </div>
+      <div className="welcome-text-content">
+        <h1>
+  {isAdmin 
+    ? "👋 Welcome Back, Admin" 
+    : `👋 Welcome Back, ${userName}`
+  }
+</h1>
+        <p>
+          {isAdmin 
+            ? "Manage your university portal, student data, and course curriculum." 
+            : "Continue your learning journey at ICFAI University."}
+        </p>
       </div>
 
       <button className="continue-learning-btn" onClick={handleAction}>

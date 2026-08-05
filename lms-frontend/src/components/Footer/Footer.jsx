@@ -1,29 +1,35 @@
 import "./Footer.css";
-import { FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'; // Icons add kiye
+import { FaInstagram, FaLinkedin, FaYoutube, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import logo from "../../assets/tvi-logo.webp";
+
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
 
         {/* About */}
-        <div className="footer-section">
-          <h2>ICFAI University</h2>
+        <div className="footer-section footer-brand">
+          <img src={logo} alt="TVI Academy" className="footer-logo" />
           <p>
-            Empowering students with quality education, innovation,
-            and excellence. Learn anytime, anywhere with our
-            modern e-learning platform.
+            TVI Academy is an online learning platform where students get
+            live &amp; recorded lectures from expert faculty and earn
+            verified certificates — learn anytime, anywhere.
           </p>
-          {/* Instagram Icon here */}
-          <a href="https://www.instagram.com/your-account-handle" target="_blank" rel="noreferrer" style={{ color: '#fff', fontSize: '1.5rem' }}>
-            <FaInstagram />
-          </a>
+          <div className="footer-socials">
+            <a href="https://www.instagram.com/your-account-handle" target="_blank" rel="noreferrer" aria-label="Instagram"><FaInstagram /></a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" aria-label="LinkedIn"><FaLinkedin /></a>
+            <a href="https://www.youtube.com" target="_blank" rel="noreferrer" aria-label="YouTube"><FaYoutube /></a>
+          </div>
         </div>
 
         {/* Quick Links */}
         <div className="footer-section">
-          <h3>Quick Links</h3>
+          <h3>Platform</h3>
           <ul>
+<li><Link to="/certification">Certification</Link></li>
+<li><Link to="/pricing">Pricing</Link></li>
+<li><Link to="/enroll">How to Enroll</Link></li>
 <li><Link to="/about">About Us</Link></li>
 <li><Link to="/contact">Contact</Link></li>
           </ul>
@@ -32,8 +38,8 @@ const Footer = () => {
         {/* Contact */}
         <div className="footer-section">
           <h3>Contact</h3>
-          <p><FaMapMarkerAlt /> Located near Cambay Golf Resort on Agra Road in Jamdoli, Jaipur, Rajasthan (Pin: 302031). </p>
-          <p><FaEnvelope /> admissions@icfaiuniversity.edu</p>
+          <p><FaMapMarkerAlt /> Jaipur, Rajasthan, India</p>
+          <p><FaEnvelope /> hello@tviacademy.in</p>
           <p><FaPhone /> +91 98765 43210</p>
         </div>
 
@@ -42,7 +48,7 @@ const Footer = () => {
       <hr />
 
       <div className="footer-bottom">
-        <p>© 2026 ICFAI University. All Rights Reserved.</p>
+        <p>© 2026 TVI Academy — a product of True Value Infosoft. All Rights Reserved.</p>
       </div>
     </footer>
   );

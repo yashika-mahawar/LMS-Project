@@ -51,7 +51,7 @@ function AdminHeader({ searchTerm = "", setSearchTerm, placeholder = "Search..."
 
   const admin = {
     name: "Administrator",
-    email: "admin@icfai.com",
+    email: "admin@tviacademy.in",
   };
 
   const logout = () => {

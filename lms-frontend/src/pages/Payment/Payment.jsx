@@ -52,7 +52,7 @@ const { data } = await axios.post(
       key: import.meta.env.VITE_RAZORPAY_KEY,
       amount: data.amount,
       currency: "INR",
-      name: "ICFAI University",
+      name: "TVI Academy",
       description: `Enrollment for ${course.title}`,
       order_id: data.id,
 handler: async (response) => {

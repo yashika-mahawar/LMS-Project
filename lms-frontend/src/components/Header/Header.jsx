@@ -218,11 +218,25 @@ notifications.slice(0, MAX_VISIBLE_NOTIFICATIONS).map((note) => (
 
         {/* Dropdown Box */}
         {showProfileBox && (
-          <div className="profile-dropdown">
-            <div className="profile-dropdown__info">
-              <p><strong>Name:</strong> {user.full_name}</p>
-              <p><strong>Roll No:</strong> ICFAI-2026-001</p>
-              <p><strong>Course:</strong> {user.program}</p>
+          <div
+            style={{
+              position: "absolute",
+              top: "70px",
+              right: "20px",
+              width: "260px",
+              background: "#ffffff",
+              padding: "20px",
+              borderRadius: "12px",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.15)",
+              border: "1px solid #e2e8f0",
+              zIndex: 1000,
+              color: "#333"
+            }}
+          >
+            <div style={{ fontSize: "0.9rem", color: "#475569", lineHeight: "2" }}>
+              <p style={{ margin: 0 }}><strong>Name:</strong>{user.full_name}</p>
+              <p style={{ margin: 0 }}><strong>Roll No:</strong> ICFAI-2026-001</p>
+              <p style={{ margin: 0 }}><strong>Course:</strong> {user.program}</p>
             </div>
             <button
               className="profile-dropdown__close-btn"

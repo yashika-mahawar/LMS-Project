@@ -16,6 +16,8 @@ import LiveClass from "../pages/LiveClass/LiveClass";
 import Assignments from '../pages/Dashboard/Assignments/Assignments';
 import Progress from '../pages/Dashboard/Progress/Progress';
 import Admission from "../pages/Admissions/Admissions";
+import Certification from "../pages/Certification/Certification";
+import Pricing from "../pages/Pricing/Pricing";
 import AdminProtectedRoute from "../components/ProtectedRoute/AdminProtectedRoute";
 import StudentLayout from "../Layout/StudentLayout";
 import AdminLayout from "../Layout/AdminLayout";
@@ -39,8 +41,11 @@ function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/enroll" element={<Admission />} />
       <Route path="/admissions" element={<Admission />} />
-      
+      <Route path="/certification" element={<Certification />} />
+      <Route path="/pricing" element={<Pricing />} />
+
       {/* Auth Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />

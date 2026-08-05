@@ -34,31 +34,6 @@ function Signup() {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchCourses = async () => {
-      try {
-        const res = await API.get("/api/courses/courses");
-        setCourses(res.data.courses || []);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoadingCourses(false);
-      }
-    };
-
-    fetchCourses();
-  }, []);
-
-  // Chrome ignores autocomplete="off" on email/password fields when it has
-  // a saved credential for this site, and silently fills them right after
-  // mount. Force those two back to empty once that autofill pass happens.
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFormData((prev) => ({ ...prev, email: "", password: "" }));
-    }, 60);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -108,7 +83,7 @@ localStorage.setItem("user", JSON.stringify(userData));
 
         <div className="auth-brand">
           <FaGraduationCap />
-          <span>ICFAI University</span>
+          <span>TVI Academy</span>
         </div>
 
         <h2>Start Your Learning Journey</h2>
@@ -138,69 +113,17 @@ localStorage.setItem("user", JSON.stringify(userData));
 
           <div className="auth-input-group">
             <FaUser className="auth-input-icon" />
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={formData.name}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-            />
-          </div>
-
-          <div className="auth-input-group">
-            <FaUserTie className="auth-input-icon" />
-            <input
-              type="text"
-              name="fatherName"
-              placeholder="Father's Name"
-              value={formData.fatherName}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-            />
+            <input type="text" name="name" placeholder="Full Name" onChange={handleChange} required />
           </div>
 
           <div className="auth-input-group">
             <FaEnvelope className="auth-input-icon" />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address"
-              value={formData.email}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-            />
+            <input type="email" name="email" placeholder="Email Address" onChange={handleChange} required />
           </div>
 
           <div className="auth-input-group">
             <FaPhone className="auth-input-icon" />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone Number"
-              pattern="[0-9+\-\s]{10,15}"
-              title="Enter a valid phone number"
-              value={formData.phone}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-            />
-          </div>
-
-          <div className="auth-input-group">
-            <FaUniversity className="auth-input-icon" />
-            <input
-              type="text"
-              name="collegeName"
-              placeholder="College Name"
-              value={formData.collegeName}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-            />
+            <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} required />
           </div>
 
           <div className="auth-input-group">

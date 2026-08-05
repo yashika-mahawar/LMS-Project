@@ -22,12 +22,22 @@ dotenv.config();
 const app = express();
 
 // CORS configuration
-// CORS configuration
+// Vite dev server auto-picks the next free port (5173, 5174, 5175, ...) when
+// one's busy, so a hardcoded single localhost port kept breaking local dev —
+// allow any localhost port instead of just 5173.
+const ALLOWED_ORIGINS = [
+  "https://lms-frontend-xmbw.onrender.com", // <--- Yeh tumhare frontend ka live Render URL hai
+];
+const LOCALHOST_ORIGIN = /^http:\/\/localhost:\d+$/;
+
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://lms-frontend-xmbw.onrender.com" // <--- Yeh tumhare frontend ka live Render URL hai
-  ],
+  origin: (origin, callback) => {
+    if (!origin || ALLOWED_ORIGINS.includes(origin) || LOCALHOST_ORIGIN.test(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));

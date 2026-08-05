@@ -1,63 +1,73 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 import './Admissions.css';
 
 function Admission() {
   return (
     <div className="admission-page">
+      <Navbar />
+
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-overlay">
-          <h1>Admissions Open 2026-27</h1>
-          <p>ICFAI University: Excellence in Education and Innovation.</p>
+          <span className="eyebrow eyebrow-light">Enrollment</span>
+          <h1>Enroll Today, Start Learning This Week</h1>
+          <p>No entrance exams. No paperwork queues. Just sign up and start.</p>
         </div>
       </section>
 
-      {/* Admission Details & Process Section */}
+      {/* Enrollment Details & Process Section */}
       <section className="admission-content">
         <div className="info-card">
-          <h3>Admission Process 2026-27</h3>
+          <h3>How Enrollment Works</h3>
           <ol className="process-list">
-            <li><strong>Online Registration:</strong> Fill out the inquiry form available on our official portal.</li>
-            <li><strong>Counseling Session:</strong> Speak with our academic counselors to understand the program structure.</li>
-            <li><strong>Entrance/Merit Evaluation:</strong> Admission is granted based on merit or specific entrance test scores.</li>
-            <li><strong>Document Verification:</strong> Submit required academic and identity documents for validation.</li>
-            <li><strong>Fee Payment & Enrollment:</strong> Complete the initial fee payment to confirm your seat.</li>
+            <li><strong>Create Your Account:</strong> Sign up with your email and phone number in under a minute.</li>
+            <li><strong>Pick a Course or Plan:</strong> Browse the course catalog or choose a subscription plan that fits you.</li>
+            <li><strong>Complete Payment:</strong> Secure checkout confirms your seat instantly.</li>
+            <li><strong>Join Your First Class:</strong> Access your dashboard and join a live class or start a recorded lecture right away.</li>
           </ol>
         </div>
 
         <div className="info-card">
-          <h3>Required Documents</h3>
+          <h3>What You'll Need</h3>
           <ul className="doc-list">
-            <li>Class 10th and 12th Marksheets</li>
-            <li>School/College Transfer Certificate (TC)</li>
-            <li>Recent Passport Size Photographs</li>
-            <li>Proof of Identity (e.g., [Aadhaar Redacted] or other valid ID)</li>
+            <li>A valid email address and phone number</li>
+            <li>Basic details (name, highest qualification)</li>
+            <li>A device with an internet connection</li>
+            <li>A payment method for paid courses (UPI, cards, netbanking)</li>
           </ul>
         </div>
       </section>
 
-      {/* Admission Calendar */}
+      {/* Enrollment Timeline */}
       <section className="calendar-section">
-        <h2 className="section-title">Important Dates</h2>
+        <h2 className="section-title">Rolling Enrollment — Join Anytime</h2>
         <div className="calendar-grid">
           <div className="calendar-item">
-            <h4>Application Start</h4>
-            <p>February 15, 2026</p>
+            <h4>Sign Up</h4>
+            <p>Open all year round</p>
           </div>
           <div className="calendar-item">
-            <h4>Entrance Window</h4>
-            <p>April - May 2026</p>
+            <h4>Next Live Cohort</h4>
+            <p>Starts every Monday</p>
           </div>
           <div className="calendar-item">
-            <h4>Merit Announcement</h4>
-            <p>June 2026</p>
+            <h4>Certificate Assessment</h4>
+            <p>At the end of each course</p>
           </div>
           <div className="calendar-item">
-            <h4>Session Commencement</h4>
-            <p>July 2026</p>
+            <h4>Certificate Issued</h4>
+            <p>Instantly after you pass</p>
           </div>
         </div>
+
+        <div className="enroll-cta">
+          <Link to="/signup" className="btn-gradient">Create Your Account</Link>
+        </div>
       </section>
+      <Footer />
     </div>
   );
 }
