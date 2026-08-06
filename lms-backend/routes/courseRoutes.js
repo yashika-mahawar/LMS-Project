@@ -14,9 +14,9 @@ import {
 } from "../controllers/courseController.js";
 
 // Routes define karo
-router.get("/courses", getCourses);
-router.get("/courses/:id", getCourseById);
-router.post("/courses", createCourse);
+router.get("/", getCourses);
+router.get("/:id", getCourseById);
+router.post("/", createCourse);
 router.put("/:id", authMiddleware, roleMiddleware(["admin"]), updateCourse);
 
 export default router;

@@ -31,7 +31,28 @@ function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [courses, setCourses] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
+useEffect(() => {
+  console.log("useEffect running");
 
+  const fetchCourses = async () => {
+    console.log("Fetching courses...");
+
+    try {
+      const res = await axios.get(
+  "http://localhost:5000/api/courses"
+);
+      console.log("Response:", res.data);
+
+      setCourses(res.data.courses);
+    } catch (error) {
+      console.error("API Error:", error);
+    } finally {
+      setLoadingCourses(false);
+    }
+  };
+
+  fetchCourses();
+}, []);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -40,6 +61,17 @@ function Signup() {
 
  const handleSignup = async (e) => {
   e.preventDefault();
+ console.log("Sending Data:", {
+    full_name: formData.name,
+    email: formData.email,
+    phone: formData.phone,
+    password: formData.password,
+    role: "student",
+    program: formData.program,
+    college_name: formData.collegeName,
+    father_name: formData.fatherName,
+  });
+
 
   try {
     const res = await axios.post(
@@ -125,6 +157,28 @@ localStorage.setItem("user", JSON.stringify(userData));
             <FaPhone className="auth-input-icon" />
             <input type="tel" name="phone" placeholder="Phone Number" onChange={handleChange} required />
           </div>
+          <div className="auth-input-group">
+  <FaUniversity className="auth-input-icon" />
+  <input
+    type="text"
+    name="collegeName"
+    placeholder="College Name"
+    value={formData.collegeName}
+    onChange={handleChange}
+    required
+  />
+</div>
+<div className="auth-input-group">
+  <FaUserTie className="auth-input-icon" />
+  <input
+    type="text"
+    name="fatherName"
+    placeholder="Father's Name"
+    value={formData.fatherName}
+    onChange={handleChange}
+    required
+  />
+</div>
 
           <div className="auth-input-group">
             <FaBookOpen className="auth-input-icon" />
