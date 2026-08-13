@@ -26,7 +26,7 @@ const ManageFaculty = () => {
   useEffect(() => {
     const fetchFaculty = async () => {
       try {
-        const res = await API.get("/api/faculty");
+        const res = await API.get("/faculty");
         setFacultyList(res.data.faculty || []);
       } catch (err) {
         console.log(err);
@@ -76,7 +76,7 @@ const ManageFaculty = () => {
       if (editingId) {
         await API.put(`/api/faculty/${editingId}`, facultyForm);
       } else {
-        await API.post("/api/faculty", facultyForm);
+        await API.post("/faculty", facultyForm);
       }
 
       setShowModal(false);

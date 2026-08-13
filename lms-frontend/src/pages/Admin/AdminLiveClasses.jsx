@@ -33,7 +33,7 @@ useEffect(() => {
 const fetchCourses = async () => {
   try {
     const res = await API.get(
-  "/api/courses/courses"
+  "/courses"
 );
     setCourses(res.data.courses);
   } catch (err) {
@@ -44,7 +44,7 @@ const fetchCourses = async () => {
 const fetchLiveClasses = async () => {
   try {
     const res = await API.get(
-  "/api/live-classes"
+  "/live-classes"
 );
     setLiveClasses(res.data.data);
   } catch (err) {
@@ -58,14 +58,14 @@ const handleSaveLiveClass = async () => {
     if (editingId) {
 
       await API.put(
-  `/api/live-classes/${editingId}`,
+  `/live-classes/${editingId}`,
   liveForm
 );
 
     } else {
 
       await API.post(
-  "/api/live-classes",
+  "/live-classes",
   liveForm
 );
 
@@ -111,7 +111,7 @@ const handleDelete = async (id) => {
   try {
 
     await API.delete(
-  `/api/live-classes/${id}`
+  `/live-classes/${id}`
 );
 
     fetchLiveClasses();

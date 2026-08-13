@@ -50,7 +50,7 @@ function CourseCard() {
 
   const fetchCourses = async () => {
     try {
-      const res = await API.get("/api/courses/courses"); // ya jo bhi endpoint ho
+      const res = await API.get("/courses"); // ya jo bhi endpoint ho
       setCourses(res.data.courses || []);
     } catch (err) {
       console.log(err);

@@ -34,7 +34,7 @@ const AdminAssignments = () => {
 
   const fetchCourses = async () => {
     try {
-      const res = await API.get("/api/courses/courses");
+      const res = await API.get("/courses");
 
       setCourses(res.data.courses);
     } catch (err) {
@@ -44,7 +44,7 @@ const AdminAssignments = () => {
 
   const fetchAssignments = async () => {
   try {
-    const res = await API.get("/api/assignments");
+    const res = await API.get("/assignments");
 
     setAssignments(res.data.data || []);
 
@@ -57,7 +57,7 @@ const AdminAssignments = () => {
   const handleAddAssignment = async () => {
     try {
       await API.post(
-  "/api/assignments",
+  "/assignments",
   assignmentForm
 );
 
@@ -95,7 +95,7 @@ const AdminAssignments = () => {
     try {
 
       await API.put(
-  `/api/assignments/${editAssignmentId}`,
+  `/assignments/${editAssignmentId}`,
   assignmentForm
 );
 
@@ -116,7 +116,7 @@ const AdminAssignments = () => {
     try {
 
       await API.delete(
-  `/api/assignments/${id}`
+  `/assignments/${id}`
 );
 
       fetchAssignments();

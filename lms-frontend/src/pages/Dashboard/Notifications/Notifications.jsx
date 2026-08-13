@@ -29,9 +29,7 @@ const Notifications = () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        const res = await API.get(
-  `/api/notifications/${user.id}`
-);
+        const res = await API.get(`/notifications/${user.id}`);
 setNotifications(dedupeNotifications(res.data.notifications || []).slice(0, MAX_VISIBLE_NOTIFICATIONS));
       } catch (err) {
         console.log(err);

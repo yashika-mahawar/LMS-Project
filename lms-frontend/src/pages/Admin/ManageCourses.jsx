@@ -38,7 +38,7 @@ useEffect(() => {
 const fetchCourses = async () => {
   try {
    const res = await API.get(
-  "/api/admin/courses"
+  "/admin/courses"
 );
     setCourses(res.data.courses);
     setLoading(false);
@@ -57,7 +57,7 @@ const fetchCourses = async () => {
   try {
 
     await API.put(
-  `/api/admin/courses/${editId}`,
+  `/admin/courses/${editId}`,
       {
         title: tempData.title,
             description: tempData.description,
@@ -82,7 +82,7 @@ const fetchCourses = async () => {
   try {
 
     await API.delete(
-  `/api/admin/courses/${id}`
+  `/admin/courses/${id}`
 );
     fetchCourses();
 
@@ -97,7 +97,7 @@ const fetchCourses = async () => {
 const handleAddCourse = async () => {
   try {
     await API.post(
-  "/api/admin/courses",
+  "/admin/courses",
   newCourse
 );
 

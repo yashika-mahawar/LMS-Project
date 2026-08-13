@@ -27,7 +27,7 @@ const AdminActivity = () => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const res = await API.get("/api/admin/notifications");
+        const res = await API.get("/admin/notifications");
         setNotifications(
           dedupeNotifications(res.data.notifications || []).slice(0, MAX_VISIBLE_NOTIFICATIONS)
         );

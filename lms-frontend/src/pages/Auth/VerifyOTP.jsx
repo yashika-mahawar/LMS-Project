@@ -35,7 +35,7 @@ function VerifyOTP() {
   const handleResend = async () => {
     setResending(true);
     try {
-      await API.post("/api/auth/forgot-password", { phone });
+      await API.post("/auth/forgot-password", { phone });
       alert("A new OTP has been sent to your WhatsApp number!");
     } catch (err) {
       alert(err.response?.data?.message || "Failed to resend OTP");

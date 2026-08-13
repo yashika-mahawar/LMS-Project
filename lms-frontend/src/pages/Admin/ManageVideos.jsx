@@ -55,7 +55,7 @@ useEffect(() => {
 }, [searchTerm, courses]);
 const fetchCourses = async () => {
   try {
-    const res = await API.get("/api/courses/courses");
+    const res = await API.get("/courses/courses");
     setCourses(res.data.courses);
   } catch (err) {
     console.log(err);
@@ -64,7 +64,7 @@ const fetchCourses = async () => {
 
 const fetchVideos = async () => {
   try {
-    const res = await API.get("/api/videos");
+    const res = await API.get("/videos");
     setVideos(res.data);
   } catch (err) {
     console.log(err);

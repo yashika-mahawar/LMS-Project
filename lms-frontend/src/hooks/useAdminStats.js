@@ -18,8 +18,8 @@ const useAdminStats = () => {
       setLoading(true);
 
       const [dashboardResult, enrollmentsResult] = await Promise.allSettled([
-        API.get("/api/admin/dashboard"),
-        API.get("/api/admin/recent-enrollments"),
+        API.get("/admin/dashboard"),
+        API.get("/admin/recent-enrollments"),
       ]);
 
       if (dashboardResult.status === "fulfilled") {

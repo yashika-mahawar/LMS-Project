@@ -94,7 +94,7 @@ if (!user) {
   console.log("SENDING DATA:", payload);
 
   try {
-    const response = await API.post("/api/progress/update", payload);
+    const response = await API.post("/progress/update", payload);
     const result = response.data;
     console.log("SERVER RESPONSE:", result);
     const progressResponse = await API.get(

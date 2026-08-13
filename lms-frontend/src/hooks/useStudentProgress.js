@@ -24,7 +24,7 @@ const useStudentProgress = () => {
 
       try {
         setLoading(true);
-        const response = await API.get(`/api/progress/user/${user.id}`);
+        const response = await API.get(`/progress/user/${user.id}`);
         const result = response.data;
 
         setData({

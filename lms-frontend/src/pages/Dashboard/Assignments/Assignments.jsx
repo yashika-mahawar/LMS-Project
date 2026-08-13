@@ -15,7 +15,7 @@ const Assignments = () => {
 
       // Student enrolled courses
       const enrolledRes = await API.get(
-  "/api/enrollments/my-courses"
+  "/enrollments/my-courses"
 );
 
       const enrolledTitles = enrolledRes.data.data.map(
@@ -24,7 +24,7 @@ const Assignments = () => {
 
       // All assignments
       const assignmentRes = await API.get(
-  "/api/assignments"
+  "/assignments"
 );
       // Sirf enrolled course ke assignments
       const filtered = (assignmentRes.data.data || []).filter((item) =>

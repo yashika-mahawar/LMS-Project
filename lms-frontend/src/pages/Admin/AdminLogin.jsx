@@ -15,7 +15,7 @@ const AdminLogin = () => {
 
   try {
     const res = await API.post(
-  "/api/auth/login",
+  "/auth/login",
   {
     email,
     password,

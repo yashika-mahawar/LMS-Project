@@ -13,7 +13,7 @@ const [loading, setLoading] = useState(true);
 const fetchStudents = async () => {
   try {
     const response = await API.get(
-  "/api/admin/students"
+  "/admin/students"
 );
 
     setStudents(response.data.students);
@@ -35,7 +35,7 @@ const handleDelete = async (id) => {
   try {
 
     await API.delete(
-  `/api/admin/students/${id}`
+  `/admin/students/${id}`
 );
 
     // refresh data

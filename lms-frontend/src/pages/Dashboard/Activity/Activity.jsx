@@ -11,9 +11,7 @@ const Activity = () => {
       try {
         const user = JSON.parse(localStorage.getItem("user"));
 
-        const res = await API.get(
-  `/api/activities/${user.id}`
-);
+        const res = await API.get(`/activities/${user.id}`);
 
         setActivities(res.data.data || []);
       } catch (err) {
