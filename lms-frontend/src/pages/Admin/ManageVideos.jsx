@@ -55,7 +55,7 @@ useEffect(() => {
 }, [searchTerm, courses]);
 const fetchCourses = async () => {
   try {
-    const res = await API.get("/courses/courses");
+    const res = await API.get("/courses");
     setCourses(res.data.courses);
   } catch (err) {
     console.log(err);
@@ -89,7 +89,7 @@ const fetchVideos = async () => {
   const saveEdit = async () => {
   try {
     await API.put(
-  `/api/videos/${editVideoId}`,
+  `/videos/${editVideoId}`,
   videoForm
 );
 
@@ -110,7 +110,7 @@ const deleteVideo = async (id) => {
   if (!window.confirm("Delete this video?")) return;
 
   try {
-    await API.delete(`/api/videos/${id}`);
+    await API.delete(`/videos/${id}`);
 
     fetchVideos();
 
@@ -121,7 +121,7 @@ const deleteVideo = async (id) => {
 const handleAddVideo = async () => {
   try {
     await API.post(
-  "/api/videos",
+  "/videos",
   videoForm
 );
 

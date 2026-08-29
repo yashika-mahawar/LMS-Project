@@ -27,7 +27,7 @@ function Pricing() {
 
   const fetchCourses = async () => {
     try {
-      const res = await API.get("/courses/courses");
+      const res = await API.get("/courses");
       setCourses(res.data.courses || []);
     } catch (err) {
       console.log(err);
