@@ -9,7 +9,7 @@ const FacultyCard = () => {
   useEffect(() => {
     const fetchFaculty = async () => {
       try {
-        const res = await API.get('/api/faculty');
+        const res = await API.get('/faculty');
         setFacultyList(res.data.faculty || []);
       } catch (err) {
         console.log(err);

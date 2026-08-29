@@ -74,7 +74,7 @@ const ManageFaculty = () => {
   const handleSaveFaculty = async () => {
     try {
       if (editingId) {
-        await API.put(`/api/faculty/${editingId}`, facultyForm);
+        await API.put(`/faculty/${editingId}`, facultyForm);
       } else {
         await API.post("/faculty", facultyForm);
       }
@@ -92,7 +92,7 @@ const ManageFaculty = () => {
     if (!window.confirm("Delete this faculty member?")) return;
 
     try {
-      await API.delete(`/api/faculty/${id}`);
+      await API.delete(`/faculty/${id}`);
       refetchFaculty();
     } catch (err) {
       console.log(err);

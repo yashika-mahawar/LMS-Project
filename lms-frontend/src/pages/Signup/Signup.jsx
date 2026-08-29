@@ -32,18 +32,16 @@ function Signup() {
   const [courses, setCourses] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
 useEffect(() => {
-  console.log("useEffect running");
-
   const fetchCourses = async () => {
-    console.log("Fetching courses...");
-
     try {
-      const res = await axios.get(
-  "http://localhost:5000/api/courses"
-);
-      console.log("Response:", res.data);
-
-      setCourses(res.data.courses);
+      const res = await API.get("/courses"); // Hardcoded URL ki jagah API instance use karein
+      
+      // Check karein ki data array hai ya object ke andar array hai
+      const courseData = Array.isArray(res.data) 
+        ? res.data 
+        : res.data.courses || [];
+        
+      setCourses(courseData);
     } catch (error) {
       console.error("API Error:", error);
     } finally {
